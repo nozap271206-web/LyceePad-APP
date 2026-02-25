@@ -1,0 +1,28 @@
+# Protection des fichiers de déploiement sensibles
+
+# Bloquer l'accès aux fichiers de log
+<FilesMatch "\.(log)$">
+    Require all denied
+</FilesMatch>
+
+# Bloquer l'accès aux scripts de déploiement
+<Files "deploy.sh">
+    Require all denied
+</Files>
+
+<Files "deploy.ps1">
+    Require all denied
+</Files>
+
+# Bloquer l'accès au README
+<Files "README.md">
+    Require all denied
+</Files>
+
+# Autoriser uniquement webhook.php
+<Files "webhook.php">
+    Require all granted
+</Files>
+
+# Protection supplémentaire
+Options -Indexes
