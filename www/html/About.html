@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LycéePad - À propos</title>
+
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('dark') === 'true') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (error) {}
+    })();
+  </script>
+  
+  <!-- CSS dans l'ordre -->
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/About.css">
+  <link rel="stylesheet" href="../lib/fontawesome/css/svg-with-js.min.css">
+  
+  <!-- AOS Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- HEADER INTÉGRÉ -->
+<nav class="nav">
+  <div class="nav-wrap">
+    <a href="../index.html" class="logo">
+      <div class="logo-ring">
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#3B82F6"/>
+              <stop offset="100%" style="stop-color:#8B5CF6"/>
+            </linearGradient>
+          </defs>
+          <path d="M18 3L33 11v14l-15 8-15-8V11l15-8z" stroke="url(#g1)" stroke-width="2.5" fill="none"/>
+          <circle cx="18" cy="18" r="6" fill="url(#g1)" opacity="0.8"/>
+        </svg>
+      </div>
+      <span class="logo-text">LycéePad</span>
+    </a>
+    
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link" data-page="home">
+        <span class="link-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
+        <span class="link-text">Accueil</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="map.html" class="nav-link" data-page="map">
+        <span class="link-icon"><i class="fa-solid fa-map" aria-hidden="true"></i></span>
+        <span class="link-text">Carte</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="Quiz.html" class="nav-link" data-page="quiz">
+        <span class="link-icon"><i class="fa-solid fa-question-circle" aria-hidden="true"></i></span>
+        <span class="link-text">Quiz</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="scanner.html" class="nav-link" data-page="scanner">
+        <span class="link-icon"><i class="fa-solid fa-qrcode" aria-hidden="true"></i></span>
+        <span class="link-text">Scanner</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="About.html" class="nav-link active" data-page="about">
+        <span class="link-icon"><i class="fa-solid fa-info-circle" aria-hidden="true"></i></span>
+        <span class="link-text">À propos</span>
+        <span class="link-glow"></span>
+      </a>
+    </div>
+
+    <button class="theme-btn" id="theme-toggle" title="Changer de thème">
+      <span class="theme-icon">
+        <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="sun-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENU -->
+<main class="main">
+  <div class="about-page">
+    <!-- Hero Section -->
+    <section class="about-hero">
+      <div class="hero-bg">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+      </div>
+      
+      <div class="hero-container">
+        <div class="hero-badge" data-aos="fade-down">
+          <span class="badge-dot"></span>
+          Établissement d'excellence
+        </div>
+        
+        <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+          <span class="gradient-text">Lycée Saint-Éloi</span><br/>
+          Former les talents de demain
+        </h1>
+        
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+          Un établissement moderne au service de la réussite de nos élèves et étudiants
+        </p>
+      </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="video-section" data-aos="fade-up">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-badge">
+            <span class="badge-icon"><i class="fa-solid fa-video"></i></span> DÉCOUVERTE </span>
+          <h2 class="section-title">Visitez notre établissement</h2>
+          <p class="section-subtitle">
+            Une immersion au cœur du Lycée Saint-Éloi
+          </p>
+        </div>
+
+        <div class="video-wrapper">
+          <div class="video-container">
+            <!-- Vidéo YouTube intégrée -->
+            <iframe 
+              class="video-iframe"
+              src="https://www.youtube.com/embed/3bHVRv5ujYo" 
+              title="Présentation Lycée Saint-Éloi" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          
+          <!-- Quick Info Cards -->
+          <div class="video-info-cards">
+            <div class="info-card">
+              <div class="info-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
+              <h4>Localisation</h4>
+              <p>Au cœur de la ville, facilement accessible en transport</p>
+            </div>
+            <div class="info-card">
+              <div class="info-icon"><i class="fa-solid fa-users"></i></div>
+              <h4>Communauté</h4>
+              <p>Plus de 500 élèves et étudiants accueillis chaque année</p>
+            </div>
+            <div class="info-card">
+              <div class="info-icon"><i class="fa-solid fa-trophy"></i></div>
+              <h4>Excellence</h4>
+              <p>Taux de réussite aux examens supérieur à 90%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Histoire & Présentation -->
+    <section class="history-section">
+      <div class="section-container">
+        <div class="history-grid">
+          <!-- Left Column - Histoire -->
+          <div class="history-content" data-aos="fade-right">
+            <div class="content-header">
+              <span class="content-badge">Notre Histoire</span>
+              <h2>Un établissement ancré dans la tradition</h2>
+            </div>
+            
+            <div class="content-text">
+              <p>
+                Le Lycée Saint-Éloi, fondé il y a plusieurs décennies, s'est imposé comme un établissement 
+                de référence dans la formation professionnelle et technologique. Notre établissement tire 
+                son nom de Saint Éloi, patron des orfèvres et des métallurgistes, symbole d'excellence 
+                et de savoir-faire.
+              </p>
+              
+              <p>
+                Au fil des années, nous avons su nous adapter aux évolutions technologiques et aux besoins 
+                du marché du travail, tout en conservant nos valeurs fondamentales : exigence, bienveillance 
+                et ouverture sur le monde professionnel.
+              </p>
+
+              <p>
+                Aujourd'hui, le Lycée Saint-Éloi est reconnu pour la qualité de ses formations, 
+                l'engagement de ses équipes pédagogiques et l'accompagnement personnalisé de chaque élève 
+                vers la réussite.
+              </p>
+
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-date">Depuis des décennies</div>
+                  <div class="timeline-content">
+                    <h4>Un héritage solide</h4>
+                    <p>Formation de générations de professionnels qualifiés</p>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">Aujourd'hui</div>
+                  <div class="timeline-content">
+                    <h4>Innovation pédagogique</h4>
+                    <p>Équipements modernes et méthodes d'enseignement actuelles</p>
+                  </div>
+                </div>
+                
+                <div class="timeline-item">
+                  <div class="timeline-date">Demain</div>
+                  <div class="timeline-content">
+                    <h4>Vision d'avenir</h4>
+                    <p>Formation aux métiers de demain et transition numérique</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column - Chiffres clés -->
+          <div class="stats-sidebar" data-aos="fade-left">
+            <!-- Stats Card -->
+            <div class="stats-card">
+              <h3> <i class="fa-solid fa-key"></i> Chiffres clés</h3>
+              <div class="stats-list">
+                <div class="stat-item">
+                  <div class="stat-number">500+</div>
+                  <div class="stat-label">Élèves et étudiants</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">90%</div>
+                  <div class="stat-label">Taux de réussite</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">15+</div>
+                  <div class="stat-label">Formations proposées</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">50+</div>
+                  <div class="stat-label">Enseignants qualifiés</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Valeurs Card -->
+            <div class="values-card">
+              <h3>💎 Nos valeurs</h3>
+              <div class="values-list">
+                <div class="value-item">
+                  <span class="value-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                  <span class="value-text">Excellence pédagogique</span>
+                </div>
+                <div class="value-item">
+                  <span class="value-icon"><i class="fa-solid fa-handshake"></i></span>
+                  <span class="value-text">Accompagnement personnalisé</span>
+                </div>
+                <div class="value-item">
+                  <span class="value-icon"><i class="fa-solid fa-rocket"></i></span>
+                  <span class="value-text">Innovation et modernité</span>
+                </div>
+                <div class="value-item">
+                  <span class="value-icon"><i class="fa-solid fa-globe"></i></span>
+                  <span class="value-text">Ouverture internationale</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Formations Section -->
+    <section class="formations-section">
+      <div class="section-container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-badge">
+            <span class="badge-icon"><i class="fa-solid fa-book"></i></span>
+            NOS FORMATIONS
+          </span>
+          <h2 class="section-title">Des parcours d'excellence</h2>
+          <p class="section-subtitle">
+            Du CAP au BTS, des formations adaptées à vos ambitions
+          </p>
+        </div>
+
+        <!-- CAP -->
+        <div class="formation-category">
+          <h3 class="category-title">⭐ Niveau CAP</h3>
+          <div class="formations-grid">
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="100">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="formation-badge">CAP</div>
+              </div>
+              <h3>CAP Électricien</h3>
+              <p class="formation-subtitle">Formation de base aux métiers de l'électricité</p>
+              <p class="formation-desc">
+                Acquisition des compétences fondamentales pour réaliser des installations 
+                électriques et assurer leur maintenance.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 2 ans</span>
+                <span class="detail-item">🎓 Niveau 3</span>
+                <span class="detail-item">🔌 Électricité</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAC PRO -->
+        <div class="formation-category">
+          <h3 class="category-title">🎓 BAC Professionnels</h3>
+          <div class="formations-grid">
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="100">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="formation-badge">BAC PRO</div>
+              </div>
+              <h3>BAC Pro MELEC</h3>
+              <p class="formation-subtitle">Métiers de l'Électricité et de ses Environnements Connectés</p>
+              <p class="formation-desc">
+                Formation aux installations électriques et réseaux de communication. 
+                Préparation aux métiers de l'électricité dans les bâtiments et l'industrie.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 3 ans</span>
+                <span class="detail-item">🎓 Niveau 4</span>
+                <span class="detail-item">🔧 Pratique intensive</span>
+              </div>
+            </div>
+
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="200">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-lock"></i></div>
+                <div class="formation-badge">BAC PRO</div>
+              </div>
+              <h3>BAC Pro CIEL</h3>
+              <p class="formation-subtitle">Cybersécurité, Informatique et réseaux, Électronique</p>
+              <p class="formation-desc">
+                Formation en électronique, réseaux informatiques et cybersécurité. 
+                Prépare aux métiers de la sécurité des systèmes connectés.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 3 ans</span>
+                <span class="detail-item">🎓 Niveau 4</span>
+                <span class="detail-item">💻 Cybersécurité</span>
+              </div>
+            </div>
+
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="300">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-industry"></i></div>
+                <div class="formation-badge">BAC PRO</div>
+              </div>
+              <h3>BAC Pro MSPC</h3>
+              <p class="formation-subtitle">Maintenance des Systèmes de Production Connectés</p>
+              <p class="formation-desc">
+                Formation en maintenance industrielle, corrective et préventive. 
+                Métiers de la maintenance des équipements de production.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 3 ans</span>
+                <span class="detail-item">🎓 Niveau 4</span>
+                <span class="detail-item">⚙️ Maintenance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BTS TECHNIQUES -->
+        <div class="formation-category">
+          <h3 class="category-title">🚀 BTS Techniques (BAC +2)</h3>
+          <div class="formations-grid">
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="100">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-laptop"></i></div>
+                <div class="formation-badge">BTS</div>
+              </div>
+              <h3>BTS CIEL</h3>
+              <p class="formation-subtitle">Cybersécurité, Informatique et réseaux, Électronique</p>
+              <p class="formation-desc">
+                Option A : Informatique et Réseaux | Option B : Électronique et Réseaux. 
+                Formation complète aux métiers de l'informatique et de l'électronique.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 2 ans</span>
+                <span class="detail-item">🎓 Niveau 5</span>
+                <span class="detail-item">💼 Alternance possible</span>
+              </div>
+            </div>
+
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="200">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-wrench"></i></div>
+                <div class="formation-badge">BTS</div>
+              </div>
+              <h3>BTS MS</h3>
+              <p class="formation-subtitle">Maintenance des Systèmes - Option A : Systèmes de production</p>
+              <p class="formation-desc">
+                Formation à la maintenance préventive et corrective des équipements 
+                industriels et des systèmes de production automatisés.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 2 ans</span>
+                <span class="detail-item">🎓 Niveau 5</span>
+                <span class="detail-item">🏭 Industrie</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BTS TERTIAIRES -->
+        <div class="formation-category">
+          <h3 class="category-title">💼 BTS Gestion/Tertiaire (BAC +2)</h3>
+          <div class="formations-grid">
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="100">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-building"></i></div>
+                <div class="formation-badge">BTS</div>
+              </div>
+              <h3>BTS GPME</h3>
+              <p class="formation-subtitle">Gestion de la PME</p>
+              <p class="formation-desc">
+                Formation polyvalente en gestion administrative, comptable, commerciale 
+                et ressources humaines pour les petites et moyennes entreprises.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 2 ans</span>
+                <span class="detail-item">🎓 Niveau 5</span>
+                <span class="detail-item">📊 Gestion</span>
+              </div>
+            </div>
+
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="200">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                <div class="formation-badge">BTS</div>
+              </div>
+              <h3>BTS SAM</h3>
+              <p class="formation-subtitle">Support à l'Action Managériale</p>
+              <p class="formation-desc">
+                Formation en assistanat de direction et management. Gestion de projets, 
+                communication interne et optimisation des processus administratifs.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 2 ans</span>
+                <span class="detail-item">🎓 Niveau 5</span>
+                <span class="detail-item">💼 Management</span>
+              </div>
+            </div>
+
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="300">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-shield-alt"></i></div>
+                <div class="formation-badge">BTS</div>
+              </div>
+              <h3>BTS Assurance</h3>
+              <p class="formation-subtitle">Métiers de l'assurance et de la protection</p>
+              <p class="formation-desc">
+                Formation aux métiers de l'assurance : gestion de contrats, relation client, 
+                conseil et commercialisation de produits d'assurance.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 2 ans</span>
+                <span class="detail-item">🎓 Niveau 5</span>
+                <span class="detail-item">📈 Commerce</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLASSE PRÉPARATOIRE -->
+        <div class="formation-category">
+          <h3 class="category-title">🎯 Classe Préparatoire</h3>
+          <div class="formations-grid">
+            <div class="formation-card special-card" data-aos="fade-up" data-aos-delay="100">
+              <div class="formation-header">
+                <div class="formation-icon"><i class="fa-solid fa-rocket"></i></div>
+                <div class="formation-badge special-badge">PRÉPA</div>
+              </div>
+              <h3>Prépa ATS</h3>
+              <p class="formation-subtitle">Adaptation Technicien Supérieur - Technologie industrielle</p>
+              <p class="formation-desc">
+                Classe préparatoire destinée aux titulaires de BTS/DUT souhaitant intégrer 
+                une école d'ingénieurs. Renforcement des compétences scientifiques et techniques.
+              </p>
+              <div class="formation-details">
+                <span class="detail-item">📅 1 an</span>
+                <span class="detail-item">🎓 Post-BTS/DUT</span>
+                <span class="detail-item">🏛️ Écoles d'ingénieurs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Infrastructures Section -->
+    <section class="infrastructures-section">
+      <div class="section-container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-badge">
+            <span class="badge-icon"><i class="fa-solid fa-school"></i></span>
+            NOS INFRASTRUCTURES
+          </span>
+          <h2 class="section-title">Des équipements modernes</h2>
+          <p class="section-subtitle">
+            Espaces de travail et d'apprentissage adaptés à chaque formation
+          </p>
+        </div>
+
+        <div class="infra-grid">
+          <div class="infra-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="infra-icon"><i class="fa-solid fa-laptop"></i></div>
+            <h3>Salles informatiques</h3>
+            <p>Équipées d'ordinateurs performants et de logiciels professionnels</p>
+          </div>
+
+          <div class="infra-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="infra-icon"><i class="fa-solid fa-microscope"></i></div>
+            <h3>Ateliers techniques</h3>
+            <p>Espaces de pratique avec matériel professionnel pour les formations MELEC</p>
+          </div>
+
+          <div class="infra-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="infra-icon"><i class="fa-solid fa-book"></i></div>
+            <h3>Centre de documentation</h3>
+            <p>Médiathèque moderne avec ressources numériques et physiques</p>
+          </div>
+
+          <div class="infra-card" data-aos="fade-up" data-aos-delay="500">
+            <div class="infra-icon"><i class="fa-solid fa-utensils"></i></div>
+            <h3>Restauration</h3>
+            <p>Self moderne proposant des repas équilibrés et variés</p>
+          </div>
+
+          <div class="infra-card" data-aos="fade-up" data-aos-delay="600">
+            <div class="infra-icon"><i class="fa-solid fa-home"></i></div>
+            <h3>Internat</h3>
+            <p>Hébergement confortable pour les élèves éloignés</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" data-aos="zoom-in">
+      <div class="cta-card">
+        <h2>Explorez notre établissement</h2>
+        <p>Découvrez virtuellement toutes les zones du Lycée Saint-Éloi</p>
+        <a href="map.html" class="cta-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Commencer la visite interactive
+        </a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER INTÉGRÉ -->
+<footer class="footer">
+  <div class="footer-wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-logo">
+          <svg width="28" height="28" viewBox="0 0 36 36">
+            <defs>
+              <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#3B82F6"/>
+                <stop offset="100%" style="stop-color:#8B5CF6"/>
+              </linearGradient>
+            </defs>
+            <path d="M18 3L33 11v14l-15 8-15-8V11l15-8z" stroke="url(#g2)" stroke-width="2.5" fill="none"/>
+            <circle cx="18" cy="18" r="6" fill="url(#g2)" opacity="0.8"/>
+          </svg>
+          <span>LycéePad</span>
+        </div>
+        <p>Innovation pédagogique pour le Lycée Saint-Éloi</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="map.html">Carte interactive</a></li>
+          <li><a href="Quiz.html">Quiz</a></li>
+          <li><a href="scanner.html">Scanner QR</a></li>
+          <li><a href="About.html">À propos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Projet</h4>
+        <ul>
+          <li>BTS CIEL IR</li>
+          <li>Promotion 2026</li>
+          <li>Lycée Saint-Éloi</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 LycéePad - Tous droits réservés</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Background Effect -->
+<div class="bg-effect"></div>
+
+<!-- Scripts -->
+<script defer src="../lib/fontawesome/js/all.min.js"></script>
+<script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script defer src="../js/About.js"></script>
+<script defer src="../js/app.js"></script>
+
+</body>
+</html>

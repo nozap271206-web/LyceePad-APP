@@ -1,0 +1,9 @@
+ext {
+    cdvMinSdkVersion = 22
+    cdvCompileSdkVersion = 34
+    cdvTargetSdkVersion = 34
+
+    cdvBuildToolsVersion = "34.0.0"
+    cdvAndroidXVersion = "1.12.0"
+    cdvPluginPostBuildExtras = []
+}

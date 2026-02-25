@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scanner QR - LycéePad</title>
+
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('dark') === 'true') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (error) {}
+    })();
+  </script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/scanner.css">
+  <link rel="stylesheet" href="../lib/fontawesome/css/svg-with-js.min.css">
+  
+  <!-- Meta pour Cordova -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content: http://10.213.168.130:*; connect-src 'self' http://10.213.168.130:*; camera:;">
+</head>
+<body>
+
+<!-- OVERLAY SCANNER FULLSCREEN -->
+<div id="scanner-overlay" class="scanner-overlay" style="display: none;">
+  <div id="qr-reader-fullscreen" class="qr-reader-fullscreen"></div>
+  <div class="scanner-overlay-controls">
+    <button id="close-scanner-btn" class="scanner-overlay-btn" title="Fermer">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <button id="switch-camera-btn" class="scanner-overlay-btn" title="Changer de caméra">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 2l4 4-4 4"/>
+        <path d="M3 11V9a4 4 0 014-4h14"/>
+        <path d="M7 22l-4-4 4-4"/>
+        <path d="M21 13v2a4 4 0 01-4 4H3"/>
+      </svg>
+    </button>
+  </div>
+  <div class="scanner-overlay-hint">
+    <span>Pointez la caméra vers un QR code</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<nav class="nav">
+  <div class="nav-wrap">
+    <a href="../index.html" class="logo">
+      <div class="logo-ring">
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#3B82F6"/>
+              <stop offset="100%" style="stop-color:#8B5CF6"/>
+            </linearGradient>
+          </defs>
+          <path d="M18 3L33 11v14l-15 8-15-8V11l15-8z" stroke="url(#g1)" stroke-width="2.5" fill="none"/>
+          <circle cx="18" cy="18" r="6" fill="url(#g1)" opacity="0.8"/>
+        </svg>
+      </div>
+      <span class="logo-text">LycéePad</span>
+    </a>
+    
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link" data-page="home">
+        <span class="link-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
+        <span class="link-text">Accueil</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="map.html" class="nav-link" data-page="map">
+        <span class="link-icon"><i class="fa-solid fa-map" aria-hidden="true"></i></span>
+        <span class="link-text">Carte</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="Quiz.html" class="nav-link" data-page="quiz">
+        <span class="link-icon"><i class="fa-solid fa-question-circle" aria-hidden="true"></i></span>
+        <span class="link-text">Quiz</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="scanner.html" class="nav-link active" data-page="scanner">
+        <span class="link-icon"><i class="fa-solid fa-qrcode" aria-hidden="true"></i></span>
+        <span class="link-text">Scanner</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="About.html" class="nav-link" data-page="about">
+        <span class="link-icon"><i class="fa-solid fa-info-circle" aria-hidden="true"></i></span>
+        <span class="link-text">À propos</span>
+        <span class="link-glow"></span>
+      </a>
+    </div>
+
+    <button class="theme-btn" id="theme-toggle" title="Changer de thème">
+      <span class="theme-icon">
+        <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="sun-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENU PRINCIPAL -->
+<main class="main scanner-main">
+  <div class="scanner-container">
+
+    <!-- Zone caméra / scanner -->
+    <div class="scanner-actions-card">
+      <p class="scanner-actions-text" id="scanner-status">Appuyez pour lancer le scan.</p>
+      <div class="scanner-controls">
+        <button id="start-scan-btn" class="scan-btn scan-btn-primary scan-btn-main">
+          <svg class="btn-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"/>
+            <polygon points="10 8 16 12 10 16 10 8"/>
+          </svg>
+          <span>Démarrer le scan</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Résultat du scan + données API -->
+    <div id="scan-result" class="scan-result" style="display: none;">
+      <div class="result-card">
+        <div class="result-header">
+          <span class="result-icon">✅</span>
+          <h3>Scan réussi !</h3>
+        </div>
+
+        <!-- Loader pendant l'appel API -->
+        <div id="api-loader" class="api-loader" style="display: none;">
+          <div class="scanner-loading"></div>
+          <span>Chargement des données...</span>
+        </div>
+
+        <!-- Erreur API -->
+        <div id="api-error" class="api-error" style="display: none;">
+          <p id="api-error-text"></p>
+        </div>
+
+        <!-- Données de la zone -->
+        <div id="zone-data" class="zone-data" style="display: none;">
+          <div class="zone-info-grid">
+            <div class="zone-info-item zone-name-item">
+              <span class="zone-label"> <i class="fa-solid fa-location-crosshairs"></i> Zone</span>
+              <span class="zone-value" id="zone-name"></span>
+            </div>
+            <div class="zone-info-item">
+              <span class="zone-label"><i class="fa-solid fa-building" aria-hidden="true"></i> Bâtiment</span>
+              <span class="zone-value" id="zone-building"></span>
+            </div>
+            <div class="zone-info-item">
+              <span class="zone-label"><i class="fa-solid fa-level-up-alt" aria-hidden="true"></i> Étage</span>
+              <span class="zone-value" id="zone-floor"></span>
+            </div>
+            <div class="zone-info-item">
+              <span class="zone-label"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Coordonnées</span>
+              <span class="zone-value" id="zone-coordinates"></span>
+            </div>
+          </div>
+          <div class="zone-description" id="zone-description"></div>
+          <img id="zone-image" class="zone-image" style="display:none;" alt="Image de la zone"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="scanner-instructions" id="scanner-instructions">
+      <h3><i class="fa-brands fa-readme"></i> Instructions</h3>
+      <ul>
+        <li>Cliquez sur "Démarrer le scan" pour activer la caméra</li>
+        <li>Pointez la caméra vers un QR code du lycée</li>
+        <li>Le scan se fait automatiquement en temps réel</li>
+        <li>Les informations de la zone s'afficheront instantanément</li>
+      </ul>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-logo">
+          <svg width="28" height="28" viewBox="0 0 36 36">
+            <defs>
+              <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#3B82F6"/>
+                <stop offset="100%" style="stop-color:#8B5CF6"/>
+              </linearGradient>
+            </defs>
+            <path d="M18 3L33 11v14l-15 8-15-8V11l15-8z" stroke="url(#g2)" stroke-width="2.5" fill="none"/>
+            <circle cx="18" cy="18" r="6" fill="url(#g2)" opacity="0.8"/>
+          </svg>
+          <span>LycéePad</span>
+        </div>
+        <p>Innovation pédagogique pour le Lycée Saint-Éloi</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="map.html">Carte interactive</a></li>
+          <li><a href="Quiz.html">Quiz</a></li>
+          <li><a href="scanner.html">Scanner QR</a></li>
+          <li><a href="About.html">À propos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Projet</h4>
+        <ul>
+          <li>BTS CIEL IR</li>
+          <li>Promotion 2026</li>
+          <li>Lycée Saint-Éloi</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 LycéePad - Tous droits réservés</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Background Effect -->
+<div class="bg-effect"></div>
+
+<!-- Scripts -->
+<script src="../cordova.js"></script>
+<script defer src="../lib/fontawesome/js/all.min.js"></script>
+<script src="../js/html5-qrcode.min.js"></script>
+<script defer src="../js/scanner.js"></script>
+<script defer src="../js/app.js"></script>
+
+</body>
+</html>

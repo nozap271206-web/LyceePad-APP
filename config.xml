@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.STELOI.LyceePad" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Lycee Pad</name>
+    <description>
+        Project Lycee Pad is a web app for student for Saint Eloi High School in Aix en Provence, France.
+    </description>
+    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <icon src="www/img/logo.png" />
+    <preference name="scheme" value="http" />
+    <preference name="hostname" value="localhost" />
+    <access origin="http://10.213.168.130:*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    
+    <!-- Configuration pour le scanner QR -->
+    <preference name="AndroidXEnabled" value="true" />
+    <preference name="Fullscreen" value="true" />
+    
+    <platform name="android">
+        <preference name="AndroidLaunchMode" value="singleTask" />
+        <preference name="MixedContentMode" value="0" />
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:usesCleartextTraffic="true" />
+        </edit-config>
+    </platform>
+</widget>
