@@ -11,13 +11,20 @@
     <icon src="www/img/logo.png" />
     <preference name="scheme" value="http" />
     <preference name="hostname" value="localhost" />
-    <access origin="http://10.213.168.130:*" />
+    <access origin="http://10.48.102.130:*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     
     <!-- Configuration pour le scanner QR -->
     <preference name="AndroidXEnabled" value="true" />
     <preference name="Fullscreen" value="true" />
+    
+    <!-- Configuration de la Splash Screen (Nouvelle méthode Android 12+) -->
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/img/logo.png" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#3b82f6" />
+    <preference name="AndroidWindowSplashScreenIconBackgroundColor" value="#3b82f6" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     
     <platform name="android">
         <preference name="AndroidLaunchMode" value="singleTask" />

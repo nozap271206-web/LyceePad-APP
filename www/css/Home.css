@@ -1319,9 +1319,9 @@ html.perf-lite .stat-item {
 }
 
 /* ============================================
-   TABLETTES (1024px)
+   TABLETTES (1024px) - Portrait et paysage
    ============================================ */
-@media (max-width: 1024px) {
+@media (max-width: 1024px), (max-width: 1366px) and (max-height: 1024px) {
   .hero-title {
     font-size: 3.5rem;
   }
@@ -1348,6 +1348,66 @@ html.perf-lite .stat-item {
 
   .bento-card {
     padding: 2rem;
+  }
+
+  /* Disposition verticale des cartes sur tablette - sans chevauchement */
+  .hero-visual {
+    height: auto;
+  }
+
+  .visual-3d {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+    transform: none;
+    perspective: none;
+  }
+
+  .float-card-3d {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    margin: 0;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .card-primary,
+  .card-secondary,
+  .card-tertiary {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    display: block;
+  }
+  
+  /* Désactiver toutes les animations */
+  .card-icon-3d {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    animation: none !important;
+  }
+  
+  .float-card-3d h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .float-card-3d p {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .card-badge {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
   }
 }
 

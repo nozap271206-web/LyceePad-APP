@@ -5,7 +5,7 @@
  */
 
 // ===== CONFIGURATION =====
-const API_BASE_URL = "http://10.213.168.130:3000";
+const API_BASE_URL = "http://10.48.102.130:3000";
 
 // ===== ÉTAT =====
 let html5QrCode = null;
