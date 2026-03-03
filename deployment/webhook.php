@@ -5,7 +5,7 @@
  */
 
 // Configuration
-define('SECRET_TOKEN', 'CHANGEZ_CE_TOKEN_SECRET'); // À changer avec un token sécurisé
+define('SECRET_TOKEN', 'tENCDxSZR6duO9VKF0M7zG5Jf2QsmU4a'); // Token sécurisé généré
 define('DEPLOY_SCRIPT', __DIR__ . '/deploy.sh'); // Chemin vers le script de déploiement
 define('LOG_FILE', __DIR__ . '/webhook.log'); // Fichier de log
 
