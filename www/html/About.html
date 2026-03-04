@@ -44,6 +44,12 @@
       <span class="logo-text">LycéePad</span>
     </a>
     
+    <button class="hamburger-btn" id="hamburger-toggle" aria-label="Menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    
     <div class="nav-links">
       <a href="../index.html" class="nav-link" data-page="home">
         <span class="link-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
@@ -70,6 +76,11 @@
         <span class="link-text">À propos</span>
         <span class="link-glow"></span>
       </a>
+    </div>
+
+    <div class="sync-status" id="sync-status" title="État de synchronisation">
+      <span class="sync-dot"></span>
+      <span class="sync-text">Local</span>
     </div>
 
     <button class="theme-btn" id="theme-toggle" title="Changer de thème">
@@ -482,10 +493,10 @@
         <div class="formation-category">
           <h3 class="category-title">🎯 Classe Préparatoire</h3>
           <div class="formations-grid">
-            <div class="formation-card special-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="formation-card" data-aos="fade-up" data-aos-delay="100">
               <div class="formation-header">
                 <div class="formation-icon"><i class="fa-solid fa-rocket"></i></div>
-                <div class="formation-badge special-badge">PRÉPA</div>
+                <div class="formation-badge">PRÉPA</div>
               </div>
               <h3>Prépa ATS</h3>
               <p class="formation-subtitle">Adaptation Technicien Supérieur - Technologie industrielle</p>
@@ -620,6 +631,7 @@
 <!-- Scripts -->
 <script defer src="../lib/fontawesome/js/all.min.js"></script>
 <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script defer src="../js/db-manager.js"></script>
 <script defer src="../js/About.js"></script>
 <script defer src="../js/app.js"></script>
 

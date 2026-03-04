@@ -1,0 +1,512 @@
+{
+  "version": "1.0.0",
+  "last_update": "2026-03-04T10:00:00Z",
+  "zones": {
+    "QR_HALL_001": {
+      "id": "1",
+      "qr_code": "QR_HALL_001",
+      "nom": "Hall d'accueil/Vie scolaire",
+      "description": "Point d'entrée principal du lycée avec personnel",
+      "batiment": "",
+      "etage": "",
+      "coordonnees": null,
+      "image": null,
+      "ordre": 1,
+      "actif": true
+    },
+    "QR_CDI_001": {
+      "id": "2",
+      "qr_code": "QR_CDI_001",
+      "nom": "CDI",
+      "description": "Centre de Documentation et d'Information",
+      "batiment": "Bâtiment C",
+      "etage": "1er étage",
+      "coordonnees": {
+        "lat": 43.52142,
+        "lng": 5.44372
+      },
+      "image": null,
+      "ordre": 2,
+      "actif": true
+    },
+    "QR_CAFET_001": {
+      "id": "3",
+      "qr_code": "QR_CAFET_001",
+      "nom": "Cafétéria",
+      "description": "Espace de restauration et de convivialité",
+      "batiment": "Bâtiment C",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52142,
+        "lng": 5.44372
+      },
+      "image": null,
+      "ordre": 3,
+      "actif": true
+    },
+    "QR_SUD_05": {
+      "id": "4",
+      "qr_code": "QR_SUD_05",
+      "nom": "Salle Sud 05",
+      "description": "Salle de cours - Bâtiment Sud",
+      "batiment": "Bâtiment Sud",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52140,
+        "lng": 5.44300
+      },
+      "image": null,
+      "ordre": 10,
+      "actif": true
+    },
+    "QR_SUD_06": {
+      "id": "5",
+      "qr_code": "QR_SUD_06",
+      "nom": "Salle Sud 06",
+      "description": "Salle de cours - Bâtiment Sud",
+      "batiment": "Bâtiment Sud",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52140,
+        "lng": 5.44300
+      },
+      "image": null,
+      "ordre": 11,
+      "actif": true
+    },
+    "QR_SUD_07": {
+      "id": "6",
+      "qr_code": "QR_SUD_07",
+      "nom": "Salle Sud 07",
+      "description": "Salle de cours - Bâtiment Sud",
+      "batiment": "Bâtiment Sud",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52140,
+        "lng": 5.44300
+      },
+      "image": null,
+      "ordre": 12,
+      "actif": true
+    },
+    "QR_SUD_08": {
+      "id": "7",
+      "qr_code": "QR_SUD_08",
+      "nom": "Salle Sud 08",
+      "description": "Salle de cours - Bâtiment Sud",
+      "batiment": "Bâtiment Sud",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52140,
+        "lng": 5.44300
+      },
+      "image": null,
+      "ordre": 13,
+      "actif": true
+    },
+    "QR_SUD_09": {
+      "id": "8",
+      "qr_code": "QR_SUD_09",
+      "nom": "Salle Sud 09",
+      "description": "Salle de cours - Bâtiment Sud",
+      "batiment": "Bâtiment Sud",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52140,
+        "lng": 5.44300
+      },
+      "image": null,
+      "ordre": 14,
+      "actif": true
+    },
+    "QR_LABO_SUD": {
+      "id": "9",
+      "qr_code": "QR_LABO_SUD",
+      "nom": "Labo Sud",
+      "description": "Laboratoire - Bâtiment Sud",
+      "batiment": "Bâtiment Sud",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52140,
+        "lng": 5.44300
+      },
+      "image": null,
+      "ordre": 15,
+      "actif": true
+    },
+    "QR_FB_10": {
+      "id": "10",
+      "qr_code": "QR_FB_10",
+      "nom": "Salle FB 10",
+      "description": "Salle de cours - Bâtiment FB",
+      "batiment": "Bâtiment FB",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52130,
+        "lng": 5.44315
+      },
+      "image": null,
+      "ordre": 20,
+      "actif": true
+    },
+    "QR_FB_11": {
+      "id": "11",
+      "qr_code": "QR_FB_11",
+      "nom": "Salle FB 11",
+      "description": "Salle de cours - Bâtiment FB",
+      "batiment": "Bâtiment FB",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52130,
+        "lng": 5.44315
+      },
+      "image": null,
+      "ordre": 21,
+      "actif": true
+    },
+    "QR_FB_20": {
+      "id": "12",
+      "qr_code": "QR_FB_20",
+      "nom": "Salle FB 20",
+      "description": "Salle de cours - Bâtiment FB",
+      "batiment": "Bâtiment FB",
+      "etage": "1er étage",
+      "coordonnees": {
+        "lat": 43.52130,
+        "lng": 5.44315
+      },
+      "image": null,
+      "ordre": 22,
+      "actif": true
+    },
+    "QR_FB_21": {
+      "id": "13",
+      "qr_code": "QR_FB_21",
+      "nom": "Salle FB 21",
+      "description": "Salle de cours - Bâtiment FB",
+      "batiment": "Bâtiment FB",
+      "etage": "1er étage",
+      "coordonnees": {
+        "lat": 43.52130,
+        "lng": 5.44315
+      },
+      "image": null,
+      "ordre": 23,
+      "actif": true
+    },
+    "QR_NORD_08": {
+      "id": "14",
+      "qr_code": "QR_NORD_08",
+      "nom": "Salle Nord 08",
+      "description": "Salle de cours - Bâtiment Nord",
+      "batiment": "Bâtiment Nord",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52137,
+        "lng": 5.44410
+      },
+      "image": null,
+      "ordre": 30,
+      "actif": true
+    },
+    "QR_NORD_09": {
+      "id": "15",
+      "qr_code": "QR_NORD_09",
+      "nom": "Salle Nord 09",
+      "description": "Salle de cours - Bâtiment Nord",
+      "batiment": "Bâtiment Nord",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52137,
+        "lng": 5.44410
+      },
+      "image": null,
+      "ordre": 31,
+      "actif": true
+    },
+    "QR_NORD_10": {
+      "id": "16",
+      "qr_code": "QR_NORD_10",
+      "nom": "Salle Nord 10",
+      "description": "Salle de cours - Bâtiment Nord",
+      "batiment": "Bâtiment Nord",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52137,
+        "lng": 5.44410
+      },
+      "image": null,
+      "ordre": 32,
+      "actif": true
+    },
+    "QR_NORD_11": {
+      "id": "17",
+      "qr_code": "QR_NORD_11",
+      "nom": "Salle Nord 11",
+      "description": "Salle de cours - Bâtiment Nord",
+      "batiment": "Bâtiment Nord",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52137,
+        "lng": 5.44410
+      },
+      "image": null,
+      "ordre": 33,
+      "actif": true
+    },
+    "QR_NORD_12": {
+      "id": "18",
+      "qr_code": "QR_NORD_12",
+      "nom": "Salle Nord 12",
+      "description": "Salle de cours - Bâtiment Nord",
+      "batiment": "Bâtiment Nord",
+      "etage": "1er étage",
+      "coordonnees": {
+        "lat": 43.52137,
+        "lng": 5.44410
+      },
+      "image": null,
+      "ordre": 34,
+      "actif": true
+    },
+    "QR_NORD_13": {
+      "id": "19",
+      "qr_code": "QR_NORD_13",
+      "nom": "Salle Nord 13",
+      "description": "Salle de cours - Bâtiment Nord",
+      "batiment": "Bâtiment Nord",
+      "etage": "1er étage",
+      "coordonnees": {
+        "lat": 43.52137,
+        "lng": 5.44410
+      },
+      "image": null,
+      "ordre": 35,
+      "actif": true
+    },
+    "QR_NORD_14": {
+      "id": "20",
+      "qr_code": "QR_NORD_14",
+      "nom": "Salle Nord 14",
+      "description": "Salle de cours - Bâtiment Nord",
+      "batiment": "Bâtiment Nord",
+      "etage": "1er étage",
+      "coordonnees": {
+        "lat": 43.52137,
+        "lng": 5.44410
+      },
+      "image": null,
+      "ordre": 36,
+      "actif": true
+    },
+    "QR_NORD_15": {
+      "id": "21",
+      "qr_code": "QR_NORD_15",
+      "nom": "Salle Nord 15",
+      "description": "Salle de cours - Bâtiment Nord",
+      "batiment": "Bâtiment Nord",
+      "etage": "1er étage",
+      "coordonnees": {
+        "lat": 43.52137,
+        "lng": 5.44410
+      },
+      "image": null,
+      "ordre": 37,
+      "actif": true
+    },
+    "QR_NORD_16": {
+      "id": "22",
+      "qr_code": "QR_NORD_16",
+      "nom": "Salle Nord 16",
+      "description": "Salle de cours - Bâtiment Nord",
+      "batiment": "Bâtiment Nord",
+      "etage": "1er étage",
+      "coordonnees": {
+        "lat": 43.52137,
+        "lng": 5.44410
+      },
+      "image": null,
+      "ordre": 38,
+      "actif": true
+    },
+    "QR_EST_11": {
+      "id": "23",
+      "qr_code": "QR_EST_11",
+      "nom": "Salle Est 11",
+      "description": "Salle de cours - Bâtiment Est",
+      "batiment": "Bâtiment Est",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52125,
+        "lng": 5.44395
+      },
+      "image": null,
+      "ordre": 40,
+      "actif": true
+    },
+    "QR_EST_12": {
+      "id": "24",
+      "qr_code": "QR_EST_12",
+      "nom": "Salle Est 12",
+      "description": "Salle de cours - Bâtiment Est",
+      "batiment": "Bâtiment Est",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52125,
+        "lng": 5.44395
+      },
+      "image": null,
+      "ordre": 41,
+      "actif": true
+    },
+    "QR_EST_13": {
+      "id": "25",
+      "qr_code": "QR_EST_13",
+      "nom": "Salle Est 13",
+      "description": "Salle de cours - Bâtiment Est",
+      "batiment": "Bâtiment Est",
+      "etage": "RDC",
+      "coordonnees": {
+        "lat": 43.52125,
+        "lng": 5.44395
+      },
+      "image": null,
+      "ordre": 42,
+      "actif": true
+    },
+    "QR_C_ETAGE_1": {
+      "id": "26",
+      "qr_code": "QR_C_ETAGE_1",
+      "nom": "Bâtiment C - 1er étage",
+      "description": "Premier étage - Bâtiment C",
+      "batiment": "Bâtiment C",
+      "etage": "1er étage",
+      "coordonnees": {
+        "lat": 43.52142,
+        "lng": 5.44372
+      },
+      "image": null,
+      "ordre": 50,
+      "actif": true
+    },
+    "QR_C_ETAGE_2": {
+      "id": "27",
+      "qr_code": "QR_C_ETAGE_2",
+      "nom": "Bâtiment C - 2ème étage",
+      "description": "Second étage - Bâtiment C",
+      "batiment": "Bâtiment C",
+      "etage": "2ème étage",
+      "coordonnees": {
+        "lat": 43.52142,
+        "lng": 5.44372
+      },
+      "image": null,
+      "ordre": 51,
+      "actif": true
+    },
+    "QR_C_ETAGE_3": {
+      "id": "28",
+      "qr_code": "QR_C_ETAGE_3",
+      "nom": "Bâtiment C - 3ème étage",
+      "description": "Troisième étage - Bâtiment C",
+      "batiment": "Bâtiment C",
+      "etage": "3ème étage",
+      "coordonnees": {
+        "lat": 43.52142,
+        "lng": 5.44372
+      },
+      "image": null,
+      "ordre": 52,
+      "actif": true
+    },
+    "QR_AMPHITHÉATRE_001": {
+      "id": "29",
+      "qr_code": "QR_AMPHITHÉATRE_001",
+      "nom": "Amphithéatre",
+      "description": "Amphithéatre de l établissement",
+      "batiment": "",
+      "etage": "",
+      "coordonnees": {
+        "lat": 43.52143,
+        "lng": 5.44385
+      },
+      "image": null,
+      "ordre": 0,
+      "actif": true
+    },
+    "QR_INTERNAT_001": {
+      "id": "30",
+      "qr_code": "QR_INTERNAT_001",
+      "nom": "Internat",
+      "description": "Internat",
+      "batiment": "Internat",
+      "etage": "",
+      "coordonnees": {
+        "lat": 43.52115,
+        "lng": 5.44340
+      },
+      "image": null,
+      "ordre": 55,
+      "actif": true
+    }
+  },
+  "parcours": {
+    "1": {
+      "id": "1",
+      "nom": "Découverte BTS CIEL",
+      "description": "Parcours complet pour découvrir la formation BTS Cybersécurité, Informatique et Réseaux",
+      "duree_estimee": 45,
+      "profil_id": "1",
+      "zones_ordre": [
+        { "id_zone": "1", "ordre": 1 },
+        { "id_zone": "10", "ordre": 2 },
+        { "id_zone": "11", "ordre": 3 },
+        { "id_zone": "15", "ordre": 4 },
+        { "id_zone": "2", "ordre": 5 }
+      ],
+      "actif": true
+    }
+  },
+  "profils": {
+    "futur_eleve": {
+      "id": "1",
+      "nom": "futur_eleve",
+      "label": "Futur élève",
+      "description": "Futur élève souhaitant découvrir le lycée",
+      "couleur": "#3B82F6",
+      "icon": "student-icon"
+    },
+    "parent": {
+      "id": "2",
+      "nom": "parent",
+      "label": "Parent",
+      "description": "Parent accompagnant",
+      "couleur": "#10B981",
+      "icon": "parent-icon"
+    },
+    "partenaire": {
+      "id": "3",
+      "nom": "partenaire",
+      "label": "Partenaire",
+      "description": "Partenaire professionnel",
+      "couleur": "#8B5CF6",
+      "icon": "partner-icon"
+    },
+    "visiteur_libre": {
+      "id": "4",
+      "nom": "visiteur_libre",
+      "label": "Visiteur libre",
+      "description": "Visiteur sans profil spécifique",
+      "couleur": "#6B7280",
+      "icon": "visitor-icon"
+    }
+  },
+  "types_contenu": {
+    "texte": { "id": "1", "nom": "texte", "description": "Contenu textuel", "icon": "text-icon" },
+    "image": { "id": "2", "nom": "image", "description": "Image ou photo", "icon": "image-icon" },
+    "video": { "id": "3", "nom": "video", "description": "Vidéo", "icon": "video-icon" },
+    "audio": { "id": "4", "nom": "audio", "description": "Fichier audio", "icon": "audio-icon" },
+    "pdf": { "id": "5", "nom": "pdf", "description": "Document PDF", "icon": "pdf-icon" },
+    "lien": { "id": "6", "nom": "lien", "description": "Lien externe", "icon": "link-icon" }
+  }
+}

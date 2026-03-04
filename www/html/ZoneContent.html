@@ -3,51 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scanner QR - LycéePad</title>
-
-  <script>
-    (function () {
-      try {
-        if (localStorage.getItem('dark') === 'true') {
-          document.documentElement.classList.add('dark');
-        }
-      } catch (error) {}
-    })();
-  </script>
+  <title>Zone - LycéePad</title>
   
   <!-- CSS -->
   <link rel="stylesheet" href="../css/app.css">
-  <link rel="stylesheet" href="../css/scanner.css">
+  <link rel="stylesheet" href="../css/ZoneContent.css">
   <link rel="stylesheet" href="../lib/fontawesome/css/svg-with-js.min.css">
-  
-  <!-- Meta pour Cordova -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content: http://10.48.102.130:*; connect-src 'self' http://10.48.102.130:*; camera:;">
 </head>
 <body>
-
-<!-- OVERLAY SCANNER FULLSCREEN -->
-<div id="scanner-overlay" class="scanner-overlay" style="display: none;">
-  <div id="qr-reader-fullscreen" class="qr-reader-fullscreen"></div>
-  <div class="scanner-overlay-controls">
-    <button id="close-scanner-btn" class="scanner-overlay-btn" title="Fermer">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <line x1="18" y1="6" x2="6" y2="18"/>
-        <line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-    <button id="switch-camera-btn" class="scanner-overlay-btn" title="Changer de caméra">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17 2l4 4-4 4"/>
-        <path d="M3 11V9a4 4 0 014-4h14"/>
-        <path d="M7 22l-4-4 4-4"/>
-        <path d="M21 13v2a4 4 0 01-4 4H3"/>
-      </svg>
-    </button>
-  </div>
-  <div class="scanner-overlay-hint">
-    <span>Pointez la caméra vers un QR code</span>
-  </div>
-</div>
 
 <!-- HEADER -->
 <nav class="nav">
@@ -90,7 +53,7 @@
         <span class="link-text">Quiz</span>
         <span class="link-glow"></span>
       </a>
-      <a href="scanner.html" class="nav-link active" data-page="scanner">
+      <a href="scanner.html" class="nav-link" data-page="scanner">
         <span class="link-icon"><i class="fa-solid fa-qrcode" aria-hidden="true"></i></span>
         <span class="link-text">Scanner</span>
         <span class="link-glow"></span>
@@ -107,7 +70,7 @@
       <span class="sync-text">Local</span>
     </div>
 
-    <button class="theme-btn" id="theme-toggle" title="Changer de thème">
+    <button class="theme-btn" id="theme-toggle">
       <span class="theme-icon">
         <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -128,82 +91,128 @@
   </div>
 </nav>
 
-<!-- CONTENU PRINCIPAL -->
-<main class="main scanner-main">
-  <div class="scanner-container">
+<!-- CONTENT -->
+<div class="zone-content">
+  <!-- Loading -->
+  <div id="loading" class="loading-container" style="display: none;">
+    <div class="loading-spinner"></div>
+    <p>Chargement de la zone...</p>
+  </div>
 
-    <!-- Zone caméra / scanner -->
-    <div class="scanner-actions-card">
-      <p class="scanner-actions-text" id="scanner-status">Appuyez pour lancer le scan.</p>
-      <div class="scanner-controls">
-        <button id="start-scan-btn" class="scan-btn scan-btn-primary scan-btn-main">
-          <svg class="btn-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="12" cy="12" r="10"/>
-            <polygon points="10 8 16 12 10 16 10 8"/>
-          </svg>
-          <span>Démarrer le scan</span>
-        </button>
+  <!-- Content -->
+  <div id="content" class="content-wrapper">
+    <!-- Hero Header -->
+    <div class="zone-hero">
+      <a href="map.html" class="back-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Retour à la carte
+      </a>
+      
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span id="zone-badge">Zone</span>
       </div>
+      
+      <h1 class="hero-title" id="zone-title"></h1>
+      <p class="hero-subtitle" id="zone-description"></p>
     </div>
 
-    <!-- Résultat du scan + données API -->
-    <div id="scan-result" class="scan-result" style="display: none;">
-      <div class="result-card">
-        <div class="result-header">
-          <span class="result-icon">✅</span>
-          <h3>Scan réussi !</h3>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Galerie -->
+      <section class="section-card gallery-card">
+        <div class="section-header">
+          <div class="section-icon">📸</div>
+          <h2>Galerie photos</h2>
+        </div>
+        
+        <div class="gallery-grid" id="gallery-grid">
+          <!-- Généré par JavaScript -->
+        </div>
+      </section>
+
+      <!-- Description -->
+      <section class="section-card description-card">
+        <div class="section-header">
+          <div class="section-icon">📝</div>
+          <h2>À propos de cette zone</h2>
+        </div>
+        
+        <div class="description-content" id="description-content">
+          <!-- Généré par JavaScript -->
         </div>
 
-        <!-- Loader pendant l'appel API -->
-        <div id="api-loader" class="api-loader" style="display: none;">
-          <div class="scanner-loading"></div>
-          <span>Chargement des données...</span>
-        </div>
-
-        <!-- Erreur API -->
-        <div id="api-error" class="api-error" style="display: none;">
-          <p id="api-error-text"></p>
-        </div>
-
-        <!-- Données de la zone -->
-        <div id="zone-data" class="zone-data" style="display: none;">
-          <div class="zone-info-grid">
-            <div class="zone-info-item zone-name-item">
-              <span class="zone-label"> <i class="fa-solid fa-location-crosshairs"></i> Zone</span>
-              <span class="zone-value" id="zone-name"></span>
-            </div>
-            <div class="zone-info-item">
-              <span class="zone-label"><i class="fa-solid fa-building" aria-hidden="true"></i> Bâtiment</span>
-              <span class="zone-value" id="zone-building"></span>
-            </div>
-            <div class="zone-info-item">
-              <span class="zone-label"><i class="fa-solid fa-level-up-alt" aria-hidden="true"></i> Étage</span>
-              <span class="zone-value" id="zone-floor"></span>
-            </div>
-            <div class="zone-info-item">
-              <span class="zone-label"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Coordonnées</span>
-              <span class="zone-value" id="zone-coordinates"></span>
+        <!-- Quiz CTA -->
+        <div class="quiz-cta">
+          <div class="quiz-cta-content">
+            <div class="quiz-cta-icon">🎯</div>
+            <div class="quiz-cta-text">
+              <h3>Testez vos connaissances</h3>
+              <p id="quiz-text">Répondez au quiz</p>
             </div>
           </div>
-          <div class="zone-description" id="zone-description"></div>
-          <img id="zone-image" class="zone-image" style="display:none;" alt="Image de la zone"/>
+          <a href="Quiz.html" class="btn-quiz" id="quiz-link">
+            Accéder au quiz
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
         </div>
+      </section>
+
+      <!-- Médias -->
+      <div class="media-grid">
+        <!-- Vidéo -->
+        <section class="section-card media-card">
+          <div class="media-header">
+            <div class="media-icon video-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Vidéo de présentation</h3>
+              <p class="media-subtitle" id="video-title"></p>
+            </div>
+          </div>
+          <div class="media-placeholder video-placeholder">
+            <div class="media-play-btn">▶</div>
+            <span>Vidéo à venir</span>
+          </div>
+        </section>
+
+        <!-- Audio -->
+        <section class="section-card media-card">
+          <div class="media-header">
+            <div class="media-icon audio-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18V5l12-2v13"/>
+                <circle cx="6" cy="18" r="3"/>
+                <circle cx="18" cy="16" r="3"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Témoignage audio</h3>
+              <p class="media-subtitle" id="audio-title"></p>
+            </div>
+          </div>
+          <div class="media-placeholder audio-placeholder">
+            <div class="audio-waves">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <span>Audio à venir</span>
+          </div>
+        </section>
       </div>
     </div>
-
-    <!-- Instructions -->
-    <div class="scanner-instructions" id="scanner-instructions">
-      <h3><i class="fa-brands fa-readme"></i> Instructions</h3>
-      <ul>
-        <li>Cliquez sur "Démarrer le scan" pour activer la caméra</li>
-        <li>Pointez la caméra vers un QR code du lycée</li>
-        <li>Le scan se fait automatiquement en temps réel</li>
-        <li>Les informations de la zone s'afficheront instantanément</li>
-      </ul>
-    </div>
-
   </div>
-</main>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -228,7 +237,7 @@
       <div class="footer-col">
         <h4>Navigation</h4>
         <ul>
-          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="Home.html">Accueil</a></li>
           <li><a href="map.html">Carte interactive</a></li>
           <li><a href="Quiz.html">Quiz</a></li>
           <li><a href="scanner.html">Scanner QR</a></li>
@@ -250,16 +259,13 @@
   </div>
 </footer>
 
-<!-- Background Effect -->
 <div class="bg-effect"></div>
 
 <!-- Scripts -->
-<script src="../cordova.js"></script>
-<script defer src="../lib/fontawesome/js/all.min.js"></script>
-<script src="../js/html5-qrcode.min.js"></script>
-<script defer src="../js/db-manager.js"></script>
-<script defer src="../js/scanner.js"></script>
-<script defer src="../js/app.js"></script>
+<script src="../lib/fontawesome/js/all.min.js"></script>
+<script src="../js/db-manager.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ZoneContent.js"></script>
 
 </body>
 </html>

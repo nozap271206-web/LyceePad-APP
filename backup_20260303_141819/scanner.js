@@ -5,7 +5,7 @@
  */
 
 // ===== CONFIGURATION =====
-const API_BASE_URL = "http://10.48.102.130:3000";
+const API_BASE_URL = "http://10.213.168.130:3000";
 
 // ===== ÉTAT =====
 let html5QrCode = null;
@@ -274,7 +274,7 @@ function onScanFailure(error) {
     // Ignoré - c'est normal quand aucun QR n'est visible
 }
 
-// ===== AFFICHER RÉSULTAT + RÉCUPÉRER DEPUIS DB =====
+// ===== AFFICHER RÉSULTAT + APPEL API =====
 async function showResultAndFetchAPI(qrCode) {
     const resultDiv = document.getElementById('scan-result');
     const apiLoader = document.getElementById('api-loader');
@@ -289,32 +289,24 @@ async function showResultAndFetchAPI(qrCode) {
     resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     try {
-        // Attendre que DBManager soit initialisé
-        if (!window.DBManager || !window.DBManager.state.db) {
-            console.log('Attente initialisation DBManager...');
-            await new Promise(resolve => setTimeout(resolve, 500));
+        // 1) Récupérer la zone via le QR code
+        const zoneResponse = await fetch(`${API_BASE_URL}/api/zone/${encodeURIComponent(qrCode)}`);
+
+        if (!zoneResponse.ok) {
+            if (zoneResponse.status === 404) {
+                throw new Error('Ce QR Code n\'est associé à aucune zone du lycée.');
+            }
+            throw new Error('Erreur serveur (code ' + zoneResponse.status + ')');
         }
 
-        // Récupérer la zone via DBManager
-        const zone = await window.DBManager.getZone(qrCode);
-        
-        if (!zone) {
-            throw new Error('Ce QR Code n\'est associé à aucune zone du lycée.');
-        }
-
-        console.log('Zone trouvée:', zone);
+        const zone = await zoneResponse.json();
+        console.log('Zone data:', zone);
 
         // Remplir les infos de la zone
-        document.getElementById('zone-name').textContent = zone.nom || '—';
-        document.getElementById('zone-building').textContent = zone.batiment || '—';
-        document.getElementById('zone-floor').textContent = zone.etage || '—';
-        
-        // Formatter les coordonnées
-        let coordText = '—';
-        if (zone.coordonnees) {
-            coordText = `${zone.coordonnees.lat}, ${zone.coordonnees.lng}`;
-        }
-        document.getElementById('zone-coordinates').textContent = coordText;
+        document.getElementById('zone-name').textContent = zone.nom_zone || zone.name || '—';
+        document.getElementById('zone-building').textContent = zone.batiment || zone.building || '—';
+        document.getElementById('zone-floor').textContent = zone.etage || zone.floor || '—';
+        document.getElementById('zone-coordinates').textContent = zone.coordonnees_gps || zone.coordinates || '—';
 
         const descEl = document.getElementById('zone-description');
         if (zone.description) {
@@ -325,8 +317,17 @@ async function showResultAndFetchAPI(qrCode) {
         }
 
         const imgEl = document.getElementById('zone-image');
-        if (zone.image) {
-            imgEl.src = zone.image;
+        const zoneImage = zone.image_principale || zone.image;
+        if (zoneImage) {
+            let imgUrl = zoneImage;
+            if (!zoneImage.startsWith('http')) {
+                if (zoneImage.startsWith('/')) {
+                    imgUrl = `${API_BASE_URL}${zoneImage}`;
+                } else {
+                    imgUrl = `${API_BASE_URL}/uploads/${zoneImage}`;
+                }
+            }
+            imgEl.src = imgUrl;
             imgEl.style.display = 'block';
         } else {
             imgEl.style.display = 'none';
@@ -335,24 +336,10 @@ async function showResultAndFetchAPI(qrCode) {
         apiLoader.style.display = 'none';
         zoneData.style.display = 'block';
 
-        // Ajouter un bouton pour voir plus de détails
-        const viewDetailsBtn = document.createElement('button');
-        viewDetailsBtn.textContent = 'Voir plus de détails';
-        viewDetailsBtn.className = 'btn-primary';
-        viewDetailsBtn.style.marginTop = '20px';
-        viewDetailsBtn.onclick = () => {
-            window.location.href = `ZoneContent.html?qr=${encodeURIComponent(qrCode)}`;
-        };
-        
-        // Ajouter le bouton s'il n'existe pas déjà
-        if (!zoneData.querySelector('.btn-primary')) {
-            zoneData.appendChild(viewDetailsBtn);
-        }
-
     } catch (err) {
-        console.error('Erreur récupération zone:', err);
+        console.error('Erreur API:', err);
         apiLoader.style.display = 'none';
-        document.getElementById('api-error-text').textContent = err.message || 'Impossible de récupérer les données de la zone.';
+        document.getElementById('api-error-text').textContent = err.message || 'Impossible de contacter le serveur.';
         apiError.style.display = 'block';
     }
 }

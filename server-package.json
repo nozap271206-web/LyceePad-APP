@@ -1,0 +1,20 @@
+{
+  "name": "lyceepad-backend",
+  "version": "1.0.0",
+  "description": "Serveur API pour l'application LycéePad - Gestion des zones et QR codes",
+  "main": "server-example.js",
+  "scripts": {
+    "start": "node server-example.js",
+    "dev": "nodemon server-example.js"
+  },
+  "keywords": ["api", "qr-code", "lycee", "rest"],
+  "author": "BTS CIEL Saint-Éloi",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

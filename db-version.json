@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "release_date": "2026-03-04",
+  "description": "Version initiale - 30 zones du Lycée Saint-Éloi",
+  "changelog": [
+    "Import initial depuis base de données MySQL",
+    "30 zones actives",
+    "1 parcours découverte BTS CIEL",
+    "4 profils visiteurs"
+  ],
+  "data_file": "qr-data.json",
+  "size_kb": 11
+}

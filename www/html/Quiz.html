@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz - LycéePad</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/Quiz.css">
+  <link rel="stylesheet" href="../lib/fontawesome/css/svg-with-js.min.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<nav class="nav">
+  <div class="nav-wrap">
+    <a href="../index.html" class="logo">
+      <div class="logo-ring">
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#3B82F6"/>
+              <stop offset="100%" style="stop-color:#8B5CF6"/>
+            </linearGradient>
+          </defs>
+          <path d="M18 3L33 11v14l-15 8-15-8V11l15-8z" stroke="url(#g1)" stroke-width="2.5" fill="none"/>
+          <circle cx="18" cy="18" r="6" fill="url(#g1)" opacity="0.8"/>
+        </svg>
+      </div>
+      <span class="logo-text">LycéePad</span>
+    </a>
+    
+    <button class="hamburger-btn" id="hamburger-toggle" aria-label="Menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link" data-page="home">
+        <span class="link-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
+        <span class="link-text">Accueil</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="map.html" class="nav-link" data-page="map">
+        <span class="link-icon"><i class="fa-solid fa-map" aria-hidden="true"></i></span>
+        <span class="link-text">Carte</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="Quiz.html" class="nav-link active" data-page="quiz">
+        <span class="link-icon"><i class="fa-solid fa-question-circle" aria-hidden="true"></i></span>
+        <span class="link-text">Quiz</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="scanner.html" class="nav-link" data-page="scanner">
+        <span class="link-icon"><i class="fa-solid fa-qrcode" aria-hidden="true"></i></span>
+        <span class="link-text">Scanner</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="About.html" class="nav-link" data-page="about">
+        <span class="link-icon"><i class="fa-solid fa-info-circle" aria-hidden="true"></i></span>
+        <span class="link-text">À propos</span>
+        <span class="link-glow"></span>
+      </a>
+    </div>
+
+    <div class="sync-status" id="sync-status" title="État de synchronisation">
+      <span class="sync-dot"></span>
+      <span class="sync-text">Local</span>
+    </div>
+
+    <button class="theme-btn" id="theme-toggle">
+      <span class="theme-icon">
+        <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="sun-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENU QUIZ -->
+<div class="quiz-page">
+  <!-- Background animé -->
+  <div class="background-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <a href="../index.html" class="back-button">
+      <span>←</span> Retour
+    </a>
+    
+    <div class="status-badge">
+      <span class="pulse-dot"></span>
+      <span>Quiz Interactifs</span>
+    </div>
+    
+    <h1 class="hero-title">
+      Testez vos <span class="gradient-text">connaissances</span>
+    </h1>
+    
+    <p class="hero-subtitle">
+      Découvrez le Lycée Saint-Éloi à travers des quiz interactifs
+    </p>
+  </div>
+  
+  <!-- Sélection des zones -->
+  <div id="zone-selection" class="zone-selection">
+    <div class="zones-grid" id="zones-grid">
+      <!-- Généré par JavaScript -->
+    </div>
+  </div>
+  
+  <!-- Quiz actif -->
+  <div id="quiz-container" class="quiz-container" style="display: none;">
+    <!-- En-tête du quiz -->
+    <div class="quiz-header-card">
+      <div class="quiz-info">
+        <h2 class="quiz-zone-name" id="quiz-zone-name"></h2>
+        <div class="quiz-score">
+          Score : <span class="score-value" id="current-score">0</span>/<span id="total-questions">0</span>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p class="progress-text" id="progress-text">Question 1 sur 1</p>
+      </div>
+    </div>
+    
+    <!-- Carte de question -->
+    <div class="question-card">
+      <div class="question-number" id="question-number">Question 1</div>
+      <h3 class="question-title" id="question-title"></h3>
+      
+      <div class="answers-list" id="answers-list">
+        <!-- Généré par JavaScript -->
+      </div>
+      
+      <div id="feedback-section" class="feedback-section" style="display: none;">
+        <!-- Généré par JavaScript -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- Résultats -->
+  <div id="results-section" class="results-section" style="display: none;">
+    <div class="results-card">
+      <div class="results-icon" id="results-icon">🏆</div>
+      
+      <h2 class="results-title">Quiz terminé !</h2>
+      
+      <div class="results-score">
+        <div class="score-circle">
+          <svg width="200" height="200" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="90" fill="none" stroke="#E5E7EB" stroke-width="12"></circle>
+            <circle id="score-circle" cx="100" cy="100" r="90" fill="none" stroke="url(#gradient)" stroke-width="12"
+              stroke-dasharray="565.48" stroke-dashoffset="565.48"
+              transform="rotate(-90 100 100)">
+            </circle>
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="score-text">
+            <div class="score-number" id="final-score">0</div>
+            <div class="score-total" id="final-total">/0</div>
+          </div>
+        </div>
+        
+        <div class="score-percentage" id="score-percentage">0%</div>
+      </div>
+      
+      <div class="results-message" id="results-message">
+        <!-- Généré par JavaScript -->
+      </div>
+      
+      <div class="results-actions">
+        <button onclick="retryQuiz()" class="action-button primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span>Recommencer</span>
+        </button>
+        
+        <button onclick="backToSelection()" class="action-button secondary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>Autres quiz</span>
+        </button>
+        
+        <a href="map.html" class="action-button tertiary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+          <span>Retour carte</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-logo">
+          <svg width="28" height="28" viewBox="0 0 36 36">
+            <defs>
+              <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#3B82F6"/>
+                <stop offset="100%" style="stop-color:#8B5CF6"/>
+              </linearGradient>
+            </defs>
+            <path d="M18 3L33 11v14l-15 8-15-8V11l15-8z" stroke="url(#g2)" stroke-width="2.5" fill="none"/>
+            <circle cx="18" cy="18" r="6" fill="url(#g2)" opacity="0.8"/>
+          </svg>
+          <span>LycéePad</span>
+        </div>
+        <p>Innovation pédagogique pour le Lycée Saint-Éloi</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="Home.html">Accueil</a></li>
+          <li><a href="map.html">Carte interactive</a></li>
+          <li><a href="Quiz.html">Quiz</a></li>
+          <li><a href="scanner.html">Scanner QR</a></li>
+          <li><a href="About.html">À propos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Projet</h4>
+        <ul>
+          <li>BTS CIEL IR</li>
+          <li>Promotion 2026</li>
+          <li>Lycée Saint-Éloi</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 LycéePad - Tous droits réservés</p>
+    </div>
+  </div>
+</footer>
+
+<div class="bg-effect"></div>
+
+<!-- Scripts -->
+<script src="../lib/fontawesome/js/all.min.js"></script>
+<script src="../js/db-manager.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/Quiz.js"></script>
+
+</body>
+</html>
