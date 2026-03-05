@@ -1,0 +1,15 @@
+{
+  "version": "1.0.1",
+  "release_date": "2026-03-05",
+  "description": "Version avec interface admin et génération QR codes",
+  "changelog": [
+    "Interface d'administration complète",
+    "Système de génération QR codes automatique",
+    "30 zones actives",
+    "1 parcours découverte BTS CIEL",
+    "4 profils visiteurs",
+    "API de synchronisation"
+  ],
+  "data_file": "qr-data.json",
+  "size_kb": 14
+}

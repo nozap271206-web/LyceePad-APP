@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Carte QR - Debug</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    #map { width: 100vw; height: 100vh; }
+    #debug { position: fixed; top: 10px; right: 10px; background: white; padding: 15px; 
+             border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
+             max-width: 300px; z-index: 2000; max-height: 80vh; overflow-y: auto; }
+    #debug h3 { margin-top: 0; color: #667eea; }
+    #debug p { margin: 5px 0; font-size: 12px; }
+    .marker-test { background: red !important; width: 20px !important; height: 20px !important; 
+                   border-radius: 50%; border: 2px solid white; }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div id="debug">
+  <h3>🐛 Debug Info</h3>
+  <p id="status">Chargement...</p>
+  <div id="zones-info"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="../js/db-manager.js"></script>
+
+<script>
+const debugEl = document.getElementById('status');
+const zonesEl = document.getElementById('zones-info');
+
+debugEl.textContent = 'Initialisation de la carte...';
+
+// Initialisation carte
+const map = L.map('map').setView([43.52130, 5.44360], 19);
+
+// Bounds de l'image
+const imageBounds = [
+  [43.52175, 5.44265],  // Nord-Ouest
+  [43.52085, 5.44455]   // Sud-Est
+];
+
+// Image du plan
+L.imageOverlay('../img/plan-lycee.png', imageBounds, {
+  opacity: 1,
+  interactive: false
+}).addTo(map);
+
+// OpenStreetMap en arrière-plan
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap',
+  opacity: 0.2,
+  maxZoom: 19
+}).addTo(map);
+
+map.fitBounds(imageBounds);
+
+debugEl.textContent = 'Carte initialisée. Chargement DBManager...';
+
+// Charger les zones après 1 seconde
+setTimeout(async () => {
+  try {
+    if (!window.DBManager) {
+      debugEl.textContent = '❌ DBManager non disponible !';
+      debugEl.style.color = 'red';
+      return;
+    }
+
+    debugEl.textContent = 'DBManager trouvé. Récupération zones...';
+    
+    const zones = await window.DBManager.getAllZones();
+    
+    debugEl.textContent = `✓ ${zones.length} zones chargées`;
+    debugEl.style.color = 'green';
+    
+    let withCoords = 0;
+    let withoutCoords = 0;
+    
+    zones.forEach((zone, index) => {
+      if (zone.coordonnees && zone.coordonnees.lat && zone.coordonnees.lng) {
+        withCoords++;
+        
+        // Créer un marker simple rouge pour test
+        const marker = L.marker([zone.coordonnees.lat, zone.coordonnees.lng], {
+          icon: L.divIcon({
+            className: 'marker-test',
+            html: `<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                   width: 40px; height: 40px; border-radius: 50%; border: 3px solid white;
+                   box-shadow: 0 4px 12px rgba(102,126,234,0.6); 
+                   display: flex; align-items: center; justify-content: center;
+                   color: white; font-weight: bold; font-size: 18px;">${index + 1}</div>`,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20]
+          })
+        }).addTo(map);
+        
+        marker.bindPopup(`
+          <strong>${zone.nom}</strong><br>
+          QR: ${zone.qr_code}<br>
+          GPS: ${zone.coordonnees.lat}, ${zone.coordonnees.lng}
+        `);
+        
+      } else {
+        withoutCoords++;
+        console.warn(`Zone sans coordonnées: ${zone.nom}`);
+      }
+    });
+    
+    zonesEl.innerHTML = `
+      <hr>
+      <p><strong>Avec GPS:</strong> ${withCoords}</p>
+      <p><strong>Sans GPS:</strong> ${withoutCoords}</p>
+      <p><strong>Total:</strong> ${zones.length}</p>
+      <hr>
+      <p style="font-size: 11px; color: #666;">
+        Les marqueurs numérotés devraient apparaître sur le plan.
+        Cliquez dessus pour voir les infos.
+      </p>
+    `;
+    
+  } catch (error) {
+    debugEl.textContent = '❌ Erreur: ' + error.message;
+    debugEl.style.color = 'red';
+    console.error('Erreur chargement zones:', error);
+  }
+}, 1500);
+</script>
+
+</body>
+</html>

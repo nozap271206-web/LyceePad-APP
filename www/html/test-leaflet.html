@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Leaflet Simple</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { width: 100vw; height: 100vh; }
+    #info { 
+      position: fixed; 
+      top: 20px; 
+      right: 20px; 
+      background: white; 
+      padding: 20px; 
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      z-index: 9999;
+      max-width: 350px;
+      font-family: Arial, sans-serif;
+    }
+    #info h2 { margin-top: 0; color: #667eea; }
+    .status { padding: 8px; margin: 5px 0; border-radius: 5px; }
+    .ok { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+    .warn { background: #fff3cd; color: #856404; }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div id="info">
+  <h2>🔧 Test Leaflet</h2>
+  <div id="logs"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+const logs = document.getElementById('logs');
+
+function addLog(msg, type = 'ok') {
+  const div = document.createElement('div');
+  div.className = `status ${type}`;
+  div.textContent = msg;
+  logs.appendChild(div);
+  console.log(msg);
+}
+
+addLog('✓ HTML chargé', 'ok');
+
+// Test 1: Leaflet chargé ?
+if (typeof L !== 'undefined') {
+  addLog('✓ Leaflet.js chargé', 'ok');
+} else {
+  addLog('✗ Leaflet.js NON chargé', 'error');
+}
+
+// Test 2: Créer la carte
+try {
+  addLog('Création de la carte...', 'warn');
+  const map = L.map('map').setView([43.52130, 5.44360], 19);
+  addLog('✓ Carte créée', 'ok');
+
+  // Test 3: Ajouter OpenStreetMap
+  addLog('Ajout fond de carte...', 'warn');
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    maxZoom: 19
+  }).addTo(map);
+  addLog('✓ Fond de carte ajouté', 'ok');
+
+  // Test 4: Ajouter l'image du plan
+  addLog('Ajout image plan lycée...', 'warn');
+  const imageBounds = [
+    [43.52175, 5.44265],
+    [43.52085, 5.44455]
+  ];
+  
+  const imageOverlay = L.imageOverlay('../img/plan-lycee.png', imageBounds, {
+    opacity: 1,
+    interactive: false
+  }).addTo(map);
+  
+  imageOverlay.on('load', function() {
+    addLog('✓ Image plan-lycee.png chargée', 'ok');
+  });
+  
+  imageOverlay.on('error', function() {
+    addLog('✗ ERREUR chargement plan-lycee.png', 'error');
+  });
+
+  map.fitBounds(imageBounds);
+  addLog('✓ Vue ajustée', 'ok');
+
+  // Test 5: Ajouter des markers de test avec coordonnées fixes
+  addLog('Ajout markers de test...', 'warn');
+  
+  const testMarkers = [
+    { name: 'CDI', lat: 43.52142, lng: 5.44372 },
+    { name: 'Cafétéria', lat: 43.52142, lng: 5.44372 },
+    { name: 'Salle Sud 05', lat: 43.52140, lng: 5.44300 },
+    { name: 'Salle FB 10', lat: 43.52130, lng: 5.44315 },
+    { name: 'Salle Nord 08', lat: 43.52137, lng: 5.44410 }
+  ];
+
+  testMarkers.forEach((zone, i) => {
+    // Marker simple avec numéro
+    const marker = L.marker([zone.lat, zone.lng], {
+      icon: L.divIcon({
+        html: `<div style="
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          border: 4px solid white;
+          box-shadow: 0 4px 20px rgba(102,126,234,0.7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: bold;
+          font-size: 20px;
+          cursor: pointer;
+        ">${i + 1}</div>`,
+        iconSize: [50, 50],
+        iconAnchor: [25, 25],
+        className: ''
+      })
+    }).addTo(map);
+
+    marker.bindPopup(`<strong>${zone.name}</strong><br>GPS: ${zone.lat}, ${zone.lng}`);
+  });
+
+  addLog(`✓ ${testMarkers.length} markers ajoutés`, 'ok');
+  addLog('--- TEST OK ---', 'ok');
+
+} catch (error) {
+  addLog('✗ ERREUR: ' + error.message, 'error');
+  console.error(error);
+}
+</script>
+
+</body>
+</html>

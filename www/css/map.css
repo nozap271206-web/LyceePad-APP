@@ -415,6 +415,7 @@
 .qr-marker-container {
   background: transparent !important;
   border: none !important;
+  z-index: 1000 !important;
 }
 
 .qr-marker {
@@ -424,6 +425,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
+  pointer-events: auto;
 }
 
 .marker-pulse {
