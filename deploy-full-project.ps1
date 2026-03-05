@@ -12,7 +12,8 @@ Write-Host "================================================`n" -ForegroundColor
 
 # Etape 1 : Sauvegarde (optionnel)
 Write-Host "[1/4] Sauvegarde du serveur..." -ForegroundColor Yellow
-ssh $SERVER "cd /var/www && tar -czf html_backup_$(date +%Y%m%d_%H%M%S).tar.gz html 2>/dev/null || true"
+$timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+ssh $SERVER "cd /var/www && tar -czf html_backup_$timestamp.tar.gz html 2>/dev/null || true"
 Write-Host "  - Sauvegarde creee" -ForegroundColor Green
 
 # Etape 2 : Nettoyage du repertoire distant
