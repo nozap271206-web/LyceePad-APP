@@ -210,6 +210,28 @@ html.perf-lite .nav {
   background: rgba(255,255,255,0.3);
 }
 
+/* Bouton Admin avec style spécial */
+.nav-link-admin {
+  border: 2px solid #f59e0b !important;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+  color: white !important;
+  position: relative;
+}
+
+.nav-link-admin .link-icon {
+  color: white !important;
+}
+
+.nav-link-admin:hover {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.3);
+}
+
+.nav-link-admin .link-glow {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .theme-btn {
   width: 48px;
   height: 48px;

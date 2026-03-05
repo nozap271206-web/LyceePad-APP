@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration - LycéePad</title>
+
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('dark') === 'true') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (error) {}
+    })();
+  </script>
+  
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/Admin.css">
+  <link rel="stylesheet" href="../lib/fontawesome/css/svg-with-js.min.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<nav class="nav">
+  <div class="nav-wrap">
+    <a href="../index.html" class="logo">
+      <div class="logo-ring">
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#3B82F6"/>
+              <stop offset="100%" style="stop-color:#8B5CF6"/>
+            </linearGradient>
+          </defs>
+          <path d="M18 3L33 11v14l-15 8-15-8V11l15-8z" stroke="url(#g1)" stroke-width="2.5" fill="none"/>
+          <circle cx="18" cy="18" r="6" fill="url(#g1)" opacity="0.8"/>
+        </svg>
+      </div>
+      <span class="logo-text">LycéePad</span>
+    </a>
+    
+    <button class="hamburger-btn" id="hamburger-toggle" aria-label="Menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link" data-page="home">
+        <span class="link-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
+        <span class="link-text">Accueil</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="map.html" class="nav-link" data-page="map">
+        <span class="link-icon"><i class="fa-solid fa-map" aria-hidden="true"></i></span>
+        <span class="link-text">Carte</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="Quiz.html" class="nav-link" data-page="quiz">
+        <span class="link-icon"><i class="fa-solid fa-question-circle" aria-hidden="true"></i></span>
+        <span class="link-text">Quiz</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="scanner.html" class="nav-link" data-page="scanner">
+        <span class="link-icon"><i class="fa-solid fa-qrcode" aria-hidden="true"></i></span>
+        <span class="link-text">Scanner</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="About.html" class="nav-link" data-page="about">
+        <span class="link-icon"><i class="fa-solid fa-info-circle" aria-hidden="true"></i></span>
+        <span class="link-text">À propos</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="Admin.html" class="nav-link nav-link-admin active" data-page="admin">
+        <span class="link-icon"><i class="fa-solid fa-shield-alt" aria-hidden="true"></i></span>
+        <span class="link-text">Admin</span>
+        <span class="link-glow"></span>
+      </a>
+    </div>
+
+    <div class="sync-status" id="sync-status" title="État de synchronisation">
+      <span class="sync-dot"></span>
+      <span class="sync-text">Local</span>
+    </div>
+
+    <button class="theme-btn" id="theme-toggle" title="Changer de thème">
+      <span class="theme-icon">
+        <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="sun-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+</nav>
+
+    <!-- Contenu principal -->
+    <main class="admin-container">
+        <header class="admin-header">
+            <h1><i class="fas fa-tools"></i> Administration du contenu</h1>
+            <p class="subtitle">Gérez les zones, contenus et configurations</p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="zones">
+                <i class="fas fa-map-marker-alt"></i> Zones
+            </button>
+            <button class="tab-btn" data-tab="contenus">
+                <i class="fas fa-folder-open"></i> Contenus
+            </button>
+            <button class="tab-btn" data-tab="sync">
+                <i class="fas fa-sync-alt"></i> Synchronisation
+            </button>
+        </div>
+
+        <!-- Tab: Zones -->
+        <div class="tab-content active" id="tab-zones">
+            <div class="action-bar">
+                <button class="btn btn-primary" id="btnAddZone">
+                    <i class="fas fa-plus"></i> Nouvelle zone
+                </button>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchZones" placeholder="Rechercher une zone...">
+                </div>
+            </div>
+
+            <div class="zones-list" id="zonesList">
+                <!-- Chargé dynamiquement -->
+            </div>
+        </div>
+
+        <!-- Tab: Contenus -->
+        <div class="tab-content" id="tab-contenus">
+            <div class="content-editor" id="contentEditor">
+                <p class="info-text">
+                    <i class="fas fa-info-circle"></i>
+                    Sélectionnez une zone dans l'onglet "Zones" pour gérer son contenu
+                </p>
+            </div>
+        </div>
+
+        <!-- Tab: Synchronisation -->
+        <div class="tab-content" id="tab-sync">
+            <div class="sync-panel">
+                <div class="sync-info">
+                    <h3><i class="fas fa-server"></i> État du serveur</h3>
+                    <div class="sync-stats" id="syncStats">
+                        <!-- Chargé dynamiquement -->
+                    </div>
+                </div>
+
+                <div class="sync-actions">
+                    <button class="btn btn-primary" id="btnForceSync">
+                        <i class="fas fa-download"></i> Télécharger depuis serveur
+                    </button>
+                    <button class="btn btn-success" id="btnPushChanges">
+                        <i class="fas fa-upload"></i> Pousser vers serveur
+                    </button>
+                    <button class="btn btn-warning" id="btnResetLocal">
+                        <i class="fas fa-redo"></i> Réinitialiser local
+                    </button>
+                </div>
+
+                <div class="sync-log" id="syncLog">
+                    <h4>Journal de synchronisation</h4>
+                    <div class="log-content" id="logContent">
+                        <!-- Logs ici -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Ajouter/Éditer Zone -->
+    <div class="modal" id="modalZone">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalZoneTitle">Nouvelle zone</h2>
+                <button class="modal-close" id="btnCloseModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formZone">
+                    <input type="hidden" id="zoneId">
+                    
+                    <div class="form-group">
+                        <label for="zoneQrCode">Code QR *</label>
+                        <input type="text" id="zoneQrCode" required placeholder="ex: QR_HALL_001">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zoneNom">Nom de la zone *</label>
+                        <input type="text" id="zoneNom" required placeholder="ex: Hall d'accueil">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zoneBatiment">Bâtiment</label>
+                        <input type="text" id="zoneBatiment" placeholder="ex: Bâtiment A">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zoneEtage">Étage</label>
+                        <input type="number" id="zoneEtage" placeholder="ex: 0">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zoneLatitude">Latitude</label>
+                            <input type="number" step="0.000001" id="zoneLatitude" placeholder="43.52764">
+                        </div>
+                        <div class="form-group">
+                            <label for="zoneLongitude">Longitude</label>
+                            <input type="number" step="0.000001" id="zoneLongitude" placeholder="5.44773">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zoneDescription">Description courte</label>
+                        <textarea id="zoneDescription" rows="2" placeholder="Description rapide de la zone"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zoneStatut">
+                            <input type="checkbox" id="zoneStatut" checked>
+                            Zone active
+                        </label>
+                    </div>
+
+                    <!-- Génération QR Code -->
+                    <div class="qr-generator" id="qrGenerator" style="display: none;">
+                        <div class="qr-header">
+                            <h3><i class="fas fa-qrcode"></i> QR Code généré</h3>
+                            <p class="qr-subtitle">Scannez ce code pour accéder à la zone</p>
+                        </div>
+                        <div class="qr-display" id="qrCodeDisplay"></div>
+                        <div class="qr-actions">
+                            <button type="button" class="btn btn-success" id="btnDownloadQR">
+                                <i class="fas fa-download"></i> Télécharger PNG
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="btnRegenerateQR">
+                                <i class="fas fa-sync"></i> Régénérer
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelZone">Annuler</button>
+                <button class="btn btn-primary" id="btnSaveZone">
+                    <i class="fas fa-save"></i> Enregistrer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../lib/qrcode.min.js"></script>
+    <script src="../js/login.js"></script>
+    <script>
+        // Vérifier l'authentification après chargement complet
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Admin.html DOMContentLoaded');
+            console.log('AuthManager exists:', !!window.AuthManager);
+            
+            // Vérifier l'authentification
+            if (!window.AuthManager) {
+                console.error('AuthManager not found!');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const isAuth = window.AuthManager.isAuthenticated();
+            console.log('Is authenticated:', isAuth);
+            console.log('Token:', localStorage.getItem('lyceepad_auth_token'));
+            console.log('Expiry:', localStorage.getItem('lyceepad_auth_expiry'));
+            console.log('Current time:', Date.now());
+            
+            if (!isAuth) {
+                console.log('Not authenticated, redirecting to login');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            console.log('Authentication successful, loading admin interface');
+            
+            // Bouton de déconnexion personnalisé (en haut à droite)
+            const adminHeader = document.querySelector('.admin-header');
+            if (adminHeader) {
+                const logoutBtn = document.createElement('button');
+                logoutBtn.className = 'btn btn-danger';
+                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Déconnexion';
+                logoutBtn.style.position = 'absolute';
+                logoutBtn.style.top = '20px';
+                logoutBtn.style.right = '20px';
+                logoutBtn.addEventListener('click', function() {
+                    if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
+                        window.AuthManager.logout();
+                    }
+                });
+                adminHeader.style.position = 'relative';
+                adminHeader.appendChild(logoutBtn);
+            }
+        });
+    </script>
+    <script src="../js/db-manager.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/Admin.js"></script>
+</body>
+</html>

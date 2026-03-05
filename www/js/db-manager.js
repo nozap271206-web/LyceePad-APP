@@ -535,6 +535,193 @@ const DBManager = {
   },
 
   /**
+   * Créer une nouvelle zone (CRUD)
+   */
+  async createZone(zoneData) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // Générer un ID unique si nécessaire
+        if (!zoneData.id) {
+          const allZones = await this.getAllZones();
+          const maxId = Math.max(...allZones.map(z => z.id || 0), 0);
+          zoneData.id = maxId + 1;
+        }
+
+        // Définir l'ordre si non fourni
+        if (!zoneData.ordre) {
+          const allZones = await this.getAllZones();
+          zoneData.ordre = allZones.length + 1;
+        }
+
+        // Valeurs par défaut
+        zoneData.actif = zoneData.statut === 'active';
+        zoneData.date_creation = new Date().toISOString();
+
+        const transaction = this.state.db.transaction(['zones'], 'readwrite');
+        const store = transaction.objectStore('zones');
+        const request = store.add(zoneData);
+
+        request.onsuccess = () => {
+          console.log('✅ Zone créée:', zoneData.nom);
+          // Marquer comme modification locale non synchronisée
+          this.saveMetadata('hasLocalChanges', true);
+          resolve(zoneData);
+        };
+        request.onerror = () => reject(request.error);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  /**
+   * Mettre à jour une zone (CRUD)
+   */
+  async updateZone(zoneData) {
+    return new Promise((resolve, reject) => {
+      const transaction = this.state.db.transaction(['zones'], 'readwrite');
+      const store = transaction.objectStore('zones');
+      
+      // Récupérer la zone existante
+      const getRequest = store.get(zoneData.qr_code);
+      
+      getRequest.onsuccess = () => {
+        const existingZone = getRequest.result;
+        if (!existingZone) {
+          reject(new Error('Zone introuvable'));
+          return;
+        }
+
+        // Fusionner les données
+        const updatedZone = {
+          ...existingZone,
+          ...zoneData,
+          actif: zoneData.statut === 'active',
+          date_modification: new Date().toISOString()
+        };
+
+        const putRequest = store.put(updatedZone);
+        
+        putRequest.onsuccess = () => {
+          console.log('✅ Zone mise à jour:', updatedZone.nom);
+          this.saveMetadata('hasLocalChanges', true);
+          resolve(updatedZone);
+        };
+        putRequest.onerror = () => reject(putRequest.error);
+      };
+      
+      getRequest.onerror = () => reject(getRequest.error);
+    });
+  },
+
+  /**
+   * Supprimer une zone (CRUD)
+   */
+  async deleteZone(qrCode) {
+    return new Promise((resolve, reject) => {
+      const transaction = this.state.db.transaction(['zones'], 'readwrite');
+      const store = transaction.objectStore('zones');
+      const request = store.delete(qrCode);
+
+      request.onsuccess = () => {
+        console.log('🗑️ Zone supprimée:', qrCode);
+        this.saveMetadata('hasLocalChanges', true);
+        resolve();
+      };
+      request.onerror = () => reject(request.error);
+    });
+  },
+
+  /**
+   * Pousser les modifications locales vers le serveur
+   */
+  async pushToServer() {
+    if (!this.state.isOnline || !this.state.serverReachable) {
+      throw new Error('Serveur inaccessible - Impossible de pousser les modifications');
+    }
+
+    try {
+      // Récupérer toutes les données locales
+      const zones = await this.getAllZones();
+      const parcours = await this.getAllParcours();
+      const profils = await this.getAllProfils();
+
+      // Construire le payload
+      const payload = {
+        zones: {},
+        parcours: {},
+        profils: {}
+      };
+
+      zones.forEach(zone => {
+        payload.zones[zone.qr_code] = zone;
+      });
+
+      parcours.forEach(p => {
+        payload.parcours[p.id] = p;
+      });
+
+      profils.forEach(p => {
+        payload.profils[p.nom] = p;
+      });
+
+      // Envoyer au serveur via API
+      const apiUrl = this.config.serverUrl.replace('/data', '/api/sync.php');
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.success) {
+        // Marquer comme synchronisé
+        await this.saveMetadata('hasLocalChanges', false);
+        await this.saveMetadata('lastPush', new Date().toISOString());
+        
+        console.log('✅ Données poussées vers le serveur');
+        
+        // Incrémenter la version
+        const currentVersion = await this.getLocalVersion();
+        const newVersion = this.incrementVersion(currentVersion);
+        await this.saveMetadata('version', newVersion);
+        
+        return result;
+      } else {
+        throw new Error(result.message || 'Erreur serveur');
+      }
+    } catch (error) {
+      console.error('❌ Erreur push serveur:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Incrémenter la version (1.0.0 → 1.0.1)
+   */
+  incrementVersion(version) {
+    if (!version) return '1.0.1';
+    const parts = version.split('.');
+    parts[2] = parseInt(parts[2]) + 1;
+    return parts.join('.');
+  },
+
+  /**
+   * Réinitialiser la base de données
+   */
+  async resetDatabase() {
+    await this.clearDatabase();
+    console.log('🔄 Base de données réinitialisée');
+  },
+
+  /**
    * Vider la base de données
    */
   async clearDatabase() {

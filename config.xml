@@ -7,7 +7,7 @@
     <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
         Apache Cordova Team
     </author>
-    <content src="index.html" />
+    <content src="html/scanner.html" />
     <icon src="www/img/logo.png" />
     <preference name="scheme" value="http" />
     <preference name="hostname" value="localhost" />
