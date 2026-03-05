@@ -406,7 +406,7 @@ html.perf-lite .nav {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 3rem;
   margin-bottom: 3rem;
 }
@@ -436,11 +436,20 @@ html.perf-lite .nav {
 .footer-col a {
   color: var(--text-secondary);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .footer-col a:hover {
   color: var(--primary);
+  transform: translateX(3px);
+}
+
+.footer-col a i {
+  font-size: 1rem;
+  opacity: 0.8;
 }
 
 .footer-logo {
