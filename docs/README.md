@@ -28,6 +28,7 @@ Bienvenue dans la documentation du projet LycéePad.
 1. Consultez le [README principal](../README.md) pour l'installation
 2. Suivez le [guide de déploiement](deployment/RESUME_DEPLOIEMENT.md)
 3. Lisez le [guide de contribution](../CONTRIBUTING.md)
+4. Comprenez le [workflow Git](GIT_WORKFLOW.md)
 
 ### Pour administrer
 1. [Guide d'administration](guides/GUIDE_ADMIN.md)
@@ -35,7 +36,8 @@ Bienvenue dans la documentation du projet LycéePad.
 
 ### Pour développer
 1. [Guide de contribution](../CONTRIBUTING.md)
-2. Consultez les [journaux de modifications](changelog/)
+2. [Workflow Git pratique](GIT_WORKFLOW.md)
+3. Consultez les [journaux de modifications](changelog/)
 
 ## 📞 Support
 
