@@ -1,103 +1,127 @@
 # 📱 LycéePad
 
-## 📌 Présentation du projet
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/nozap271206-web/LyceePad-APP)
+[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Android-brightgreen.svg)](https://cordova.apache.org/)
 
-**LycéePad** est une application web de visite guidée interactive du
-Lycée Polyvalent Saint-Éloi d'Aix-en-Provence.
+> Application mobile interactive de visite guidée du Lycée Polyvalent Saint-Éloi d'Aix-en-Provence
 
-Elle permet aux visiteurs (élèves, parents, partenaires) de découvrir
-les espaces du lycée de manière autonome grâce à des contenus
-multimédias géolocalisés et à des parcours personnalisés.
+## 📌 À propos
 
-Le projet s'inspire du principe des **HistoPad**, utilisés notamment
-dans les châteaux de la Loire.
+**LycéePad** est une application mobile (Android/PWA) permettant une visite interactive et autonome du lycée grâce à :
+- 🗺️ Une carte interactive avec géolocalisation
+- 📷 Des QR codes pour accéder aux contenus des zones
+- 🎬 Des contenus multimédias (photos, vidéos, textes)
+- 📱 Un fonctionnement hors-ligne
+- 🎯 Des quiz pédagogiques
 
-------------------------------------------------------------------------
+Inspiré des **HistoPad** utilisés dans les musées et châteaux.
 
-## 🎯 Objectifs
+## ✨ Fonctionnalités
 
--   Proposer une visite interactive et autonome du lycée\
--   Valoriser l'établissement et ses formations\
--   Faciliter l'orientation des visiteurs\
--   Offrir des contenus adaptés à différents profils\
--   Fonctionner sur tablette et mobile (PWA)
+- ✅ **Carte interactive** : Navigation visuelle du lycée avec Leaflet.js
+- ✅ **Scanner QR** : Accès instantané aux contenus des zones
+- ✅ **Mode hors-ligne** : Synchronisation locale avec SQLite
+- ✅ **Quiz interactifs** : Évaluation des connaissances
+- ✅ **Administration** : Interface de gestion des contenus
+- ✅ **Multi-profils** : Contenus adaptés (élève, parent, visiteur)
 
-------------------------------------------------------------------------
+## 🛠️ Stack technique
 
-## 🛠️ Technologies utilisées
+### Frontend
+- **Cordova** : Framework mobile multi-plateforme
+- **HTML5/CSS3/JavaScript** : Technologies web natives
+- **Leaflet.js** : Cartographie interactive
+- **html5-qrcode** : Scanner QR codes
 
-### 🔹 Frontend
+### Backend & Données
+- **PHP** : API REST pour synchronisation
+- **MySQL** : Base de données serveur
+- **SQLite** : Stockage local mobile
 
--   HTML / CSS / JavaScript\
--   Vue.js\
--   Vite ou Webpack\
--   Leaflet.js (carte interactive)\
--   Approche responsive mobile-first
+### Outils de développement
+- **Git/GitHub** : Gestion de version
+- **Android Studio** : Build Android
+- **PowerShell** : Scripts de déploiement automatisé
 
-### 🔹 Backend
+## 🚀 Installation et démarrage
 
--   Node.js\
--   Express.js\
--   API REST\
--   MySQL
+### Prérequis
+```bash
+Node.js >= 14.x
+Cordova CLI >= 11.x
+Android SDK
+JDK 11+
+```
 
-### 🔹 PWA
+### Installation
+```bash
+# Cloner le projet
+git clone https://github.com/nozap271206-web/LyceePad-APP.git
+cd LyceePad-APP
 
--   Service Worker\
--   Web App Manifest\
--   Mode hors ligne\
--   HTTPS obligatoire
+# Installer les dépendances
+npm install
 
-### 🔹 Outils
+# Ajouter la plateforme Android
+cordova platform add android
 
--   Git / GitHub\
--   Figma (maquettes)\
--   Draw.io (schémas UML)\
--   Lighthouse (audit PWA)\
--   Postman (tests API)
+# Lancer en mode développement
+cordova run android
+```
 
-------------------------------------------------------------------------
+### Build de production
+```bash
+# Build APK signé
+cordova build android --release
 
-## 👥 Équipe projet
+# L'APK se trouve dans platforms/android/app/build/outputs/apk/release/
+```
 
-### 👨‍💻 Étudiant 1 -- Frontend & UX/UI
+## 📚 Documentation
 
--   Interface utilisateur\
--   Navigation\
--   Carte interactive et QR codes\
--   Responsive design & accessibilité
+- 📖 [Guide d'administration](docs/guides/GUIDE_ADMIN.md)
+- 🔐 [Guide d'authentification](docs/guides/GUIDE_AUTHENTIFICATION.md)
+- 📷 [Guide QR Codes](docs/guides/GUIDE_QR_CODES.md)
+- 🚀 [Guide de déploiement](docs/deployment/RESUME_DEPLOIEMENT.md)
+- 🔗 [Configuration Webhook](docs/deployment/GUIDE_WEBHOOK_SIMPLIFIE.md)
 
-### 🖥️ Étudiant 2 -- Backend & Base de données
+## 🤝 Contribution
 
--   Serveur Node.js / Express\
--   API REST\
--   Base de données MySQL\
--   Sécurité et gestion des accès
+Veuillez consulter [CONTRIBUTING.md](CONTRIBUTING.md) pour connaître :
+- La stratégie de branches (Git Flow)
+- Les conventions de code
+- Le processus de Pull Request
 
-### 📲 Étudiant 3 -- Contenu multimédia & PWA
+## 📋 Structure du projet
 
--   Service Worker\
--   Fonctionnalités PWA\
--   CI/CD simplifié\
--   Création et gestion des contenus
+```
+LyceePad/
+├── www/                    # Code source application
+│   ├── index.html         # Point d'entrée
+│   ├── css/              # Feuilles de style
+│   ├── js/               # Scripts JavaScript
+│   ├── html/             # Pages HTML
+│   ├── data/             # Données JSON locales
+│   └── API/              # Scripts PHP serveur
+├── platforms/            # Plateformes Cordova (générées)
+├── plugins/              # Plugins Cordova
+├── res/                  # Ressources (icônes, splash)
+├── docs/                 # Documentation
+└── scripts/              # Scripts utilitaires
+```
 
-------------------------------------------------------------------------
+## 📄 Licence
 
-## ⚙️ Fonctionnalités principales
+Ce projet est sous licence Apache 2.0 - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
--   Carte interactive du lycée\
--   Accès aux contenus via QR codes\
--   Contenus multimédias (photos, vidéos, textes)\
--   Interface d'administration des contenus\
--   Mode hors ligne\
--   Installation de l'application sur tablette
+## 👥 Auteurs
 
-------------------------------------------------------------------------
+Développé par les étudiants du Lycée Polyvalent Saint-Éloi dans le cadre d'un projet pédagogique.
 
-## 🚀 Déploiement
+---
 
--   Déploiement sur serveur interne\
--   Pipeline CI/CD simplifié\
+**Note** : Cette application est destinée à un usage interne au lycée.
 -   Redémarrage automatique du serveur\
 -   Tests post-déploiement
 
