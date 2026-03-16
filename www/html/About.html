@@ -22,6 +22,8 @@
   
   <!-- AOS Library -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#2EA3F2">
 </head>
 <body>
 
@@ -597,5 +599,7 @@
 <script defer src="../js/About.js"></script>
 <script defer src="../js/app.js"></script>
 
+
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("../service-worker.js").catch(function(){});}</script>
 </body>
 </html>

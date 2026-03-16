@@ -1,0 +1,42 @@
+{
+  "name": "LycéePad - Lycée Saint-Éloi",
+  "short_name": "LycéePad",
+  "description": "Découvrez le Lycée Saint-Éloi d'Aix-en-Provence en mode interactif : carte, QR codes, quiz et contenus multimédias.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2EA3F2",
+  "theme_color": "#2EA3F2",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "img/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Scanner QR",
+      "short_name": "Scanner",
+      "url": "/html/scanner.html",
+      "icons": [{ "src": "img/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Carte du lycée",
+      "short_name": "Carte",
+      "url": "/html/map.html",
+      "icons": [{ "src": "img/logo.png", "sizes": "192x192" }]
+    }
+  ]
+}
