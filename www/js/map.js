@@ -5,16 +5,27 @@ function goToZone(qrCode) {
   window.location.href = `ZoneContent.html?qr=${qrCode}`;
 }
 
+// Charger les zones depuis le fichier local JSON
+async function loadZonesLocally() {
+  const response = await fetch('../data/qr-data.json');
+  if (!response.ok) throw new Error('Fichier qr-data.json introuvable');
+  const data = await response.json();
+  return Object.values(data.zones).filter(z => z.actif);
+}
+
 // Initialiser la carte au chargement de la page
 document.addEventListener('DOMContentLoaded', async function() {
-  
-  try {
-    // Attendre que DBManager soit complètement initialisé
-    await window.DBManager.ready;
 
-    // Récupérer toutes les zones actives
-    const zones = await window.DBManager.getActiveZones();
-    console.log(`${zones.length} zones chargées depuis DBManager`);
+  try {
+    // Essayer DBManager d'abord, sinon fallback local
+    let zones;
+    try {
+      await window.DBManager.ready;
+      zones = await window.DBManager.getActiveZones();
+      if (!zones || zones.length === 0) throw new Error('Aucune zone en DB');
+    } catch (dbErr) {
+      zones = await loadZonesLocally();
+    }
 
     // ===== INITIALISATION DE LA CARTE LEAFLET =====
     const map = L.map('map').setView([43.52130, 5.44360], 19);
