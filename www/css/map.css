@@ -415,7 +415,11 @@
 .qr-marker-container {
   background: transparent !important;
   border: none !important;
-  z-index: 1000 !important;
+  pointer-events: auto !important;
+  z-index: 1002 !important;
+  /* Désactive le zoom sur les icônes */
+  transform: none !important;
+  will-change: unset !important;
 }
 
 .qr-marker {
@@ -425,8 +429,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  pointer-events: auto;
+  pointer-events: auto !important;
+  transform: none !important;
 }
 
 .marker-pulse {
@@ -455,6 +459,21 @@
   justify-content: center;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
   z-index: 1;
+  transform: none !important;
+}
+/* Forcer l'affichage des icônes FontAwesome */
+.fa-solid, .fa, .fas {
+  display: inline-block !important;
+  font-family: 'Font Awesome 6 Free', 'FontAwesome', Arial, sans-serif !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+  font-size: 1.15em !important;
+  color: inherit !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+  text-rendering: auto !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .qr-icon {

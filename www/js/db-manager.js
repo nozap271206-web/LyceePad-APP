@@ -33,6 +33,7 @@ const DBManager = {
    * Initialisation du gestionnaire
    */
   async init() {
+    this.loadServerUrl();
     console.log('🚀 Initialisation du DB Manager...');
     
     // Écouter les changements de connexion
@@ -518,12 +519,16 @@ const DBManager = {
   async getStats() {
     const zones = await this.getAllZones();
     const parcours = await this.getAllParcours();
+    const profils = await this.getAllProfils();
     const version = await this.getLocalVersion();
     const lastSync = await this.getMetadata('lastSync');
 
     return {
-      totalZones: zones.length,
+      zones: zones.length,
       activeZones: zones.filter(z => z.actif).length,
+      parcours: parcours.length,
+      profils: profils.length,
+      totalZones: zones.length,
       totalParcours: parcours.length,
       version,
       lastSync,
@@ -532,6 +537,31 @@ const DBManager = {
       lastPing: this.state.lastPing,
       useFallback: this.state.useFallback
     };
+  },
+
+  /**
+   * Modifier l'URL du serveur à la volée (depuis l'interface admin)
+   */
+  setServerUrl(url) {
+    // Supprimer le slash final
+    this.config.serverUrl = url.replace(/\/$/, '');
+    try {
+      localStorage.setItem('lyceepad_server_url', this.config.serverUrl);
+    } catch (e) {}
+    console.log('🌐 URL serveur mise à jour :', this.config.serverUrl);
+  },
+
+  /**
+   * Charger l'URL serveur depuis localStorage si présente
+   */
+  loadServerUrl() {
+    try {
+      const saved = localStorage.getItem('lyceepad_server_url');
+      if (saved) {
+        this.config.serverUrl = saved;
+        console.log('🌐 URL serveur restaurée :', saved);
+      }
+    } catch (e) {}
   },
 
   /**

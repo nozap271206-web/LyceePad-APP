@@ -29,8 +29,8 @@
         <svg width="36" height="36" viewBox="0 0 36 36">
           <defs>
             <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#3B82F6"/>
-              <stop offset="100%" style="stop-color:#8B5CF6"/>
+              <stop offset="0%" style="stop-color:#2EA3F2"/>
+              <stop offset="100%" style="stop-color:#1a6fa8"/>
             </linearGradient>
           </defs>
           <path d="M18 3L33 11v14l-15 8-15-8V11l15-8z" stroke="url(#g1)" stroke-width="2.5" fill="none"/>
@@ -155,6 +155,25 @@
         <!-- Tab: Synchronisation -->
         <div class="tab-content" id="tab-sync">
             <div class="sync-panel">
+
+                <!-- Configuration IP/URL serveur -->
+                <div class="server-config">
+                    <h3><i class="fas fa-network-wired"></i> Configuration serveur</h3>
+                    <div class="server-config-row">
+                        <div class="form-group">
+                            <label for="inputServerUrl">URL du serveur</label>
+                            <input type="text" id="inputServerUrl" placeholder="http://192.168.X.X/lyceepad">
+                            <p class="server-url-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Exemple : <code>http://192.168.15.38</code> — l'URL est sauvegardée automatiquement.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary" id="btnSaveServerUrl" style="margin-bottom:26px;">
+                            <i class="fas fa-save"></i> Appliquer
+                        </button>
+                    </div>
+                </div>
+
                 <div class="sync-info">
                     <h3><i class="fas fa-server"></i> État du serveur</h3>
                     <div class="sync-stats" id="syncStats">
@@ -171,6 +190,9 @@
                     </button>
                     <button class="btn btn-warning" id="btnResetLocal">
                         <i class="fas fa-redo"></i> Réinitialiser local
+                    </button>
+                    <button class="btn btn-danger" id="btnExitKiosk" style="display:none;">
+                        <i class="fas fa-unlock"></i> Quitter le mode kiosque
                     </button>
                 </div>
 
@@ -269,55 +291,55 @@
 
     <!-- Scripts -->
     <script src="../lib/qrcode.min.js"></script>
+    <script src="../js/kiosk.js"></script>
     <script src="../js/login.js"></script>
     <script>
-        // Vérifier l'authentification après chargement complet
+        // Authentification désactivée pour accès direct à l'admin
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Admin.html DOMContentLoaded');
-            console.log('AuthManager exists:', !!window.AuthManager);
-            
-            // Vérifier l'authentification
-            if (!window.AuthManager) {
-                console.error('AuthManager not found!');
-                window.location.href = 'login.html';
-                return;
+
+            // Pré-remplir l'input URL serveur avec la valeur actuelle
+            const inputUrl = document.getElementById('inputServerUrl');
+            if (inputUrl && window.DBManager) {
+                inputUrl.value = DBManager.config.serverUrl;
             }
-            
-            const isAuth = window.AuthManager.isAuthenticated();
-            console.log('Is authenticated:', isAuth);
-            console.log('Token:', localStorage.getItem('lyceepad_auth_token'));
-            console.log('Expiry:', localStorage.getItem('lyceepad_auth_expiry'));
-            console.log('Current time:', Date.now());
-            
-            if (!isAuth) {
-                console.log('Not authenticated, redirecting to login');
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            console.log('Authentication successful, loading admin interface');
-            
-            // Bouton de déconnexion personnalisé (en haut à droite)
-            const adminHeader = document.querySelector('.admin-header');
-            if (adminHeader) {
-                const logoutBtn = document.createElement('button');
-                logoutBtn.className = 'btn btn-danger';
-                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Déconnexion';
-                logoutBtn.style.position = 'absolute';
-                logoutBtn.style.top = '20px';
-                logoutBtn.style.right = '20px';
-                logoutBtn.addEventListener('click', function() {
-                    if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
-                        window.AuthManager.logout();
-                    }
+
+            // Bouton "Appliquer" URL serveur
+            const btnSave = document.getElementById('btnSaveServerUrl');
+            if (btnSave) {
+                btnSave.addEventListener('click', function() {
+                    const val = inputUrl.value.trim();
+                    if (!val) { alert('Entrez une URL valide'); return; }
+                    DBManager.setServerUrl(val);
+                    btnSave.innerHTML = '<i class="fas fa-check"></i> Sauvegardé !';
+                    setTimeout(() => { btnSave.innerHTML = '<i class="fas fa-save"></i> Appliquer'; }, 2000);
                 });
-                adminHeader.style.position = 'relative';
-                adminHeader.appendChild(logoutBtn);
             }
         });
     </script>
     <script src="../js/db-manager.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/Admin.js"></script>
+    <script src="../js/Contenus.js"></script>
+    <script>
+        // Bouton kiosque - visible uniquement sur Android avec Cordova
+        document.addEventListener('deviceready', function() {
+            var btn = document.getElementById('btnExitKiosk');
+            if (btn) {
+                btn.style.display = 'inline-flex';
+                btn.addEventListener('click', function() {
+                    if (window.KioskMode) {
+                        KioskMode.stop(function() {
+                            if (navigator.app && navigator.app.exitApp) {
+                                navigator.app.exitApp();
+                            }
+                        }, function(err) {
+                            alert('Erreur kiosque : ' + err);
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

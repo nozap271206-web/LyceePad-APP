@@ -593,26 +593,9 @@
    ============================================ */
 .cta-section {
   padding: 8rem 2rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   position: relative;
   overflow: hidden;
-  min-height: 600px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Vidéo d'arrière-plan */
-.cta-video-bg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  z-index: 0;
 }
 
 .cta-section::before {
@@ -622,9 +605,8 @@
   right: -10%;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
   border-radius: 50%;
-  z-index: 2;
 }
 
 .cta-card {
@@ -632,7 +614,7 @@
   margin: 0 auto;
   text-align: center;
   position: relative;
-  z-index: 3;
+  z-index: 1;
 }
 
 .cta-card h2 {
@@ -641,14 +623,12 @@
   color: white;
   margin-bottom: 1rem;
   letter-spacing: -2px;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .cta-card p {
   font-size: 1.5rem;
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 3rem;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .cta-btn {

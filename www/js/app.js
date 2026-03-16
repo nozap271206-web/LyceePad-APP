@@ -31,6 +31,11 @@ document.addEventListener('deviceready', function() {
   applyAndroidKioskMode();
   setTimeout(applyAndroidKioskMode, 500);
   document.addEventListener('resume', applyAndroidKioskMode, false);
+
+  // Activer le mode kiosque Android (Lock Task)
+  if (window.KioskMode && typeof window.KioskMode.start === 'function') {
+    window.KioskMode.start();
+  }
 }, false);
 
 document.addEventListener('DOMContentLoaded', function() {
