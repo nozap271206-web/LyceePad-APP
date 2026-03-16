@@ -119,13 +119,27 @@
     </div>
   </section>
 
+  <!-- Étape 1.5 : Choisir une formation (futur élève uniquement) -->
+  <section class="parcours-step hidden" id="stepFormation">
+    <div class="step-header">
+      <span class="step-number">2</span>
+      <h2>Quelle formation vous intéresse ?</h2>
+      <button class="btn-back" id="btnBackProfilFromFormation">
+        <i class="fas fa-arrow-left"></i> Changer de profil
+      </button>
+    </div>
+    <div class="formations-grid" id="formationsGrid">
+      <div class="loading-placeholder"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+    </div>
+  </section>
+
   <!-- Étape 2 : Choisir un parcours -->
   <section class="parcours-step hidden" id="stepParcours">
     <div class="step-header">
-      <span class="step-number">2</span>
+      <span class="step-number" id="stepParcoursNumber">2</span>
       <h2>Quel parcours ?</h2>
       <button class="btn-back" id="btnBackProfil">
-        <i class="fas fa-arrow-left"></i> Changer de profil
+        <i class="fas fa-arrow-left"></i> Retour
       </button>
     </div>
     <div class="parcours-grid" id="parcoursGrid"></div>
@@ -134,7 +148,7 @@
   <!-- Étape 3 : Aperçu des zones + démarrer -->
   <section class="parcours-step hidden" id="stepZones">
     <div class="step-header">
-      <span class="step-number">3</span>
+      <span class="step-number" id="stepZonesNumber">3</span>
       <h2 id="stepZonesTitle">Votre parcours</h2>
       <button class="btn-back" id="btnBackParcours">
         <i class="fas fa-arrow-left"></i> Changer de parcours
