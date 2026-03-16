@@ -715,12 +715,8 @@ const DBManager = {
   }
 };
 
-// Initialiser automatiquement au chargement
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => DBManager.init());
-} else {
-  DBManager.init();
-}
-
-// Export pour utilisation globale
+// Initialiser automatiquement et exposer la Promise pour les autres scripts
 window.DBManager = DBManager;
+DBManager.ready = (document.readyState === 'loading')
+  ? new Promise(resolve => document.addEventListener('DOMContentLoaded', () => resolve(DBManager.init())))
+  : DBManager.init();
