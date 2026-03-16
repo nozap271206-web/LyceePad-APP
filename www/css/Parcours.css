@@ -1,0 +1,412 @@
+/* Parcours.css - Page de sélection de parcours */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
+.parcours-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.parcours-hero {
+  text-align: center;
+  margin-bottom: 48px;
+  padding: 40px 24px;
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
+  border-radius: 16px;
+  color: white;
+}
+
+.parcours-hero h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.parcours-hero h1 i { margin-right: 12px; }
+
+.parcours-hero p {
+  font-size: 1.05rem;
+  opacity: 0.9;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ── Étape ────────────────────────────────────────────────────────────────── */
+.parcours-step {
+  margin-bottom: 48px;
+  transition: opacity 0.3s ease;
+}
+
+.parcours-step.hidden {
+  display: none;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.step-number {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #2EA3F2, #1a6fa8);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.step-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  flex: 1;
+}
+
+.btn-back {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ── Grille profils ───────────────────────────────────────────────────────── */
+.profils-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.profil-card {
+  background: var(--bg-elevated);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.profil-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--profil-color, #2EA3F2);
+  border-radius: 14px 14px 0 0;
+}
+
+.profil-card:hover {
+  border-color: var(--profil-color, #2EA3F2);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+}
+
+.profil-card.selected {
+  border-color: var(--profil-color, #2EA3F2);
+  background: color-mix(in srgb, var(--profil-color, #2EA3F2) 8%, var(--bg-elevated));
+}
+
+.profil-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 1.8rem;
+  color: white;
+  background: var(--profil-color, #2EA3F2);
+}
+
+.profil-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.profil-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Grille parcours ──────────────────────────────────────────────────────── */
+.parcours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.parcours-card {
+  background: var(--bg-elevated);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.parcours-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(46,163,242,0.15);
+}
+
+.parcours-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.parcours-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.parcours-badge {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.parcours-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.parcours-meta {
+  display: flex;
+  gap: 14px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.parcours-meta i { color: var(--primary); margin-right: 4px; }
+
+.parcours-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+.parcours-empty i { font-size: 2.5rem; display: block; margin-bottom: 12px; opacity: 0.4; }
+
+/* ── Résumé parcours ──────────────────────────────────────────────────────── */
+.parcours-summary {
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
+  border-radius: 12px;
+  padding: 20px 24px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.parcours-summary-icon {
+  font-size: 2.2rem;
+  opacity: 0.9;
+}
+
+.parcours-summary-info h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.parcours-summary-info p {
+  font-size: 0.875rem;
+  opacity: 0.85;
+}
+
+.parcours-summary-stats {
+  margin-left: auto;
+  display: flex;
+  gap: 24px;
+}
+
+.summary-stat { text-align: center; }
+.summary-stat-value { font-size: 1.8rem; font-weight: 700; }
+.summary-stat-label { font-size: 0.75rem; opacity: 0.8; }
+
+/* ── Timeline zones ───────────────────────────────────────────────────────── */
+.zones-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 36px;
+  position: relative;
+}
+
+.zone-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  position: relative;
+}
+
+/* Ligne verticale entre les étapes */
+.zone-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 52px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.zone-step-number {
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.zone-step:last-child .zone-step-number {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.zone-step-content {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  flex: 1;
+  transition: box-shadow 0.2s;
+}
+
+.zone-step-content:hover {
+  box-shadow: 0 4px 14px rgba(46,163,242,0.1);
+}
+
+.zone-step-name {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.zone-step-meta {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.zone-step-meta i { color: var(--primary); margin-right: 3px; }
+
+.zone-step-qr {
+  font-family: monospace;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+  display: inline-block;
+}
+
+/* ── CTA ──────────────────────────────────────────────────────────────────── */
+.parcours-cta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #2EA3F2, #1a6fa8);
+  color: white;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s;
+  box-shadow: 0 4px 16px rgba(46,163,242,0.3);
+}
+
+.btn-start:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(46,163,242,0.4);
+}
+
+.btn-start-scan {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 4px 16px rgba(34,197,94,0.3);
+}
+.btn-start-scan:hover {
+  box-shadow: 0 8px 24px rgba(34,197,94,0.4);
+}
+
+/* ── Loading ──────────────────────────────────────────────────────────────── */
+.loading-placeholder {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .parcours-hero h1 { font-size: 1.5rem; }
+  .profils-grid { grid-template-columns: repeat(2, 1fr); }
+  .parcours-summary-stats { margin-left: 0; width: 100%; justify-content: flex-start; }
+  .parcours-cta { flex-direction: column; }
+  .btn-start { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .profils-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .profil-card { padding: 20px 14px; }
+  .profil-icon { width: 52px; height: 52px; font-size: 1.4rem; }
+}
