@@ -1,8 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 .map-page {
   min-height: 100vh;
@@ -37,7 +32,7 @@
 .orb-1 {
   width: 500px;
   height: 500px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   top: -250px;
   left: -250px;
   animation-delay: 0s;
@@ -104,10 +99,10 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1.25rem;
-  background: rgba(102, 126, 234, 0.1);
-  border: 1px solid rgba(102, 126, 234, 0.3);
+  background: rgba(46, 163, 242, 0.1);
+  border: 1px solid rgba(46, 163, 242, 0.3);
   border-radius: 50px;
-  color: #667eea;
+  color: #2EA3F2;
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
@@ -116,7 +111,7 @@
 .pulse-dot {
   width: 8px;
   height: 8px;
-  background: #667eea;
+  background: #2EA3F2;
   border-radius: 50%;
   animation: pulse 2s infinite;
 }
@@ -135,7 +130,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -194,7 +189,7 @@
 }
 
 .control-item svg {
-  color: #667eea;
+  color: #2EA3F2;
   flex-shrink: 0;
 }
 
@@ -257,7 +252,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   transform: scaleX(0);
   transition: transform 0.3s;
 }
@@ -265,7 +260,7 @@
 .zone-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  border-color: #667eea;
+  border-color: #2EA3F2;
 }
 
 .zone-card:hover::before {
@@ -281,12 +276,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   color: white;
   border-radius: 12px;
   font-weight: 700;
   font-size: 1.1rem;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(46, 163, 242, 0.3);
 }
 
 .zone-icon {
@@ -313,7 +308,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -325,7 +320,7 @@
 
 .zone-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 20px rgba(46, 163, 242, 0.4);
 }
 
 .zone-btn svg {
@@ -369,7 +364,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   color: white;
   border-radius: 8px;
   font-weight: 700;
@@ -396,7 +391,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 1.25rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -408,13 +403,18 @@
 
 .popup-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 16px rgba(46, 163, 242, 0.4);
 }
 
 /* QR Marker Custom */
 .qr-marker-container {
   background: transparent !important;
   border: none !important;
+  pointer-events: auto !important;
+  z-index: 1002 !important;
+  /* Désactive le zoom sur les icônes */
+  transform: none !important;
+  will-change: unset !important;
 }
 
 .qr-marker {
@@ -424,13 +424,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: auto !important;
+  transform: none !important;
 }
 
 .marker-pulse {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   border-radius: 50%;
   opacity: 0.3;
   animation: markerPulse 2s infinite;
@@ -445,13 +447,28 @@
   position: relative;
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(46, 163, 242, 0.4);
   z-index: 1;
+  transform: none !important;
+}
+/* Forcer l'affichage des icônes FontAwesome */
+.fa-solid, .fa, .fas {
+  display: inline-block !important;
+  font-family: 'Font Awesome 6 Free', 'FontAwesome', Arial, sans-serif !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+  font-size: 1.15em !important;
+  color: inherit !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+  text-rendering: auto !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .qr-icon {
