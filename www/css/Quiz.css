@@ -37,7 +37,7 @@
 .orb-1 {
   width: 500px;
   height: 500px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   top: -250px;
   left: -250px;
   animation-delay: 0s;
@@ -104,10 +104,10 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1.25rem;
-  background: rgba(102, 126, 234, 0.1);
-  border: 1px solid rgba(102, 126, 234, 0.3);
+  background: rgba(46, 163, 242, 0.1);
+  border: 1px solid rgba(46, 163, 242, 0.3);
   border-radius: 50px;
-  color: #667eea;
+  color: #2EA3F2;
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
@@ -116,7 +116,7 @@
 .pulse-dot {
   width: 8px;
   height: 8px;
-  background: #667eea;
+  background: #2EA3F2;
   border-radius: 50%;
   animation: pulse 2s infinite;
 }
@@ -135,7 +135,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -182,7 +182,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   transform: scaleX(0);
   transition: transform 0.3s;
 }
@@ -190,7 +190,7 @@
 .zone-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  border-color: #667eea;
+  border-color: #2EA3F2;
 }
 
 .zone-card:hover::before {
@@ -207,7 +207,7 @@
   top: 1.5rem;
   right: 1.5rem;
   padding: 0.4rem 0.8rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   color: white;
   border-radius: 50px;
   font-size: 0.85rem;
@@ -245,13 +245,13 @@
 }
 
 .stat-item svg {
-  color: #667eea;
+  color: #2EA3F2;
 }
 
 .start-btn {
   width: 100%;
   padding: 0.9rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -267,7 +267,7 @@
 
 .start-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 20px rgba(46, 163, 242, 0.4);
 }
 
 .start-btn svg {
@@ -317,7 +317,7 @@
 .score-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #667eea;
+  color: #2EA3F2;
 }
 
 .progress-container {
@@ -335,7 +335,7 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   transition: width 0.5s ease;
   border-radius: 50px;
 }
@@ -357,8 +357,8 @@
 .question-number {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(46, 163, 242, 0.1);
+  color: #2EA3F2;
   border-radius: 50px;
   font-size: 0.9rem;
   font-weight: 700;
@@ -396,7 +396,7 @@
 
 .answer-option:hover:not(:disabled) {
   background: var(--bg-alt);
-  border-color: #667eea;
+  border-color: #2EA3F2;
   transform: translateX(5px);
 }
 
@@ -406,7 +406,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   color: white;
   border-radius: 8px;
   font-weight: 700;
@@ -434,8 +434,8 @@
 }
 
 .answer-option.selected {
-  background: rgba(102, 126, 234, 0.1);
-  border-color: #667eea;
+  background: rgba(46, 163, 242, 0.1);
+  border-color: #2EA3F2;
 }
 
 .answer-option.correct {
@@ -517,7 +517,7 @@
 .next-button {
   width: 100%;
   padding: 1.1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -533,7 +533,7 @@
 
 .next-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 12px 28px rgba(46, 163, 242, 0.4);
 }
 
 .next-button svg {
@@ -614,7 +614,7 @@
 .score-percentage {
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -638,8 +638,8 @@
 }
 
 .message.good {
-  background: rgba(102, 126, 234, 0.1);
-  border: 1px solid rgba(102, 126, 234, 0.3);
+  background: rgba(46, 163, 242, 0.1);
+  border: 1px solid rgba(46, 163, 242, 0.3);
   color: var(--text);
 }
 
@@ -671,7 +671,7 @@
 }
 
 .action-button.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%);
   color: white;
 }
 
