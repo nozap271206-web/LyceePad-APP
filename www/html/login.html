@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="../css/app.css">
     <link rel="stylesheet" href="../css/login.css">
     <link rel="stylesheet" href="../lib/fontawesome/css/all.min.css">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#2EA3F2">
 </head>
 <body class="login-body">
     <div class="login-container">
@@ -100,5 +102,7 @@
             console.log('login.html DOMContentLoaded');
         });
         </script>
+
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("../service-worker.js").catch(function(){});}</script>
 </body>
 </html>
