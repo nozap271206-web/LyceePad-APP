@@ -16,7 +16,6 @@ let relayoutTimer = null;
 
 // ===== INITIALISATION =====
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('Scanner page loaded');
     if (window.cordova) {
         document.addEventListener('deviceready', function () {
             initializeScanner();
@@ -109,16 +108,13 @@ function requestCameraPermission() {
             
             permissions.checkPermission(permissions.CAMERA, function(status) {
                 if (status.hasPermission) {
-                    console.log('Permission caméra déjà accordée');
                     resolve(true);
                 } else {
                     // Demander la permission
                     permissions.requestPermission(permissions.CAMERA, function(status) {
                         if (status.hasPermission) {
-                            console.log('Permission caméra accordée');
                             resolve(true);
                         } else {
-                            console.log('Permission caméra refusée');
                             resolve(false);
                         }
                     }, function() {
@@ -207,7 +203,6 @@ async function startScanning() {
             onScanFailure
         );
 
-        console.log('Scanner started with facingMode:', facingMode);
 
     } catch (err) {
         console.error('Erreur démarrage scanner:', err);
@@ -240,7 +235,6 @@ async function switchCamera() {
             onScanFailure
         );
 
-        console.log('Caméra changée:', facingMode);
     } catch (err) {
         console.error('Erreur changement caméra:', err);
         closeScannerOverlay();
@@ -250,7 +244,6 @@ async function switchCamera() {
 
 // ===== CALLBACK SCAN RÉUSSI =====
 async function onScanSuccess(decodedText, decodedResult) {
-    console.log('QR Code scanné:', decodedText, decodedResult);
 
     // Arrêter le scanner
     if (html5QrCode && scanning) {
@@ -299,7 +292,6 @@ async function showResultAndFetchAPI(qrCode) {
     try {
         // Attendre que DBManager soit initialisé
         if (!window.DBManager || !window.DBManager.state.db) {
-            console.log('Attente initialisation DBManager...');
             await new Promise(resolve => setTimeout(resolve, 500));
         }
 
@@ -310,7 +302,6 @@ async function showResultAndFetchAPI(qrCode) {
             throw new Error('Ce QR Code n\'est associé à aucune zone du lycée.');
         }
 
-        console.log('Zone trouvée:', zone);
 
         // Remplir les infos de la zone
         document.getElementById('zone-name').textContent = zone.nom || '—';
@@ -388,4 +379,3 @@ document.addEventListener('backbutton', function (e) {
     }
 }, false);
 
-console.log('Scanner.js loaded (html5-qrcode + API)');

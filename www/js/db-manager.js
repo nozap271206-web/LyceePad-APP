@@ -34,7 +34,6 @@ const DBManager = {
    */
   async init() {
     this.loadServerUrl();
-    console.log('🚀 Initialisation du DB Manager...');
     
     // Écouter les changements de connexion
     window.addEventListener('online', () => this.handleOnlineStatus(true));
@@ -50,7 +49,6 @@ const DBManager = {
       // Démarrer le ping périodique du serveur (toutes les 10 secondes)
       this.startPeriodicPing(10000);
       
-      console.log('✅ DB Manager initialisé');
       return true;
     } catch (error) {
       console.error('❌ Erreur initialisation DB Manager:', error);
@@ -106,7 +104,6 @@ const DBManager = {
    */
   async syncData() {
     if (!this.state.isOnline) {
-      console.log('⚠️ Mode hors-ligne - Utilisation des données locales');
       await this.loadLocalData();
       return;
     }
@@ -116,27 +113,19 @@ const DBManager = {
       const serverVersion = await this.checkServerVersion();
       const localVersion = await this.getLocalVersion();
 
-      console.log('📊 Versions:', { server: serverVersion, local: localVersion });
 
       // Télécharger si nouvelle version ou pas de données locales
       if (!localVersion || serverVersion !== localVersion) {
-        console.log('⬇️ Téléchargement des nouvelles données...');
         await this.downloadAndStore();
         await this.saveMetadata('version', serverVersion);
         await this.saveMetadata('lastSync', new Date().toISOString());
-        console.log('✅ Données synchronisées');
         
         // Déclencher un événement personnalisé
         window.dispatchEvent(new CustomEvent('datasynced', { 
           detail: { version: serverVersion } 
         }));
-      } else {
-        console.log('✅ Données à jour');
-      }
-
     } catch (error) {
       console.error('❌ Erreur de synchronisation:', error);
-      console.log('🔄 Fallback sur données locales');
       await this.loadLocalData();
     }
   },
@@ -173,10 +162,8 @@ const DBManager = {
       };
       
       if (isReachable) {
-        console.log(`✅ Serveur accessible (${pingTime}ms)`);
         this.state.useFallback = false;
       } else {
-        console.log(`⚠️ Serveur répond mais erreur HTTP ${response.status}`);
         this.state.useFallback = true;
       }
       
@@ -193,7 +180,6 @@ const DBManager = {
     } catch (error) {
       const pingTime = Date.now() - startTime;
       
-      console.log(`❌ Serveur inaccessible (${error.name})`);
       this.state.serverReachable = false;
       this.state.useFallback = true;
       this.state.lastPing = {
@@ -231,7 +217,6 @@ const DBManager = {
       this.pingServer();
     }, intervalMs);
     
-    console.log(`🔄 Ping périodique démarré (toutes les ${intervalMs/1000}s)`);
   },
 
   /**
@@ -241,7 +226,6 @@ const DBManager = {
     if (this.pingInterval) {
       clearInterval(this.pingInterval);
       this.pingInterval = null;
-      console.log('⏸️ Ping périodique arrêté');
     }
   },
 
@@ -295,43 +279,19 @@ const DBManager = {
    */
   async storeData(data) {
     const db = this.state.db;
-    
-    // Transaction pour les zones
-    const txZones = db.transaction(['zones'], 'readwrite');
-    const storeZones = txZones.objectStore('zones');
-    
-    // Vider et remplir
-    await storeZones.clear();
-    
-    for (const [qrCode, zone] of Object.entries(data.zones)) {
-      await storeZones.put(zone);
-    }
 
-    await txZones.complete;
+    const bulkWrite = (storeName, entries) => new Promise((resolve, reject) => {
+      const tx    = db.transaction([storeName], 'readwrite');
+      const store = tx.objectStore(storeName);
+      store.clear();
+      for (const item of entries) store.put(item);
+      tx.oncomplete = resolve;
+      tx.onerror    = () => reject(tx.error);
+    });
 
-    // Stocker les parcours
-    if (data.parcours) {
-      const txParcours = db.transaction(['parcours'], 'readwrite');
-      const storeParcours = txParcours.objectStore('parcours');
-      await storeParcours.clear();
-      
-      for (const [id, parcours] of Object.entries(data.parcours)) {
-        await storeParcours.put(parcours);
-      }
-    }
-
-    // Stocker les profils
-    if (data.profils) {
-      const txProfils = db.transaction(['profils'], 'readwrite');
-      const storeProfils = txProfils.objectStore('profils');
-      await storeProfils.clear();
-      
-      for (const [nom, profil] of Object.entries(data.profils)) {
-        await storeProfils.put(profil);
-      }
-    }
-
-    console.log('💾 Données stockées dans IndexedDB');
+    await bulkWrite('zones', Object.values(data.zones));
+    if (data.parcours) await bulkWrite('parcours', Object.values(data.parcours));
+    if (data.profils)  await bulkWrite('profils',  Object.values(data.profils));
   },
 
   /**
@@ -346,7 +306,6 @@ const DBManager = {
       await this.storeData(data);
       
       this.state.useFallback = true;
-      console.log('📁 Données locales chargées');
       
       return data;
     } catch (error) {
@@ -491,7 +450,6 @@ const DBManager = {
     window.dispatchEvent(event);
 
     if (isOnline) {
-      console.log('🌐 Connexion rétablie - Vérification serveur...');
       // Ping immédiat pour vérifier le serveur
       this.pingServer().then(reachable => {
         if (reachable) {
@@ -499,7 +457,6 @@ const DBManager = {
         }
       });
     } else {
-      console.log('📵 Mode hors-ligne activé');
       this.state.serverReachable = false;
       this.state.useFallback = true;
     }
@@ -509,7 +466,6 @@ const DBManager = {
    * Forcer la synchronisation
    */
   async forceSync() {
-    console.log('🔄 Synchronisation forcée...');
     await this.syncData();
   },
 
@@ -548,7 +504,6 @@ const DBManager = {
     try {
       localStorage.setItem('lyceepad_server_url', this.config.serverUrl);
     } catch (e) {}
-    console.log('🌐 URL serveur mise à jour :', this.config.serverUrl);
   },
 
   /**
@@ -559,7 +514,6 @@ const DBManager = {
       const saved = localStorage.getItem('lyceepad_server_url');
       if (saved) {
         this.config.serverUrl = saved;
-        console.log('🌐 URL serveur restaurée :', saved);
       }
     } catch (e) {}
   },
@@ -592,7 +546,6 @@ const DBManager = {
         const request = store.add(zoneData);
 
         request.onsuccess = () => {
-          console.log('✅ Zone créée:', zoneData.nom);
           // Marquer comme modification locale non synchronisée
           this.saveMetadata('hasLocalChanges', true);
           resolve(zoneData);
@@ -633,7 +586,6 @@ const DBManager = {
         const putRequest = store.put(updatedZone);
         
         putRequest.onsuccess = () => {
-          console.log('✅ Zone mise à jour:', updatedZone.nom);
           this.saveMetadata('hasLocalChanges', true);
           resolve(updatedZone);
         };
@@ -654,7 +606,6 @@ const DBManager = {
       const request = store.delete(qrCode);
 
       request.onsuccess = () => {
-        console.log('🗑️ Zone supprimée:', qrCode);
         this.saveMetadata('hasLocalChanges', true);
         resolve();
       };
@@ -716,7 +667,6 @@ const DBManager = {
         await this.saveMetadata('hasLocalChanges', false);
         await this.saveMetadata('lastPush', new Date().toISOString());
         
-        console.log('✅ Données poussées vers le serveur');
         
         // Incrémenter la version
         const currentVersion = await this.getLocalVersion();
@@ -748,7 +698,6 @@ const DBManager = {
    */
   async resetDatabase() {
     await this.clearDatabase();
-    console.log('🔄 Base de données réinitialisée');
   },
 
   /**
@@ -763,7 +712,6 @@ const DBManager = {
       await store.clear();
     }
     
-    console.log('🗑️ Base de données vidée');
   }
 };
 
