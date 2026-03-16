@@ -9,8 +9,11 @@ function goToZone(qrCode) {
 document.addEventListener('DOMContentLoaded', async function() {
   
   try {
-    // Attendre que DBManager soit complètement initialisé
-    await window.DBManager.ready;
+    // Attendre que DBManager soit initialisé
+    if (!window.DBManager || !window.DBManager.state.db) {
+      console.log('Attente initialisation DBManager...');
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
 
     // Récupérer toutes les zones actives
     const zones = await window.DBManager.getActiveZones();
