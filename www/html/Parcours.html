@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choisir un parcours - LycéePad</title>
+  <script>
+    (function () {
+      try { if (localStorage.getItem('dark') === 'true') document.documentElement.classList.add('dark'); } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/Parcours.css">
+  <link rel="stylesheet" href="../lib/fontawesome/css/all.min.css">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#2EA3F2">
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-wrap">
+    <a href="../index.html" class="logo">
+      <div class="logo-ring">
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#2EA3F2"/>
+              <stop offset="100%" style="stop-color:#1a6fa8"/>
+            </linearGradient>
+          </defs>
+          <path d="M18 3L33 11v14l-15 8-15-8V11l15-8z" stroke="url(#g1)" stroke-width="2.5" fill="none"/>
+          <circle cx="18" cy="18" r="6" fill="url(#g1)" opacity="0.8"/>
+        </svg>
+      </div>
+      <span class="logo-text">LycéePad</span>
+    </a>
+
+    <button class="hamburger-btn" id="hamburger-toggle" aria-label="Menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link" data-page="home">
+        <span class="link-icon"><i class="fas fa-house"></i></span>
+        <span class="link-text">Accueil</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="map.html" class="nav-link" data-page="map">
+        <span class="link-icon"><i class="fas fa-map"></i></span>
+        <span class="link-text">Carte</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="Parcours.html" class="nav-link active" data-page="parcours">
+        <span class="link-icon"><i class="fas fa-route"></i></span>
+        <span class="link-text">Parcours</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="scanner.html" class="nav-link" data-page="scanner">
+        <span class="link-icon"><i class="fas fa-qrcode"></i></span>
+        <span class="link-text">Scanner</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="Quiz.html" class="nav-link" data-page="quiz">
+        <span class="link-icon"><i class="fas fa-question-circle"></i></span>
+        <span class="link-text">Quiz</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="About.html" class="nav-link" data-page="about">
+        <span class="link-icon"><i class="fas fa-info-circle"></i></span>
+        <span class="link-text">À propos</span>
+        <span class="link-glow"></span>
+      </a>
+    </div>
+
+    <div class="sync-status" id="sync-status" title="État de synchronisation">
+      <span class="sync-dot"></span>
+      <span class="sync-text">Local</span>
+    </div>
+
+    <button class="theme-btn" id="theme-toggle" title="Changer de thème">
+      <span class="theme-icon">
+        <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="sun-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENU PRINCIPAL -->
+<main class="parcours-main">
+
+  <!-- En-tête -->
+  <section class="parcours-hero">
+    <h1><i class="fas fa-route"></i> Choisissez votre parcours</h1>
+    <p>Sélectionnez votre profil pour découvrir le lycée Saint-Éloi selon vos centres d'intérêt.</p>
+  </section>
+
+  <!-- Étape 1 : Choisir un profil -->
+  <section class="parcours-step" id="stepProfil">
+    <div class="step-header">
+      <span class="step-number">1</span>
+      <h2>Qui êtes-vous ?</h2>
+    </div>
+    <div class="profils-grid" id="profilsGrid">
+      <div class="loading-placeholder">
+        <i class="fas fa-spinner fa-spin"></i> Chargement...
+      </div>
+    </div>
+  </section>
+
+  <!-- Étape 2 : Choisir un parcours -->
+  <section class="parcours-step hidden" id="stepParcours">
+    <div class="step-header">
+      <span class="step-number">2</span>
+      <h2>Quel parcours ?</h2>
+      <button class="btn-back" id="btnBackProfil">
+        <i class="fas fa-arrow-left"></i> Changer de profil
+      </button>
+    </div>
+    <div class="parcours-grid" id="parcoursGrid"></div>
+  </section>
+
+  <!-- Étape 3 : Aperçu des zones + démarrer -->
+  <section class="parcours-step hidden" id="stepZones">
+    <div class="step-header">
+      <span class="step-number">3</span>
+      <h2 id="stepZonesTitle">Votre parcours</h2>
+      <button class="btn-back" id="btnBackParcours">
+        <i class="fas fa-arrow-left"></i> Changer de parcours
+      </button>
+    </div>
+
+    <div class="parcours-summary" id="parcoursSummary"></div>
+
+    <div class="zones-timeline" id="zonesTimeline"></div>
+
+    <div class="parcours-cta">
+      <a href="map.html" class="btn-start" id="btnStartMap">
+        <i class="fas fa-map-marked-alt"></i> Voir sur la carte
+      </a>
+      <a href="scanner.html" class="btn-start btn-start-scan" id="btnStartScan">
+        <i class="fas fa-qrcode"></i> Commencer avec le scanner
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<script src="../js/db-manager.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/Parcours.js"></script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("../service-worker.js").catch(function(){});}</script>
+</body>
+</html>

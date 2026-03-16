@@ -7,6 +7,17 @@
 
   <script>
     (function () {
+      // Garde d'authentification — redirection immédiate si non connecté
+      try {
+        var token  = localStorage.getItem('lyceepad_auth_token');
+        var expiry = localStorage.getItem('lyceepad_auth_expiry');
+        if (!token || !expiry || Date.now() > parseInt(expiry)) {
+          window.location.replace('login.html');
+        }
+      } catch (e) {
+        window.location.replace('login.html');
+      }
+      // Thème sombre
       try {
         if (localStorage.getItem('dark') === 'true') {
           document.documentElement.classList.add('dark');
