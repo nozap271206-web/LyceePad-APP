@@ -11,24 +11,11 @@ const AUTH_TOKEN_KEY = 'lyceepad_auth_token';
 const AUTH_EXPIRY_KEY = 'lyceepad_auth_expiry';
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Simulation automatique pour diagnostic (à retirer en production)
-    // Remplit le formulaire et tente une connexion automatique après 1s
-    setTimeout(() => {
-      if (usernameInput && passwordInput && btnLogin) {
-        usernameInput.value = 'admin';
-        passwordInput.value = 'admin';
-        btnLogin.click();
-        console.log('Simulation : tentative de connexion automatique avec admin/admin');
-      }
-    }, 1000);
   const loginForm = document.getElementById('loginForm');
-  
-  // Vérifier si on est sur la page de login (les éléments n'existent que là)
-  if (!loginForm) {
-    console.log('login.js chargé mais pas sur la page de login');
-    return; // Sortir si on n'est pas sur la page login
-  }
-  
+
+  // Vérifier si on est sur la page de login
+  if (!loginForm) return;
+
   const usernameInput = document.getElementById('username');
   const passwordInput = document.getElementById('password');
   const rememberMeCheckbox = document.getElementById('rememberMe');
