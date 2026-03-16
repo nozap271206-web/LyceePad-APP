@@ -290,10 +290,8 @@ async function showResultAndFetchAPI(qrCode) {
     resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     try {
-        // Attendre que DBManager soit initialisé
-        if (!window.DBManager || !window.DBManager.state.db) {
-            await new Promise(resolve => setTimeout(resolve, 500));
-        }
+        // Attendre que DBManager soit complètement initialisé
+        await window.DBManager.ready;
 
         // Récupérer la zone via DBManager
         const zone = await window.DBManager.getZone(qrCode);
