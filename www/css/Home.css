@@ -1,3 +1,59 @@
+/* ============================================
+   TABLETTES - Empilement vertical des blocs accueil
+   ============================================ */
+@media (max-width: 1200px) {
+  .visual-3d {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 1.2rem 0 1.2rem 0 !important;
+    gap: 1.2rem !important;
+    box-sizing: border-box !important;
+    background: none !important;
+    transform: none !important;
+    perspective: none !important;
+    overflow-x: auto !important;
+  }
+  .float-card-3d {
+    position: relative !important;
+    flex: 1 1 0 !important;
+    min-width: 220px !important;
+    max-width: 340px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    animation: none !important;
+    transform: none !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10) !important;
+    border-radius: 18px !important;
+  }
+  .card-primary,
+  .card-secondary,
+  .card-tertiary {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    display: block !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 340px !important;
+    min-width: 220px !important;
+  }
+  /* Désactiver toutes les animations et effets 3D */
+  .float-card-3d, .card-primary, .card-secondary, .card-tertiary {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10) !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
 /* ========================================
    VARIABLES CSS GLOBALES
 ======================================== */
@@ -108,10 +164,10 @@
 }
 
 :root:not(.dark) .float-card-3d {
-  background: transparent !important;
+  background: #fff !important;
   backdrop-filter: none !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: none !important;
+  border: 1.5px solid #E2E8F0 !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06) !important;
 }
 
 :root:not(.dark) .float-card-3d:hover {
@@ -122,11 +178,11 @@
 }
 
 :root:not(.dark) .float-card-3d h4 {
-  color: #0F172A;
+  color: #0F172A !important;
 }
 
 :root:not(.dark) .float-card-3d p {
-  color: #64748B;
+  color: #64748B !important;
 }
 
 :root:not(.dark) .scroll-indicator {
@@ -435,7 +491,7 @@ body {
   transform: translate(-50%, -50%);
   object-fit: cover;
   z-index: 0;
-  opacity: 0.3;
+  opacity: 1;
 }
 
 .mesh-gradient {
@@ -816,32 +872,32 @@ html.perf-lite .stat-item {
 .float-card-3d {
   position: absolute;
   width: 280px;
-  background: transparent;
-  backdrop-filter: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--border);
   border-radius: 24px;
   padding: 2rem;
   cursor: default;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   animation: float3d 6s ease-in-out infinite;
   animation-delay: var(--delay);
+  box-shadow: var(--shadow-lg);
 }
 
 .card-primary {
-  top: 10%;
-  left: 5%;
+  top: 8%;
+  left: 8%;
   z-index: 3;
 }
 
 .card-secondary {
-  top: 26%;
-  right: 0%;
+  top: 30%;
+  right: 10%;
   z-index: 4;
 }
 
 .card-tertiary {
-  bottom: 13%;
-  left: 12%;
+  bottom: 10%;
+  left: 18%;
   z-index: 2;
 }
 
@@ -898,12 +954,14 @@ html.perf-lite .stat-item {
   font-weight: 800;
   color: var(--text);
   margin-bottom: 0.5rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .float-card-3d p {
   color: var(--text-secondary);
   font-size: 0.95rem;
   margin-bottom: 1rem;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.03);
 }
 
 .card-badge {
@@ -1080,6 +1138,7 @@ html.perf-lite .stat-item {
   background: var(--bg-elevated);
   border: 1.5px solid var(--border);
   box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  color: #0F172A;
 }
 
 :root:not(.dark) .stat-item,

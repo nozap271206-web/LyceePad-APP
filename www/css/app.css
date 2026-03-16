@@ -1,30 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --primary: #3B82F6;
-  --primary-dark: #2563EB;
-  --secondary: #8B5CF6;
-  --accent: #10B981;
+  --primary: #2EA3F2;
+  --primary-dark: #1a8fd1;
+  --secondary: #1a6fa8;
+  --accent: #2EA3F2;
   --bg: #FFFFFF;
-  --bg-alt: #F8FAFC;
+  --bg-alt: #F5F7FA;
   --bg-elevated: #FFFFFF;
-  --text: #0F172A;
-  --text-secondary: #475569;
-  --text-tertiary: #94A3B8;
-  --border: #CBD5E1;
+  --text: #333333;
+  --text-secondary: #666666;
+  --text-tertiary: #BBBBBB;
+  --border: #DDDDDD;
   --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 25px rgba(0,0,0,0.12), 0 4px 10px rgba(0,0,0,0.08);
-  --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
+  --shadow-lg: 0 10px 25px rgba(46,163,242,0.12), 0 4px 10px rgba(0,0,0,0.08);
+  --shadow-xl: 0 20px 40px rgba(46,163,242,0.18);
 }
 
 .dark {
-  --bg: #0F172A;
-  --bg-alt: #1E293B;
-  --bg-elevated: #1E293B;
-  --text: #F1F5F9;
-  --text-secondary: #CBD5E1;
-  --text-tertiary: #94A3B8;
-  --border: #334155;
+  --bg: #1a2332;
+  --bg-alt: #243044;
+  --bg-elevated: #243044;
+  --text: #F0F4F8;
+  --text-secondary: #B0BEC5;
+  --text-tertiary: #78909C;
+  --border: #2d3f55;
   --shadow: 0 1px 3px rgba(0,0,0,0.4);
   --shadow-lg: 0 10px 25px rgba(0,0,0,0.5);
   --shadow-xl: 0 20px 40px rgba(0,0,0,0.6);
@@ -202,7 +202,7 @@ html.perf-lite .nav {
 
 .nav-link.active {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: white;
+  color: var(--text);
 }
 
 .nav-link.active .link-glow {
@@ -212,20 +212,20 @@ html.perf-lite .nav {
 
 /* Bouton Admin avec style spécial */
 .nav-link-admin {
-  border: 2px solid #f59e0b !important;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
-  color: white !important;
+  border: 2px solid var(--primary) !important;
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+  color: #fff !important;
   position: relative;
 }
 
 .nav-link-admin .link-icon {
-  color: white !important;
+  color: #fff !important;
 }
 
 .nav-link-admin:hover {
-  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  background: linear-gradient(135deg, var(--primary-dark), var(--secondary)) !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 6px 16px rgba(46, 163, 242, 0.35);
 }
 
 .nav-link-admin .link-glow {
@@ -406,7 +406,7 @@ html.perf-lite .nav {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 3rem;
   margin-bottom: 3rem;
 }
@@ -436,20 +436,11 @@ html.perf-lite .nav {
 .footer-col a {
   color: var(--text-secondary);
   text-decoration: none;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  transition: color 0.2s ease;
 }
 
 .footer-col a:hover {
   color: var(--primary);
-  transform: translateX(3px);
-}
-
-.footer-col a i {
-  font-size: 1rem;
-  opacity: 0.8;
 }
 
 .footer-logo {
@@ -558,7 +549,7 @@ html.perf-lite .nav {
 
 .btn-primary {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: white;
+  color: var(--text);
   box-shadow: var(--shadow-lg);
 }
 

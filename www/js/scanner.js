@@ -20,9 +20,17 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.cordova) {
         document.addEventListener('deviceready', function () {
             initializeScanner();
+            // Démarrage auto du scan sur mobile
+            setTimeout(() => {
+                if (typeof startScanning === 'function') startScanning();
+            }, 400);
         }, { once: true });
     } else {
         initializeScanner();
+        // Démarrage auto du scan sur navigateur
+        setTimeout(() => {
+            if (typeof startScanning === 'function') startScanning();
+        }, 400);
     }
 });
 

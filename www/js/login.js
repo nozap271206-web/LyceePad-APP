@@ -1,17 +1,26 @@
+
+// Diagnostic : vérifier que le bon script est chargé
+console.log('login.js chargé - version debug 2026-03-12');
+
 /**
  * login.js - Authentification admin
  */
 
-// Identifiants par défaut (à changer en production !)
-const ADMIN_CREDENTIALS = {
-  username: 'admin',
-  password: 'admin' // ⚠️ À remplacer par un hash en production
-};
 
 const AUTH_TOKEN_KEY = 'lyceepad_auth_token';
 const AUTH_EXPIRY_KEY = 'lyceepad_auth_expiry';
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Simulation automatique pour diagnostic (à retirer en production)
+    // Remplit le formulaire et tente une connexion automatique après 1s
+    setTimeout(() => {
+      if (usernameInput && passwordInput && btnLogin) {
+        usernameInput.value = 'admin';
+        passwordInput.value = 'admin';
+        btnLogin.click();
+        console.log('Simulation : tentative de connexion automatique avec admin/admin');
+      }
+    }, 1000);
   const loginForm = document.getElementById('loginForm');
   
   // Vérifier si on est sur la page de login (les éléments n'existent que là)
@@ -38,81 +47,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Soumission du formulaire
-  loginForm.addEventListener('submit', async function(e) {
+  // Soumission du formulaire (identifiants en dur, version forcée)
+  loginForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    
     const username = usernameInput.value.trim();
     const password = passwordInput.value;
     const rememberMe = rememberMeCheckbox.checked;
 
-    // Cacher le message d'erreur
     errorMessage.style.display = 'none';
-
-    // Désactiver le bouton pendant la vérification
     btnLogin.disabled = true;
     btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Vérification...';
 
-    // Simuler un délai (pour plus de réalisme)
-    await new Promise(resolve => setTimeout(resolve, 800));
+    // Identifiants en dur
+    const VALID_USERNAME = 'admin';
+    const VALID_PASSWORD = 'admin';
 
-    // Vérifier les identifiants
-    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-      // Authentification réussie
-      console.log('✅ Authentification réussie pour:', username);
-      
-      const token = generateToken();
-      const expiry = rememberMe ? (Date.now() + 7 * 24 * 60 * 60 * 1000) : (Date.now() + 2 * 60 * 60 * 1000);
-      
-      console.log('📝 Token généré:', token);
-      console.log('⏰ Expiry:', expiry);
-      console.log('🕐 Date actuelle:', Date.now());
-      
-      // Vérifier si localStorage est disponible
-      try {
+    setTimeout(() => {
+      if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+        // Authentification réussie
+        const token = generateToken();
+        const expiry = rememberMe ? (Date.now() + 7 * 24 * 60 * 60 * 1000) : (Date.now() + 2 * 60 * 60 * 1000);
         localStorage.setItem(AUTH_TOKEN_KEY, token);
         localStorage.setItem(AUTH_EXPIRY_KEY, expiry);
-        console.log('✅ Token stocké dans localStorage');
-        
-        // Vérifier immédiatement si on peut le relire
-        const savedToken = localStorage.getItem(AUTH_TOKEN_KEY);
-        console.log('🔍 Vérification: Token relu =', savedToken);
-        
-        if (!savedToken) {
-          console.error('❌ ERREUR: localStorage ne fonctionne pas (navigation privée?)');
-          showError('Erreur: Le mode navigation privée bloque la connexion. Utilisez un onglet normal.');
-          btnLogin.disabled = false;
-          btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Connexion';
-          return;
-        }
-      } catch (e) {
-        console.error('❌ ERREUR localStorage:', e);
-        showError('Erreur: Impossible de sauvegarder la session. Désactivez le mode navigation privée.');
+        btnLogin.innerHTML = '<i class="fas fa-check"></i> Connexion réussie !';
+        btnLogin.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+        setTimeout(() => {
+          window.location.href = 'Admin.html';
+        }, 800);
+      } else {
+        showError('Identifiant ou mot de passe incorrect');
         btnLogin.disabled = false;
         btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Connexion';
-        return;
+        loginForm.classList.add('shake');
+        setTimeout(() => loginForm.classList.remove('shake'), 500);
       }
-
-      // Feedback visuel
-      btnLogin.innerHTML = '<i class="fas fa-check"></i> Connexion réussie !';
-      btnLogin.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
-
-      // Attendre un peu avant de rediriger pour s'assurer que localStorage est bien synchronisé
-      setTimeout(() => {
-        // Vérifier une dernière fois avant de rediriger
-        console.log('🚀 Redirection vers Admin, token:', localStorage.getItem(AUTH_TOKEN_KEY));
-        window.location.href = 'Admin.html';
-      }, 800);
-    } else {
-      // Échec de l'authentification
-      showError('Identifiant ou mot de passe incorrect');
-      btnLogin.disabled = false;
-      btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Connexion';
-      
-      // Secouer le formulaire
-      loginForm.classList.add('shake');
-      setTimeout(() => loginForm.classList.remove('shake'), 500);
-    }
+    }, 500);
   });
 
   // Afficher un message d'erreur
