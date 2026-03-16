@@ -177,60 +177,7 @@
   box-shadow: 0 12px 32px rgba(46, 163, 242, 0.15);
 }
 
-/* ========================================
-   RESET DE BASE
-======================================== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ========================================
-   STYLES DES BOUTONS GLOBAUX
-======================================== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  border: none;
-  text-decoration: none;
-  font-size: 1rem;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: white;
-  box-shadow: 0 8px 20px rgba(46, 163, 242, 0.3);
-}
-
-.btn-secondary {
-  background: var(--bg-elevated);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
-}
-
-.btn-primary:hover {
-  box-shadow: 0 12px 32px rgba(46, 163, 242, 0.5);
-}
+/* Reset et boutons globaux gérés par app.css */
 
 /* ========================================
    ANIMATIONS GLOBALES

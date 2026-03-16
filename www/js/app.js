@@ -189,25 +189,16 @@ function updateSyncStatus() {
 
 // Écouter les événements de synchronisation
 window.addEventListener('datasynced', function(e) {
-  console.log('Données synchronisées:', e.detail);
   updateSyncStatus();
 });
 
 window.addEventListener('connectionchange', function(e) {
-  console.log('Changement de connexion:', e.detail.isOnline ? 'En ligne' : 'Hors ligne');
   updateSyncStatus();
 });
 
-// Écouter les événements de ping du serveur
-window.addEventListener('serverstatus', function(e) {
-  const { reachable, responseTime, error } = e.detail;
-  if (reachable) {
-    console.log(`🟢 Serveur accessible (${responseTime}ms)`);
-  } else {
-    console.log(`🔴 Serveur inaccessible: ${error || 'timeout'}`);
-  }
+window.addEventListener('serverstatus', function() {
   updateSyncStatus();
 });
 
-// Mettre à jour le statut toutes les 2 secondes (le ping se fait toutes les 10s)
-setInterval(updateSyncStatus, 2000);
+// Mise à jour alignée sur le ping serveur (toutes les 10s)
+setInterval(updateSyncStatus, 10000);

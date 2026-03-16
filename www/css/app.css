@@ -486,6 +486,7 @@ html.perf-lite .nav {
   border-radius: 50%;
   filter: blur(100px);
   opacity: 0.3;
+  will-change: transform;
 }
 
 .bg-effect::before {
