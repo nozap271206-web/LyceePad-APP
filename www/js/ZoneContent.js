@@ -10,7 +10,7 @@ const zonesData = {
       'Les salles SUD accueillent les étudiants de BTS CIEL (Cybersécurité, Informatique et réseaux, ELectronique) en 1ère et 2ème année, avec les options IR (Informatique et Réseaux) et ER (Électronique et Réseaux). Grâce à ses nombreux ordinateurs performants et son espace de travail modulable, cette salle constitue un environnement idéal pour réaliser des travaux pratiques en informatique, réseau et électronique. Équipée de postes informatiques modernes et d\'un réseau haut débit, elle permet aux étudiants de mettre en pratique leurs compétences techniques dans des conditions professionnelles.'
     ],
     photos: [
-      { name: 'Salle de cours', color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+      { name: 'Salle de cours', color: 'linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%)' },
       { name: 'Espace informatique', color: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' }
     ],
     videoTitle: 'Visite des salles SUD',
@@ -66,7 +66,7 @@ const zonesData = {
       'Salles adaptées aux différentes filières professionnelles du lycée. Équipements spécifiques selon les métiers : ateliers, postes informatiques, matériel technique. Pédagogie axée sur la pratique.'
     ],
     photos: [
-      { name: 'Salle de cours', color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+      { name: 'Salle de cours', color: 'linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%)' },
       { name: 'Atelier informatique', color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }
     ],
     videoTitle: 'Présentation des salles BAC Pro',
@@ -168,7 +168,7 @@ async function loadZoneFromDB(qrCode) {
       const photoDiv = document.createElement('div');
       photoDiv.className = 'gallery-item';
       photoDiv.innerHTML = `
-        <div class="gallery-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+        <div class="gallery-placeholder" style="background: linear-gradient(135deg, #2EA3F2 0%, #1a6fa8 100%)">
           <div class="placeholder-icon">🖼️</div>
           <span class="placeholder-label">${zone.nom}</span>
         </div>
