@@ -472,7 +472,10 @@ const ParcoursPage = {
       const timelineHtml = zonesList.map((z, i) => {
         const etage = z.etage ? `<span><i class="fas fa-layer-group"></i> ${z.etage}</span>` : '';
         const desc  = z.description ? `<span>${z.description}</span>` : '';
-        const hasContent = !!z.qr_code;
+        const href = z.contentId != null
+          ? `ZoneContent.html?id=${z.contentId}`
+          : (z.qr_code ? `ZoneContent.html?qr=${encodeURIComponent(z.qr_code)}` : null);
+        const hasContent = !!href;
         const inner = `
             <div class="zone-step-number">${i + 1}</div>
             <div class="zone-step-content">
@@ -481,7 +484,7 @@ const ParcoursPage = {
               ${z.qr_code ? `<span class="zone-step-qr">${z.qr_code}</span>` : ''}
             </div>`;
         return hasContent
-          ? `<a href="ZoneContent.html?qr=${encodeURIComponent(z.qr_code)}" class="zone-step zone-step--link">${inner}</a>`
+          ? `<a href="${href}" class="zone-step zone-step--link">${inner}</a>`
           : `<div class="zone-step">${inner}</div>`;
       }).join('');
 
@@ -558,7 +561,7 @@ const ParcoursPage = {
       { id:'23', qr_code:'QR_EST_11',           nom:'Salle Est 11',            description:'Salle de cours - Bâtiment Est', batiment:'Bâtiment Est', etage:'RDC',    ordre:40 },
       { id:'24', qr_code:'QR_EST_12',           nom:'Salle Est 12',            description:'Salle de cours - Bâtiment Est', batiment:'Bâtiment Est', etage:'RDC',    ordre:41 },
       { id:'25', qr_code:'QR_EST_13',           nom:'Salle Est 13',            description:'Salle de cours - Bâtiment Est', batiment:'Bâtiment Est', etage:'RDC',    ordre:42 },
-      { id:'30', qr_code:'QR_INTERNAT_001',     nom:'Internat',                description:'Internat',                     batiment:'Internat',     etage:'',         ordre:55 },
+      { id:'30', qr_code:'QR_INTERNAT_001',     nom:'Internat',                description:'Internat',                     batiment:'Internat',     etage:'',         ordre:55, contentId: 10 },
     ];
   },
 
