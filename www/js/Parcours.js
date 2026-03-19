@@ -472,7 +472,7 @@ const ParcoursPage = {
       const timelineHtml = zonesList.map((z, i) => {
         const etage = z.etage ? `<span><i class="fas fa-layer-group"></i> ${z.etage}</span>` : '';
         const desc  = z.description ? `<span>${z.description}</span>` : '';
-        const hasContent = z.id != null;
+        const hasContent = !!z.qr_code;
         const inner = `
             <div class="zone-step-number">${i + 1}</div>
             <div class="zone-step-content">
@@ -481,7 +481,7 @@ const ParcoursPage = {
               ${z.qr_code ? `<span class="zone-step-qr">${z.qr_code}</span>` : ''}
             </div>`;
         return hasContent
-          ? `<a href="ZoneContent.html?id=${z.id}" class="zone-step zone-step--link">${inner}</a>`
+          ? `<a href="ZoneContent.html?qr=${encodeURIComponent(z.qr_code)}" class="zone-step zone-step--link">${inner}</a>`
           : `<div class="zone-step">${inner}</div>`;
       }).join('');
 

@@ -127,7 +127,9 @@ const DBManager = {
       }
     } catch (error) {
       console.error('❌ Erreur de synchronisation:', error);
-      await this.loadLocalData();
+      try { await this.loadLocalData(); } catch (_) {
+        console.warn('Données locales inaccessibles (mode file://), fallback statique actif');
+      }
     }
   },
 
