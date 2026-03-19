@@ -4,14 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zone - LycéePad</title>
-  <script>
-    (function () {
-      try { if (localStorage.getItem('dark') === 'true') document.documentElement.classList.add('dark'); } catch (e) {}
-    })();
-  </script>
+  
   <!-- CSS -->
   <link rel="stylesheet" href="../css/app.css">
   <link rel="stylesheet" href="../css/ZoneContent.css">
+  <link rel="stylesheet" href="../lib/fontawesome/css/svg-with-js.min.css">
   <link rel="manifest" href="../manifest.json">
   <meta name="theme-color" content="#2EA3F2">
 </head>
@@ -20,7 +17,7 @@
 <!-- HEADER -->
 <nav class="nav">
   <div class="nav-wrap">
-    <a href="../index.html" class="logo">
+    <span class="logo">
       <div class="logo-ring">
         <svg width="36" height="36" viewBox="0 0 36 36">
           <defs>
@@ -34,36 +31,58 @@
         </svg>
       </div>
       <span class="logo-text">LycéePad</span>
-    </a>
-
+    </span>
+    
+    <button class="hamburger-btn" id="hamburger-toggle" aria-label="Menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    
     <div class="nav-links">
       <a href="../index.html" class="nav-link" data-page="home">
-        <span class="link-icon">🏠</span>
+        <span class="link-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
         <span class="link-text">Accueil</span>
+        <span class="link-glow"></span>
       </a>
       <a href="map.html" class="nav-link" data-page="map">
-        <span class="link-icon">🗺️</span>
+        <span class="link-icon"><i class="fa-solid fa-map" aria-hidden="true"></i></span>
         <span class="link-text">Carte</span>
+        <span class="link-glow"></span>
       </a>
       <a href="Parcours.html" class="nav-link" data-page="parcours">
-        <span class="link-icon">🚶</span>
+        <span class="link-icon"><i class="fa-solid fa-route" aria-hidden="true"></i></span>
         <span class="link-text">Parcours</span>
+        <span class="link-glow"></span>
       </a>
       <a href="Quiz.html" class="nav-link" data-page="quiz">
-        <span class="link-icon">🎯</span>
+        <span class="link-icon"><i class="fa-solid fa-question-circle" aria-hidden="true"></i></span>
         <span class="link-text">Quiz</span>
+        <span class="link-glow"></span>
       </a>
       <a href="scanner.html" class="nav-link" data-page="scanner">
-        <span class="link-icon">📷</span>
+        <span class="link-icon"><i class="fa-solid fa-qrcode" aria-hidden="true"></i></span>
         <span class="link-text">Scanner</span>
+        <span class="link-glow"></span>
       </a>
       <a href="About.html" class="nav-link" data-page="about">
-        <span class="link-icon">💡</span>
+        <span class="link-icon"><i class="fa-solid fa-info-circle" aria-hidden="true"></i></span>
         <span class="link-text">À propos</span>
+        <span class="link-glow"></span>
+      </a>
+      <a href="login.html" class="nav-link nav-link-admin" data-page="admin">
+        <span class="link-icon"><i class="fa-solid fa-shield-alt" aria-hidden="true"></i></span>
+        <span class="link-text">Admin</span>
+        <span class="link-glow"></span>
       </a>
     </div>
 
-    <button class="theme-btn" id="theme-toggle" title="Changer de thème">
+    <div class="sync-status" id="sync-status" title="État de synchronisation">
+      <span class="sync-dot"></span>
+      <span class="sync-text">Local</span>
+    </div>
+
+    <button class="theme-btn" id="theme-toggle">
       <span class="theme-icon">
         <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -102,12 +121,12 @@
         </svg>
         Retour à la carte
       </a>
-
+      
       <div class="hero-badge">
         <span class="badge-dot"></span>
         <span id="zone-badge">Zone</span>
       </div>
-
+      
       <h1 class="hero-title" id="zone-title"></h1>
       <p class="hero-subtitle" id="zone-description"></p>
     </div>
@@ -120,7 +139,7 @@
           <div class="section-icon">📸</div>
           <h2>Galerie photos</h2>
         </div>
-
+        
         <div class="gallery-grid" id="gallery-grid">
           <!-- Généré par JavaScript -->
         </div>
@@ -132,7 +151,7 @@
           <div class="section-icon">📝</div>
           <h2>À propos de cette zone</h2>
         </div>
-
+        
         <div class="description-content" id="description-content">
           <!-- Généré par JavaScript -->
         </div>
@@ -207,6 +226,7 @@
   </div>
 </div>
 
+
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-wrap">
@@ -256,9 +276,12 @@
 <div class="bg-effect"></div>
 
 <!-- Scripts -->
+<script src="../lib/fontawesome/js/all.min.js"></script>
 <script src="../js/db-manager.js"></script>
 <script src="../js/app.js"></script>
 <script src="../js/ZoneContent.js"></script>
-<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("../service-worker.js").catch(function(){});}</script>
+
+
+  <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("../service-worker.js").catch(function(){});}</script>
 </body>
 </html>
