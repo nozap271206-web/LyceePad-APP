@@ -124,19 +124,58 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 });
 
+// Fallback statique (offline / IndexedDB vide)
+const ZONES_FALLBACK = {
+  'QR_HALL_001':         { nom: 'Hall d\'accueil/Vie scolaire', batiment: '', etage: '', description: 'Point d\'entrée principal du lycée avec personnel d\'accueil.' },
+  'QR_CDI_001':          { nom: 'CDI', batiment: 'Bâtiment C', etage: '1er étage', description: 'Centre de Documentation et d\'Information.' },
+  'QR_CAFET_001':        { nom: 'Cafétéria', batiment: 'Bâtiment C', etage: 'RDC', description: 'Espace de restauration et de convivialité.' },
+  'QR_SUD_05':           { nom: 'Salle Sud 05', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
+  'QR_SUD_06':           { nom: 'Salle Sud 06', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
+  'QR_SUD_07':           { nom: 'Salle Sud 07', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
+  'QR_SUD_08':           { nom: 'Salle Sud 08', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
+  'QR_SUD_09':           { nom: 'Salle Sud 09', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
+  'QR_LABO_SUD':         { nom: 'Labo Sud', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Laboratoire - Bâtiment Sud.' },
+  'QR_FB_10':            { nom: 'Salle FB 10', batiment: 'Bâtiment FB', etage: 'RDC', description: 'Salle de cours - Bâtiment FB.' },
+  'QR_FB_11':            { nom: 'Salle FB 11', batiment: 'Bâtiment FB', etage: 'RDC', description: 'Salle de cours - Bâtiment FB.' },
+  'QR_FB_20':            { nom: 'Salle FB 20', batiment: 'Bâtiment FB', etage: '1er étage', description: 'Salle de cours - Bâtiment FB.' },
+  'QR_FB_21':            { nom: 'Salle FB 21', batiment: 'Bâtiment FB', etage: '1er étage', description: 'Salle de cours - Bâtiment FB.' },
+  'QR_NORD_08':          { nom: 'Salle Nord 08', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_NORD_09':          { nom: 'Salle Nord 09', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_NORD_10':          { nom: 'Salle Nord 10', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_NORD_11':          { nom: 'Salle Nord 11', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_NORD_12':          { nom: 'Salle Nord 12', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_NORD_13':          { nom: 'Salle Nord 13', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_NORD_14':          { nom: 'Salle Nord 14', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_NORD_15':          { nom: 'Salle Nord 15', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_NORD_16':          { nom: 'Salle Nord 16', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_EST_11':           { nom: 'Salle Est 11', batiment: 'Bâtiment Est', etage: 'RDC', description: 'Salle de cours - Bâtiment Est.' },
+  'QR_EST_12':           { nom: 'Salle Est 12', batiment: 'Bâtiment Est', etage: 'RDC', description: 'Salle de cours - Bâtiment Est.' },
+  'QR_EST_13':           { nom: 'Salle Est 13', batiment: 'Bâtiment Est', etage: 'RDC', description: 'Salle de cours - Bâtiment Est.' },
+  'QR_C_ETAGE_1':        { nom: 'Bâtiment C - 1er étage', batiment: 'Bâtiment C', etage: '1er étage', description: 'Premier étage - Bâtiment C.' },
+  'QR_C_ETAGE_2':        { nom: 'Bâtiment C - 2ème étage', batiment: 'Bâtiment C', etage: '2ème étage', description: 'Second étage - Bâtiment C.' },
+  'QR_C_ETAGE_3':        { nom: 'Bâtiment C - 3ème étage', batiment: 'Bâtiment C', etage: '3ème étage', description: 'Troisième étage - Bâtiment C.' },
+  'QR_AMPHITHÉATRE_001': { nom: 'Amphithéâtre', batiment: '', etage: '', description: 'Amphithéâtre de l\'établissement.' },
+  'QR_INTERNAT_001':     { nom: 'Internat', batiment: 'Internat', etage: '', description: 'Internat du lycée Saint-Éloi.' },
+};
+
 async function loadZoneFromDB(qrCode) {
   try {
     // Attendre que DBManager soit initialisé
     if (!window.DBManager || !window.DBManager.state.db) {
-      console.log('Attente initialisation DBManager...');
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     // Récupérer la zone depuis DBManager
-    const zone = await window.DBManager.getZone(qrCode);
-    
+    let zone = await window.DBManager.getZone(qrCode);
+
+    // Fallback statique si IndexedDB vide (offline)
+    if (!zone && ZONES_FALLBACK[qrCode]) {
+      const f = ZONES_FALLBACK[qrCode];
+      zone = { nom: f.nom, batiment: f.batiment, etage: f.etage, description: f.description, image: null, coordonnees: null };
+    }
+
     if (!zone) {
-      alert('Zone non trouvée');
+      alert('Zone non trouvée : ' + qrCode);
       window.location.href = 'map.html';
       return;
     }

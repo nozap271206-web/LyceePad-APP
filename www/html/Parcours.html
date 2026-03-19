@@ -105,9 +105,22 @@
 
   <!-- En-tête -->
   <section class="parcours-hero">
-    <h1><i class="fas fa-route"></i> Choisissez votre parcours</h1>
-    <p>Sélectionnez votre profil pour découvrir le lycée Saint-Éloi selon vos centres d'intérêt.</p>
+    <h1><i class="fas fa-route"></i> Découvrez le lycée Saint-Éloi</h1>
+    <p>Suivez un parcours guidé selon votre profil, ou explorez toutes les zones librement.</p>
   </section>
+
+  <!-- Onglets de navigation -->
+  <div class="page-tabs">
+    <button class="page-tab active" id="tabBtnParcours" data-tab="parcours">
+      <i class="fas fa-route"></i> Parcours guidé
+    </button>
+    <button class="page-tab" id="tabBtnZones" data-tab="zones">
+      <i class="fas fa-map-marker-alt"></i> Toutes les zones
+    </button>
+  </div>
+
+  <!-- ═══ ONGLET : PARCOURS GUIDÉ ═══ -->
+  <div id="tab-parcours" class="tab-panel">
 
   <!-- Étape 1 : Choisir un profil -->
   <section class="parcours-step" id="stepProfil">
@@ -171,6 +184,23 @@
       </a>
     </div>
   </section>
+
+  </div><!-- fin #tab-parcours -->
+
+  <!-- ═══ ONGLET : TOUTES LES ZONES ═══ -->
+  <div id="tab-zones" class="tab-panel hidden">
+    <section class="parcours-step">
+      <div class="step-header">
+        <span class="step-number"><i class="fas fa-map-marker-alt" style="font-size:0.85rem"></i></span>
+        <h2>Toutes les zones du lycée</h2>
+      </div>
+      <div id="allZonesContainer">
+        <div class="loading-placeholder">
+          <i class="fas fa-spinner fa-spin"></i> Chargement des zones...
+        </div>
+      </div>
+    </section>
+  </div><!-- fin #tab-zones -->
 
 </main>
 

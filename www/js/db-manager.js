@@ -121,9 +121,10 @@ const DBManager = {
         await this.saveMetadata('lastSync', new Date().toISOString());
         
         // Déclencher un événement personnalisé
-        window.dispatchEvent(new CustomEvent('datasynced', { 
-          detail: { version: serverVersion } 
+        window.dispatchEvent(new CustomEvent('datasynced', {
+          detail: { version: serverVersion }
         }));
+      }
     } catch (error) {
       console.error('❌ Erreur de synchronisation:', error);
       await this.loadLocalData();
