@@ -155,7 +155,7 @@ const ZONES_FALLBACK = {
   'QR_C_ETAGE_2':        { nom: 'Bâtiment C - 2ème étage', batiment: 'Bâtiment C', etage: '2ème étage', description: 'Second étage - Bâtiment C.' },
   'QR_C_ETAGE_3':        { nom: 'Bâtiment C - 3ème étage', batiment: 'Bâtiment C', etage: '3ème étage', description: 'Troisième étage - Bâtiment C.' },
   'QR_AMPHITHÉATRE_001': { nom: 'Amphithéâtre', batiment: '', etage: '', description: 'Amphithéâtre de l\'établissement.' },
-  'QR_INTERNAT_001':     { nom: 'Internat', batiment: 'Internat', etage: '', description: 'Internat du lycée Saint-Éloi.' },
+  'QR_INTERNAT_001':     { nom: 'Internat', batiment: 'Internat', etage: '', description: 'Internat du lycée Saint-Éloi.', photos: ['../img/photo_salle_internat.png', '../img/photo_chambre_internat.png'], videos: ['../video/presentation_internat.mp4'] },
 };
 
 async function loadZoneFromDB(qrCode) {
@@ -171,7 +171,14 @@ async function loadZoneFromDB(qrCode) {
     // Fallback statique si IndexedDB vide (offline)
     if (!zone && ZONES_FALLBACK[qrCode]) {
       const f = ZONES_FALLBACK[qrCode];
-      zone = { nom: f.nom, batiment: f.batiment, etage: f.etage, description: f.description, image: null, photos: f.photos || null, coordonnees: null };
+      zone = { nom: f.nom, batiment: f.batiment, etage: f.etage, description: f.description, image: null, photos: f.photos || null, videos: f.videos || null, coordonnees: null };
+    }
+
+    // Enrichir avec les médias statiques si la DB n'en a pas
+    if (zone && ZONES_FALLBACK[qrCode]) {
+      const f = ZONES_FALLBACK[qrCode];
+      if ((!zone.photos || zone.photos.length === 0) && f.photos) zone.photos = f.photos;
+      if ((!zone.videos || zone.videos.length === 0) && f.videos) zone.videos = f.videos;
     }
 
     if (!zone) {
