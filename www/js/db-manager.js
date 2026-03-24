@@ -516,7 +516,12 @@ const DBManager = {
     try {
       const saved = localStorage.getItem('lyceepad_server_url');
       if (saved) {
-        this.config.serverUrl = saved;
+        // Si la page est en HTTPS, forcer HTTPS sur l'URL sauvegardée
+        if (location.protocol === 'https:') {
+          this.config.serverUrl = saved.replace(/^http:\/\/[^/]+/, location.origin);
+        } else {
+          this.config.serverUrl = saved;
+        }
       }
     } catch (e) {}
   },
