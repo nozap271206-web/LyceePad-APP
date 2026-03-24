@@ -52,8 +52,8 @@
       "batiment": "Bâtiment Sud",
       "etage": "RDC",
       "coordonnees": {
-        "lat": 43.52140,
-        "lng": 5.44300
+        "lat": 43.5214,
+        "lng": 5.443
       },
       "image": null,
       "ordre": 10,
@@ -67,8 +67,8 @@
       "batiment": "Bâtiment Sud",
       "etage": "RDC",
       "coordonnees": {
-        "lat": 43.52140,
-        "lng": 5.44300
+        "lat": 43.5214,
+        "lng": 5.443
       },
       "image": null,
       "ordre": 11,
@@ -82,8 +82,8 @@
       "batiment": "Bâtiment Sud",
       "etage": "RDC",
       "coordonnees": {
-        "lat": 43.52140,
-        "lng": 5.44300
+        "lat": 43.5214,
+        "lng": 5.443
       },
       "image": null,
       "ordre": 12,
@@ -97,8 +97,8 @@
       "batiment": "Bâtiment Sud",
       "etage": "RDC",
       "coordonnees": {
-        "lat": 43.52140,
-        "lng": 5.44300
+        "lat": 43.5214,
+        "lng": 5.443
       },
       "image": null,
       "ordre": 13,
@@ -112,8 +112,8 @@
       "batiment": "Bâtiment Sud",
       "etage": "RDC",
       "coordonnees": {
-        "lat": 43.52140,
-        "lng": 5.44300
+        "lat": 43.5214,
+        "lng": 5.443
       },
       "image": null,
       "ordre": 14,
@@ -127,8 +127,8 @@
       "batiment": "Bâtiment Sud",
       "etage": "RDC",
       "coordonnees": {
-        "lat": 43.52140,
-        "lng": 5.44300
+        "lat": 43.5214,
+        "lng": 5.443
       },
       "image": null,
       "ordre": 15,
@@ -142,7 +142,7 @@
       "batiment": "Bâtiment FB",
       "etage": "RDC",
       "coordonnees": {
-        "lat": 43.52130,
+        "lat": 43.5213,
         "lng": 5.44315
       },
       "image": null,
@@ -157,7 +157,7 @@
       "batiment": "Bâtiment FB",
       "etage": "RDC",
       "coordonnees": {
-        "lat": 43.52130,
+        "lat": 43.5213,
         "lng": 5.44315
       },
       "image": null,
@@ -172,7 +172,7 @@
       "batiment": "Bâtiment FB",
       "etage": "1er étage",
       "coordonnees": {
-        "lat": 43.52130,
+        "lat": 43.5213,
         "lng": 5.44315
       },
       "image": null,
@@ -187,7 +187,7 @@
       "batiment": "Bâtiment FB",
       "etage": "1er étage",
       "coordonnees": {
-        "lat": 43.52130,
+        "lat": 43.5213,
         "lng": 5.44315
       },
       "image": null,
@@ -203,7 +203,7 @@
       "etage": "RDC",
       "coordonnees": {
         "lat": 43.52137,
-        "lng": 5.44410
+        "lng": 5.4441
       },
       "image": null,
       "ordre": 30,
@@ -218,7 +218,7 @@
       "etage": "RDC",
       "coordonnees": {
         "lat": 43.52137,
-        "lng": 5.44410
+        "lng": 5.4441
       },
       "image": null,
       "ordre": 31,
@@ -233,7 +233,7 @@
       "etage": "RDC",
       "coordonnees": {
         "lat": 43.52137,
-        "lng": 5.44410
+        "lng": 5.4441
       },
       "image": null,
       "ordre": 32,
@@ -248,7 +248,7 @@
       "etage": "RDC",
       "coordonnees": {
         "lat": 43.52137,
-        "lng": 5.44410
+        "lng": 5.4441
       },
       "image": null,
       "ordre": 33,
@@ -263,7 +263,7 @@
       "etage": "1er étage",
       "coordonnees": {
         "lat": 43.52137,
-        "lng": 5.44410
+        "lng": 5.4441
       },
       "image": null,
       "ordre": 34,
@@ -278,7 +278,7 @@
       "etage": "1er étage",
       "coordonnees": {
         "lat": 43.52137,
-        "lng": 5.44410
+        "lng": 5.4441
       },
       "image": null,
       "ordre": 35,
@@ -293,7 +293,7 @@
       "etage": "1er étage",
       "coordonnees": {
         "lat": 43.52137,
-        "lng": 5.44410
+        "lng": 5.4441
       },
       "image": null,
       "ordre": 36,
@@ -308,7 +308,7 @@
       "etage": "1er étage",
       "coordonnees": {
         "lat": 43.52137,
-        "lng": 5.44410
+        "lng": 5.4441
       },
       "image": null,
       "ordre": 37,
@@ -323,7 +323,7 @@
       "etage": "1er étage",
       "coordonnees": {
         "lat": 43.52137,
-        "lng": 5.44410
+        "lng": 5.4441
       },
       "image": null,
       "ordre": 38,
@@ -443,9 +443,9 @@
       "etage": "",
       "coordonnees": {
         "lat": 43.52115,
-        "lng": 5.44340
+        "lng": 5.4434
       },
-      "image": "../img/photo_salle_internat.png",
+      "image": "/img/photo_salle_internat.png",
       "ordre": 55,
       "actif": true
     }
@@ -458,11 +458,26 @@
       "duree_estimee": 45,
       "profil_id": "1",
       "zones_ordre": [
-        { "id_zone": "1", "ordre": 1 },
-        { "id_zone": "10", "ordre": 2 },
-        { "id_zone": "11", "ordre": 3 },
-        { "id_zone": "15", "ordre": 4 },
-        { "id_zone": "2", "ordre": 5 }
+        {
+          "id_zone": "1",
+          "ordre": 1
+        },
+        {
+          "id_zone": "10",
+          "ordre": 2
+        },
+        {
+          "id_zone": "11",
+          "ordre": 3
+        },
+        {
+          "id_zone": "15",
+          "ordre": 4
+        },
+        {
+          "id_zone": "2",
+          "ordre": 5
+        }
       ],
       "actif": true
     }
@@ -502,11 +517,41 @@
     }
   },
   "types_contenu": {
-    "texte": { "id": "1", "nom": "texte", "description": "Contenu textuel", "icon": "text-icon" },
-    "image": { "id": "2", "nom": "image", "description": "Image ou photo", "icon": "image-icon" },
-    "video": { "id": "3", "nom": "video", "description": "Vidéo", "icon": "video-icon" },
-    "audio": { "id": "4", "nom": "audio", "description": "Fichier audio", "icon": "audio-icon" },
-    "pdf": { "id": "5", "nom": "pdf", "description": "Document PDF", "icon": "pdf-icon" },
-    "lien": { "id": "6", "nom": "lien", "description": "Lien externe", "icon": "link-icon" }
+    "texte": {
+      "id": "1",
+      "nom": "texte",
+      "description": "Contenu textuel",
+      "icon": "text-icon"
+    },
+    "image": {
+      "id": "2",
+      "nom": "image",
+      "description": "Image ou photo",
+      "icon": "image-icon"
+    },
+    "video": {
+      "id": "3",
+      "nom": "video",
+      "description": "Vidéo",
+      "icon": "video-icon"
+    },
+    "audio": {
+      "id": "4",
+      "nom": "audio",
+      "description": "Fichier audio",
+      "icon": "audio-icon"
+    },
+    "pdf": {
+      "id": "5",
+      "nom": "pdf",
+      "description": "Document PDF",
+      "icon": "pdf-icon"
+    },
+    "lien": {
+      "id": "6",
+      "nom": "lien",
+      "description": "Lien externe",
+      "icon": "link-icon"
+    }
   }
 }
