@@ -44,6 +44,7 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
 html.perf-lite * {
@@ -54,6 +55,7 @@ html.perf-lite * {
 
 html {
   min-height: 100vh;
+  overscroll-behavior: none;
 }
 
 /* NAV */

@@ -89,7 +89,7 @@ const ParcoursPage = {
               { id_zone: 1,  nom_zone: 'Hall d\'accueil/Vie scolaire', description: 'Point d\'entrée principal du lycée', batiment: '', etage: '', ordre_visite: 1 },
               { id_zone: 10, nom_zone: 'Cantine', description: 'Réfectoire - Cafétéria', batiment: 'Bâtiment C', etage: 'RDC', ordre_visite: 2 },
               { id_zone: 11, nom_zone: 'Salle Sud 7-8-9', description: 'Salle de cours - Collone SUD', batiment: 'Collone SUD', etage: 'RDC', ordre_visite: 3 },
-              { id_zone: 15, nom_zone: 'Salle Nord 09', description: 'Salle de cours - Bâtiment Nord', batiment: 'Bâtiment Nord', etage: 'RDC', ordre_visite: 4 },
+              { id_zone: 15, nom_zone: 'Salles Nord', description: 'Salle de cours - Bâtiment Nord', batiment: 'Bâtiment Nord', etage: 'RDC', ordre_visite: 4 },
               { id_zone: 2,  nom_zone: 'CDI', description: 'Centre de Documentation et d\'Information', batiment: 'Bâtiment C', etage: '1er étage', ordre_visite: 5 }
             ]
           }
@@ -107,7 +107,8 @@ const ParcoursPage = {
             zones: [
               { id_zone: 1, nom_zone: 'Hall d\'accueil/Vie scolaire', description: 'Point d\'entrée principal du lycée', batiment: '', etage: '', ordre_visite: 1 },
               { id_zone: 2, nom_zone: 'CDI', description: 'Centre de Documentation et d\'Information', batiment: 'Bâtiment C', etage: '1er étage', ordre_visite: 2 },
-              { id_zone: 3, nom_zone: 'Cafétéria', description: 'Espace de restauration et de convivialité', batiment: 'Bâtiment C', etage: 'RDC', ordre_visite: 3 }
+              { id_zone: 3, nom_zone: 'Cafétéria', description: 'Espace de restauration et de convivialité', batiment: 'Bâtiment C', etage: 'RDC', ordre_visite: 3 },
+              { id_zone: 4, nom_zone: 'Administration', description: 'Espace administratif', batiment: 'Bâtiment C', etage: '1er étage', ordre_visite: 4}
             ]
           }
         ]
@@ -126,7 +127,7 @@ const ParcoursPage = {
               { id_zone: 29, nom_zone: 'Amphithéatre', description: 'Amphithéatre de l\'établissement', batiment: '', etage: '', ordre_visite: 2 },
               { id_zone: 2,  nom_zone: 'CDI', description: 'Centre de Documentation et d\'Information', batiment: 'Bâtiment C', etage: '1er étage', ordre_visite: 3 },
               { id_zone: 3,  nom_zone: 'Cafétéria', description: 'Espace de restauration', batiment: 'Bâtiment C', etage: 'RDC', ordre_visite: 4 },
-              { id_zone: 30, nom_zone: 'Internat', description: 'Internat', batiment: 'Internat', etage: '', ordre_visite: 5 }
+              { id_zone: 30, nom_zone: 'Internat', description: 'Internat lié au lycée', batiment: 'Internat', etage: '', ordre_visite: 5 }
             ]
           }
         ]
@@ -139,11 +140,11 @@ const ParcoursPage = {
           {
             id_parcours: 4, nom_parcours: 'Visite partenaires',
             description: 'Présentation des plateaux techniques et équipements',
-            duree_estimee: 60,
+            duree_estimee: 35,
             zones: [
               { id_zone: 1,  nom_zone: 'Hall d\'accueil/Vie scolaire', description: 'Point d\'entrée principal du lycée', batiment: '', etage: '', ordre_visite: 1 },
-              { id_zone: 9,  nom_zone: 'Labo Sud', description: 'Laboratoire - Bâtiment Sud', batiment: 'Bâtiment Sud', etage: 'RDC', ordre_visite: 2 },
-              { id_zone: 10, nom_zone: 'Salle FB 10', description: 'Salle de cours - Bâtiment FB', batiment: 'Bâtiment FB', etage: 'RDC', ordre_visite: 3 }
+              { id_zone: 9,  nom_zone: 'Administration', description: 'Espace administratif - Premier étage', batiment: 'Bâtiment C', etage: '1er étage', ordre_visite: 2 }
+              
             ]
           }
         ]
