@@ -202,9 +202,15 @@ async function loadZoneFromDB(qrCode) {
     galleryGrid.innerHTML = '';
 
     const serverBase = (window.DBManager?.config?.serverUrl || '').replace(/\/data\/?$/, '');
+    const resolveUrl = p => {
+      if (!p) return null;
+      if (p.startsWith('http')) return p;
+      if (p.startsWith('/img/zones/')) return serverBase + p; // fichiers uploadés
+      return p; // assets statiques, laisser le navigateur résoudre
+    };
     const photoSources = (zone.photos && zone.photos.length > 0)
-      ? zone.photos.map(p => p.startsWith('http') ? p : serverBase + p)
-      : (zone.image ? [zone.image] : []);
+      ? zone.photos.map(resolveUrl).filter(Boolean)
+      : (zone.image ? [resolveUrl(zone.image)] : []);
 
     if (photoSources.length > 0) {
       photoSources.forEach(src => {
