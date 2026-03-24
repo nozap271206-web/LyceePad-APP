@@ -194,7 +194,10 @@ async function loadZoneFromDB(qrCode) {
     const galleryGrid = document.getElementById('gallery-grid');
     galleryGrid.innerHTML = '';
 
-    const photoSources = zone.photos || (zone.image ? [zone.image] : []);
+    const serverBase = (window.DBManager?.config?.serverUrl || '').replace(/\/data\/?$/, '');
+    const photoSources = (zone.photos && zone.photos.length > 0)
+      ? zone.photos.map(p => p.startsWith('http') ? p : serverBase + p)
+      : (zone.image ? [zone.image] : []);
 
     if (photoSources.length > 0) {
       photoSources.forEach(src => {
@@ -240,8 +243,13 @@ async function loadZoneFromDB(qrCode) {
     document.getElementById('quiz-text').textContent = `Répondez au quiz sur ${zone.nom}`;
     document.getElementById('quiz-link').href = `Quiz.html?zone=${zone.id}`;
 
-    // Mettre à jour les titres médias
+    // Mettre à jour les titres médias et afficher la vidéo si disponible
     document.getElementById('video-title').textContent = `Visite de ${zone.nom}`;
+    if (zone.videos && zone.videos.length > 0) {
+      const videoSrc = zone.videos[0].startsWith('http') ? zone.videos[0] : serverBase + zone.videos[0];
+      const placeholder = document.getElementById('video-placeholder');
+      placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}"></video>`;
+    }
 
   } catch (err) {
     console.error('Erreur chargement zone:', err);

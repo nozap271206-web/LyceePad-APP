@@ -188,6 +188,29 @@ function regenerateJSONFromDB($pdo) {
                 ];
             }
 
+            // Récupérer les médias uploadés depuis le dossier
+            $uploadDir = __DIR__ . '/../img/zones/' . $zone['qr_code'] . '/';
+            $photos = [];
+            $videos = [];
+            if (is_dir($uploadDir)) {
+                $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'ogg', 'mov'];
+                foreach (scandir($uploadDir) as $f) {
+                    if ($f === '.' || $f === '..') continue;
+                    $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
+                    if (!in_array($ext, $allowedExt)) continue;
+                    $finfo = new finfo(FILEINFO_MIME_TYPE);
+                    $mime = $finfo->file($uploadDir . $f);
+                    $url = '/img/zones/' . $zone['qr_code'] . '/' . $f;
+                    if (strpos($mime, 'video') === 0) {
+                        $videos[] = $url;
+                    } else {
+                        $photos[] = $url;
+                    }
+                }
+            }
+            $zoneData['photos'] = $photos;
+            $zoneData['videos'] = $videos;
+
             $data['zones'][$zone['qr_code']] = $zoneData;
         }
 
