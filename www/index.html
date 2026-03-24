@@ -179,7 +179,7 @@
               <span class="btn-shine"></span>
             </a>
 
-            <a href="/LyceePad.apk" download class="btn-futuristic btn-secondary">
+            <button onclick="document.getElementById('install-modal').style.display='flex'" class="btn-futuristic btn-secondary">
               <span class="btn-content">
                 <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -189,7 +189,7 @@
                 <span>Télécharger l'app</span>
               </span>
               <span class="btn-shine"></span>
-            </a>
+            </button>
           </div>  
     </section>
 
@@ -305,6 +305,29 @@
 </main>
 
 
+
+<!-- Modal installation APK -->
+<div id="install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:var(--bg-elevated);border-radius:20px;max-width:480px;width:100%;padding:2rem;position:relative;box-shadow:var(--shadow-xl);">
+    <button onclick="document.getElementById('install-modal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;color:var(--text);font-size:1.5rem;">✕</button>
+    <h2 style="margin-bottom:1.5rem;color:var(--text);font-size:1.3rem;">📲 Installer LycéePad</h2>
+    <ol style="color:var(--text-secondary);line-height:2;padding-left:1.2rem;margin-bottom:1.5rem;">
+      <li>Appuyez sur <strong style="color:var(--text);">Télécharger</strong> ci-dessous</li>
+      <li>Ouvrez le fichier <strong style="color:var(--text);">LyceePad.apk</strong> téléchargé</li>
+      <li>Si demandé, allez dans <strong style="color:var(--text);">Paramètres</strong> et activez <strong style="color:var(--text);">"Installer des apps inconnues"</strong> pour votre navigateur</li>
+      <li>Revenez et appuyez sur <strong style="color:var(--text);">Installer</strong></li>
+      <li>L'app apparaît dans vos applications ✅</li>
+    </ol>
+    <a href="/LyceePad.apk" download style="display:flex;align-items:center;justify-content:center;gap:0.6rem;background:#2EA3F2;color:white;padding:0.9rem 1.5rem;border-radius:12px;text-decoration:none;font-weight:600;font-size:1rem;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Télécharger LyceePad.apk
+    </a>
+  </div>
+</div>
 
 <!-- Background Effect -->
 <div class="bg-effect"></div>
