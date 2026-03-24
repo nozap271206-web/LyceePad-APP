@@ -121,12 +121,15 @@ const DBManager = {
         await this.saveMetadata('lastSync', new Date().toISOString());
         
         // Déclencher un événement personnalisé
-        window.dispatchEvent(new CustomEvent('datasynced', { 
-          detail: { version: serverVersion } 
+        window.dispatchEvent(new CustomEvent('datasynced', {
+          detail: { version: serverVersion }
         }));
+      }
     } catch (error) {
       console.error('❌ Erreur de synchronisation:', error);
-      await this.loadLocalData();
+      try { await this.loadLocalData(); } catch (_) {
+        console.warn('Données locales inaccessibles (mode file://), fallback statique actif');
+      }
     }
   },
 

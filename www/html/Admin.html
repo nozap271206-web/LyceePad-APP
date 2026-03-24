@@ -136,6 +136,9 @@
             <button class="tab-btn" data-tab="contenus">
                 <i class="fas fa-folder-open"></i> Contenus
             </button>
+            <button class="tab-btn" data-tab="parcours">
+                <i class="fas fa-route"></i> Parcours
+            </button>
             <button class="tab-btn" data-tab="sync">
                 <i class="fas fa-sync-alt"></i> Synchronisation
             </button>
@@ -165,6 +168,19 @@
                     <i class="fas fa-info-circle"></i>
                     Sélectionnez une zone dans l'onglet "Zones" pour gérer son contenu
                 </p>
+            </div>
+        </div>
+
+        <!-- Tab: Parcours -->
+        <div class="tab-content" id="tab-parcours">
+            <div class="action-bar">
+                <div class="search-box">
+                    <i class="fas fa-info-circle"></i>
+                    <span style="color:var(--text-secondary);font-size:0.9rem">Les parcours sont sauvegardés localement sur l'appareil</span>
+                </div>
+            </div>
+            <div id="parcoursList">
+                <div class="info-text"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
             </div>
         </div>
 
@@ -299,6 +315,53 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="btnCancelZone">Annuler</button>
                 <button class="btn btn-primary" id="btnSaveZone">
+                    <i class="fas fa-save"></i> Enregistrer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Ajouter/Éditer Parcours -->
+    <div class="modal" id="modalParcours">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalParcoursTitle">Nouveau parcours</h2>
+                <button class="modal-close" id="btnCloseParcoursModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formParcours">
+                    <div class="form-group">
+                        <label for="parcoursProfil">Profil visiteur *</label>
+                        <select id="parcoursProfil" style="width:100%;padding:0.75rem;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-size:1rem">
+                            <option value="1">Futur élève</option>
+                            <option value="2">Parent</option>
+                            <option value="3">Visiteur libre</option>
+                            <option value="4">Partenaire professionnel</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="parcoursNom">Nom du parcours *</label>
+                        <input type="text" id="parcoursNom" required placeholder="ex: Découverte BTS CIEL">
+                    </div>
+                    <div class="form-group">
+                        <label for="parcoursDesc">Description</label>
+                        <textarea id="parcoursDesc" rows="3" placeholder="Description du parcours"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="parcoursDuree">Durée estimée (minutes)</label>
+                        <input type="number" id="parcoursDuree" min="1" placeholder="ex: 45">
+                    </div>
+                    <div class="form-group">
+                        <label>Zones du parcours <span style="color:var(--text-secondary);font-size:0.85rem">(cochez dans l'ordre de visite)</span></label>
+                        <div id="zonesChecklist" style="max-height:250px;overflow-y:auto;border:1.5px solid var(--border);border-radius:10px;padding:0.75rem;background:var(--bg)"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelParcours">Annuler</button>
+                <button class="btn btn-primary" id="btnSaveParcours">
                     <i class="fas fa-save"></i> Enregistrer
                 </button>
             </div>

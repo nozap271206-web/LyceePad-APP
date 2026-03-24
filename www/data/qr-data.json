@@ -445,7 +445,7 @@
         "lat": 43.52115,
         "lng": 5.44340
       },
-      "image": null,
+      "image": "../img/photo_salle_internat.png",
       "ordre": 55,
       "actif": true
     }

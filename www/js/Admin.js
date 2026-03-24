@@ -126,6 +126,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         loadZones();
       } else if (tabName === 'sync') {
         loadSyncStats();
+      } else if (tabName === 'parcours') {
+        loadParcours();
       }
     });
   });
@@ -134,11 +136,26 @@ document.addEventListener('DOMContentLoaded', async function() {
   async function loadZones() {
     try {
       allZones = await DBManager.getAllZones();
-      displayZones(allZones);
     } catch (error) {
-      console.error('Erreur chargement zones:', error);
-      addLog('error', 'Erreur de chargement des zones');
+      allZones = [];
     }
+
+    // IndexedDB vide (hors-ligne, jamais synchronisé) → fallback statique
+    if (allZones.length === 0) {
+      allZones = STATIC_ZONES_LIST.map(z => ({
+        qr_code:          'QR_' + z.nom.toUpperCase().replace(/[^A-Z0-9]/g, '_').substring(0, 12),
+        nom:              z.nom,
+        batiment:         z.batiment || null,
+        etage:            z.etage    || null,
+        coordonnees_gps:  null,
+        statut:           'active',
+        description_courte: null,
+        id:               z.id
+      }));
+      addLog('info', 'Données locales statiques utilisées (hors-ligne)');
+    }
+
+    displayZones(allZones);
   }
 
   // Afficher les zones
@@ -458,6 +475,248 @@ document.addEventListener('DOMContentLoaded', async function() {
       logContent.removeChild(logContent.lastChild);
     }
   }
+
+  // === GESTION PARCOURS ===
+
+  const STATIC_ZONES_LIST = [
+    { id: 1,  nom: 'Hall d\'accueil/Vie scolaire', batiment: '', etage: '' },
+    { id: 2,  nom: 'CDI', batiment: 'Bâtiment C', etage: '1er étage' },
+    { id: 3,  nom: 'Cafétéria', batiment: 'Bâtiment C', etage: 'RDC' },
+    { id: 4,  nom: 'Salle Sud 05', batiment: 'Bâtiment Sud', etage: 'RDC' },
+    { id: 5,  nom: 'Salle Sud 06', batiment: 'Bâtiment Sud', etage: 'RDC' },
+    { id: 6,  nom: 'Salle Sud 07', batiment: 'Bâtiment Sud', etage: 'RDC' },
+    { id: 7,  nom: 'Salle Sud 08', batiment: 'Bâtiment Sud', etage: 'RDC' },
+    { id: 8,  nom: 'Salle Sud 09', batiment: 'Bâtiment Sud', etage: 'RDC' },
+    { id: 9,  nom: 'Labo Sud', batiment: 'Bâtiment Sud', etage: 'RDC' },
+    { id: 10, nom: 'Salle FB 10', batiment: 'Bâtiment FB', etage: 'RDC' },
+    { id: 11, nom: 'Salle FB 11', batiment: 'Bâtiment FB', etage: 'RDC' },
+    { id: 12, nom: 'Salle FB 20', batiment: 'Bâtiment FB', etage: '1er étage' },
+    { id: 13, nom: 'Salle FB 21', batiment: 'Bâtiment FB', etage: '1er étage' },
+    { id: 14, nom: 'Salle Nord 08', batiment: 'Bâtiment Nord', etage: 'RDC' },
+    { id: 15, nom: 'Salle Nord 09', batiment: 'Bâtiment Nord', etage: 'RDC' },
+    { id: 16, nom: 'Salle Nord 10', batiment: 'Bâtiment Nord', etage: 'RDC' },
+    { id: 17, nom: 'Salle Nord 11', batiment: 'Bâtiment Nord', etage: 'RDC' },
+    { id: 18, nom: 'Salle Nord 12', batiment: 'Bâtiment Nord', etage: '1er étage' },
+    { id: 19, nom: 'Salle Nord 13', batiment: 'Bâtiment Nord', etage: '1er étage' },
+    { id: 20, nom: 'Salle Nord 14', batiment: 'Bâtiment Nord', etage: '1er étage' },
+    { id: 21, nom: 'Salle Nord 15', batiment: 'Bâtiment Nord', etage: '1er étage' },
+    { id: 22, nom: 'Salle Nord 16', batiment: 'Bâtiment Nord', etage: '1er étage' },
+    { id: 23, nom: 'Salle Est 11', batiment: 'Bâtiment Est', etage: 'RDC' },
+    { id: 24, nom: 'Salle Est 12', batiment: 'Bâtiment Est', etage: 'RDC' },
+    { id: 25, nom: 'Salle Est 13', batiment: 'Bâtiment Est', etage: 'RDC' },
+    { id: 26, nom: 'Bâtiment C - 1er étage', batiment: 'Bâtiment C', etage: '1er étage' },
+    { id: 27, nom: 'Bâtiment C - 2ème étage', batiment: 'Bâtiment C', etage: '2ème étage' },
+    { id: 28, nom: 'Bâtiment C - 3ème étage', batiment: 'Bâtiment C', etage: '3ème étage' },
+    { id: 29, nom: 'Amphithéâtre', batiment: '', etage: '' },
+    { id: 30, nom: 'Internat', batiment: 'Internat', etage: '' },
+  ];
+
+  const PROFILS_MAP = {
+    1: { nom: 'futur_eleve',    label: 'Futur élève',              couleur: '#2EA3F2' },
+    2: { nom: 'parent',         label: 'Parent',                   couleur: '#10B981' },
+    3: { nom: 'visiteur_libre', label: 'Visiteur libre',           couleur: '#6B7280' },
+    4: { nom: 'partenaire',     label: 'Partenaire professionnel', couleur: '#8B5CF6' },
+  };
+
+  let parcoursData = [];
+  let currentParcoursEdit = null;
+
+  function getDefaultParcoursData() {
+    return Object.entries(PROFILS_MAP).map(([id, p]) => ({
+      id_profil:   parseInt(id),
+      nom_profil:  p.nom,
+      description: '',
+      couleur:     p.couleur,
+      parcours:    []
+    }));
+  }
+
+  function loadParcoursFromStorage() {
+    try {
+      const stored = localStorage.getItem('lyceepad_parcours_custom');
+      if (stored) return JSON.parse(stored);
+    } catch {}
+    return null;
+  }
+
+  function saveParcoursToStorage(data) {
+    localStorage.setItem('lyceepad_parcours_custom', JSON.stringify(data));
+  }
+
+  function loadParcours() {
+    parcoursData = loadParcoursFromStorage() || getDefaultParcoursData();
+    displayParcoursAdmin(parcoursData);
+  }
+
+  function displayParcoursAdmin(data) {
+    const container = document.getElementById('parcoursList');
+    if (!container) return;
+
+    container.innerHTML = data.map(profil => {
+      const list = profil.parcours || [];
+      const color = profil.couleur || 'var(--primary)';
+      return `
+        <div style="margin-bottom:2rem">
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:var(--bg-elevated);border-radius:12px;margin-bottom:1rem;border-left:4px solid ${color}">
+            <h3 style="margin:0;color:var(--text)">${PROFILS_MAP[profil.id_profil]?.label || profil.nom_profil}</h3>
+            <span style="color:var(--text-secondary);font-size:0.9rem">${list.length} parcours</span>
+            <button class="btn btn-primary" data-profil="${profil.id_profil}" style="margin-left:auto;padding:0.4rem 1rem;font-size:0.85rem" onclick="window._adminOpenParcours(${profil.id_profil}, null)">
+              <i class="fas fa-plus"></i> Ajouter
+            </button>
+          </div>
+          ${list.length === 0
+            ? `<p style="color:var(--text-secondary);padding:0.5rem 1rem">Aucun parcours pour ce profil.</p>`
+            : list.map((p, idx) => `
+              <div class="zone-card" style="margin-bottom:0.75rem">
+                <div class="zone-card-header">
+                  <h3 class="zone-card-title">${p.nom_parcours}</h3>
+                  <span class="zone-card-qr">${p.duree_estimee ? p.duree_estimee + ' min' : 'Durée libre'}</span>
+                </div>
+                <div class="zone-card-info">
+                  <p>${p.description || '<em>Aucune description</em>'}</p>
+                  <p><i class="fas fa-map-marker-alt"></i> ${(p.zones || []).length} zone(s)</p>
+                </div>
+                <div class="zone-card-actions">
+                  <button class="btn btn-warning" onclick="window._adminOpenParcours(${profil.id_profil}, ${idx})">
+                    <i class="fas fa-edit"></i> Modifier
+                  </button>
+                  <button class="btn btn-danger" onclick="window._adminDeleteParcours(${profil.id_profil}, ${idx})">
+                    <i class="fas fa-trash"></i> Supprimer
+                  </button>
+                </div>
+              </div>
+            `).join('')
+          }
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function openParcoursModal(profilId, parcoursIdx) {
+    currentParcoursEdit = { profilId, parcoursIdx };
+
+    const title = document.getElementById('modalParcoursTitle');
+    const modalParcours = document.getElementById('modalParcours');
+    const checklistDiv = document.getElementById('zonesChecklist');
+
+    // Charger zones disponibles
+    let zones = [];
+    try { zones = await DBManager.getAllZones(); } catch {}
+    if (!zones.length) zones = STATIC_ZONES_LIST;
+
+    let selectedZoneIds = [];
+
+    if (parcoursIdx !== null) {
+      title.textContent = 'Modifier le parcours';
+      const profil = parcoursData.find(p => p.id_profil === profilId);
+      const parcours = profil?.parcours[parcoursIdx];
+      if (parcours) {
+        document.getElementById('parcoursProfil').value = profilId;
+        document.getElementById('parcoursNom').value = parcours.nom_parcours;
+        document.getElementById('parcoursDesc').value = parcours.description || '';
+        document.getElementById('parcoursDuree').value = parcours.duree_estimee || '';
+        selectedZoneIds = (parcours.zones || []).map(z => z.id_zone);
+      }
+    } else {
+      title.textContent = 'Nouveau parcours';
+      document.getElementById('formParcours').reset();
+      document.getElementById('parcoursProfil').value = profilId;
+    }
+
+    checklistDiv.innerHTML = zones.map(z => {
+      const zid = z.id || z.id_zone;
+      const znom = z.nom || z.nom_zone;
+      const zbat = z.batiment || '';
+      return `
+        <label style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0.25rem;cursor:pointer;border-radius:8px">
+          <input type="checkbox" name="zone_check" value="${zid}"
+                 ${selectedZoneIds.includes(zid) ? 'checked' : ''}
+                 style="width:16px;height:16px;accent-color:var(--primary)">
+          <span style="color:var(--text)"><strong>${znom}</strong>${zbat ? `<span style="color:var(--text-secondary);font-size:0.85rem"> — ${zbat}</span>` : ''}</span>
+        </label>`;
+    }).join('');
+
+    modalParcours.classList.add('active');
+  }
+
+  function closeParcoursModal() {
+    document.getElementById('modalParcours').classList.remove('active');
+    currentParcoursEdit = null;
+  }
+
+  async function saveParcours() {
+    const nom = document.getElementById('parcoursNom').value.trim();
+    if (!nom) { alert('Le nom du parcours est obligatoire'); return; }
+
+    const profilId  = parseInt(document.getElementById('parcoursProfil').value);
+    const desc      = document.getElementById('parcoursDesc').value.trim();
+    const duree     = parseInt(document.getElementById('parcoursDuree').value) || null;
+
+    let allZ = [];
+    try { allZ = await DBManager.getAllZones(); } catch {}
+    if (!allZ.length) allZ = STATIC_ZONES_LIST;
+
+    const checked = [...document.querySelectorAll('input[name="zone_check"]:checked')];
+    const zones = checked.map((cb, i) => {
+      const zid = parseInt(cb.value);
+      const z = allZ.find(z => (z.id || z.id_zone) === zid) || {};
+      return {
+        id_zone:      zid,
+        nom_zone:     z.nom || z.nom_zone || '',
+        description:  z.description_courte || z.description || '',
+        batiment:     z.batiment || '',
+        etage:        z.etage || '',
+        ordre_visite: i + 1
+      };
+    });
+
+    const { profilId: originalProfilId, parcoursIdx } = currentParcoursEdit;
+
+    // Si le profil a changé, retirer de l'ancien et ajouter au nouveau
+    if (parcoursIdx !== null && originalProfilId !== profilId) {
+      const oldProfil = parcoursData.find(p => p.id_profil === originalProfilId);
+      if (oldProfil) oldProfil.parcours.splice(parcoursIdx, 1);
+    }
+
+    const targetProfil = parcoursData.find(p => p.id_profil === profilId);
+    if (!targetProfil) { alert('Profil introuvable'); return; }
+
+    const parcoursObj = { id_parcours: Date.now(), nom_parcours: nom, description: desc, duree_estimee: duree, zones };
+
+    if (parcoursIdx !== null && originalProfilId === profilId) {
+      targetProfil.parcours[parcoursIdx] = { ...targetProfil.parcours[parcoursIdx], ...parcoursObj };
+    } else {
+      targetProfil.parcours.push(parcoursObj);
+    }
+
+    saveParcoursToStorage(parcoursData);
+    closeParcoursModal();
+    displayParcoursAdmin(parcoursData);
+    addLog('success', `Parcours "${nom}" sauvegardé`);
+  }
+
+  function deleteParcours(profilId, parcoursIdx) {
+    const profil = parcoursData.find(p => p.id_profil === profilId);
+    if (!profil) return;
+    const nom = profil.parcours[parcoursIdx]?.nom_parcours || 'ce parcours';
+    if (!confirm(`Supprimer "${nom}" ?\nCette action est irréversible.`)) return;
+    profil.parcours.splice(parcoursIdx, 1);
+    saveParcoursToStorage(parcoursData);
+    displayParcoursAdmin(parcoursData);
+    addLog('success', `Parcours "${nom}" supprimé`);
+  }
+
+  // Exposer pour les onclick inline
+  window._adminOpenParcours   = openParcoursModal;
+  window._adminDeleteParcours = deleteParcours;
+
+  // Events modale parcours
+  document.getElementById('btnCloseParcoursModal').addEventListener('click', closeParcoursModal);
+  document.getElementById('btnCancelParcours').addEventListener('click', closeParcoursModal);
+  document.getElementById('btnSaveParcours').addEventListener('click', saveParcours);
+  document.getElementById('modalParcours').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modalParcours')) closeParcoursModal();
+  });
 
   // Charger initial
   loadZones();

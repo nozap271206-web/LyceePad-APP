@@ -35,8 +35,16 @@ const zonesEl = document.getElementById('zones-info');
 
 debugEl.textContent = 'Initialisation de la carte...';
 
-// Initialisation carte
-const map = L.map('map').setView([43.52130, 5.44360], 19);
+// Initialisation carte (désactive déplacement et zoom)
+const map = L.map('map', {
+  dragging: false,
+  zoomControl: false,
+  scrollWheelZoom: false,
+  doubleClickZoom: false,
+  boxZoom: false,
+  keyboard: false,
+  touchZoom: false
+}).setView([43.52130, 5.44360], 19);
 
 // Bounds de l'image
 const imageBounds = [

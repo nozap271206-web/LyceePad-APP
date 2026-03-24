@@ -1,20 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --primary: #2EA3F2;
-  --primary-dark: #1a8fd1;
-  --secondary: #1a6fa8;
-  --accent: #2EA3F2;
-  --bg: #FFFFFF;
-  --bg-alt: #F5F7FA;
-  --bg-elevated: #FFFFFF;
-  --text: #333333;
-  --text-secondary: #666666;
-  --text-tertiary: #BBBBBB;
-  --border: #DDDDDD;
+  --primary: #8DB896;
+  --primary-dark: #6fa37a;
+  --secondary: #A5C9AE;
+  --accent: #8DB896;
+  --bg: #8DB896;
+  --bg-alt: #A5C9AE;
+  --bg-elevated: #BDD9C4;
+  --text: #1a3320;
+  --text-secondary: #2e5237;
+  --text-tertiary: #5a8a62;
+  --border: #7aaa83;
   --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 25px rgba(46,163,242,0.12), 0 4px 10px rgba(0,0,0,0.08);
-  --shadow-xl: 0 20px 40px rgba(46,163,242,0.18);
+  --shadow-lg: 0 10px 25px rgba(141,184,150,0.25), 0 4px 10px rgba(0,0,0,0.08);
+  --shadow-xl: 0 20px 40px rgba(141,184,150,0.35);
 }
 
 .dark {
@@ -44,6 +44,7 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
 html.perf-lite * {
@@ -54,6 +55,7 @@ html.perf-lite * {
 
 html {
   min-height: 100vh;
+  overscroll-behavior: none;
 }
 
 /* NAV */

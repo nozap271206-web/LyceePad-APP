@@ -411,6 +411,34 @@
 
 .zone-step-meta i { color: var(--primary); margin-right: 3px; }
 
+/* Zone cliquable */
+a.zone-step--link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+}
+
+a.zone-step--link .zone-step-content {
+  cursor: pointer;
+}
+
+a.zone-step--link:hover .zone-step-content {
+  border-color: var(--primary);
+  box-shadow: 0 4px 16px rgba(46,163,242,0.18);
+}
+
+a.zone-step--link:hover .zone-step-number {
+  background: linear-gradient(135deg, #2EA3F2, #1a6fa8);
+  box-shadow: 0 0 0 3px rgba(46,163,242,0.2);
+}
+
+.zone-step-arrow {
+  font-size: 0.75rem;
+  color: var(--primary);
+  margin-left: 6px;
+  opacity: 0.7;
+}
+
 .zone-step-qr {
   font-family: monospace;
   background: var(--bg-alt);
@@ -456,6 +484,143 @@
 }
 .btn-start-scan:hover {
   box-shadow: 0 8px 24px rgba(34,197,94,0.4);
+}
+
+/* ── Onglets de page ──────────────────────────────────────────────────────── */
+.page-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 5px;
+  margin-bottom: 36px;
+}
+
+.page-tab {
+  flex: 1;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 9px;
+  font-size: 0.93rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.22s ease;
+  color: var(--text-secondary);
+  background: transparent;
+}
+
+.page-tab:hover {
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
+}
+
+.page-tab.active {
+  background: var(--bg-elevated);
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.tab-panel.hidden { display: none; }
+
+/* ── Source sync ──────────────────────────────────────────────────────────── */
+.zones-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-bottom: 24px;
+}
+.zones-source--server { background: color-mix(in srgb, #10b981 10%, var(--bg-alt)); color: #10b981; }
+.zones-source--local  { background: color-mix(in srgb, #f59e0b 10%, var(--bg-alt)); color: #f59e0b; }
+
+/* ── Sections bâtiments (onglet toutes les zones) ─────────────────────────── */
+.batiment-section {
+  margin-bottom: 48px;
+}
+
+.batiment-section .zones-timeline {
+  margin-bottom: 0;
+}
+
+.batiment-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.batiment-title i { color: var(--primary); }
+
+.batiment-count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--primary) 10%, var(--bg-alt));
+  color: var(--primary);
+  border-radius: 20px;
+  padding: 2px 9px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Grille de zones ──────────────────────────────────────────────────────── */
+.zones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.zone-card {
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+.zone-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(46,163,242,0.12);
+}
+
+.zone-card-name {
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+.zone-card-meta {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.zone-card-meta i { color: var(--primary); margin-right: 3px; }
+
+.zone-card-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+  line-height: 1.5;
 }
 
 /* ── Loading ──────────────────────────────────────────────────────────────── */

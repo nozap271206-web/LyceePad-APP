@@ -368,7 +368,6 @@
 }
 
 .media-placeholder {
-  aspect-ratio: 16/9;
   background: var(--bg-alt);
   border-radius: 12px;
   display: flex;
@@ -380,6 +379,13 @@
   font-weight: 600;
   position: relative;
   overflow: hidden;
+}
+
+.video-placeholder {
+  background: #000;
+  padding: 0;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .media-play-btn {
