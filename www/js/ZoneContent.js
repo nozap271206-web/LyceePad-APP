@@ -94,8 +94,8 @@ const zonesData = {
       'L\'internat accueille les élèves éloignés dans un cadre sécurisé et convivial. Chambres confortables avec connexion internet. Encadrement éducatif et accompagnement personnalisé.'
     ],
     photos: [
-      { name: 'Salle d étude', src: '../img/photo_salle_internat.png' },
-      { name: 'chambre', src: '../img/photo_chambre_internat.png' }
+      { name: 'Salle d étude', src: '/img/photo_salle_internat.png' },
+      { name: 'chambre', src: '/img/photo_chambre_internat.png' }
     ],
     videoTitle: 'Découverte de l\'internat',
     audioTitle: 'Témoignage d\'un interne'
@@ -332,6 +332,6 @@ function loadZoneContent(zoneId) {
   // Injecter la vidéo uniquement pour la zone internat (id=10)
   if (parseInt(zoneId) === 10) {
     const placeholder = document.getElementById('video-placeholder');
-    placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="../video/presentation_internat.mp4" type="video/mp4"></video>`;
+    placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="/video/presentation_internat.mp4" type="video/mp4"></video>`;
   }
 }
