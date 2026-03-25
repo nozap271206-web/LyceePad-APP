@@ -132,7 +132,7 @@ const ZONES_FALLBACK = {
   'QR_SUD_05':           { nom: 'Salle Sud 05', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
   'QR_SUD_06':           { nom: 'Salle Sud 06', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
   'QR_SUD_07':           { nom: 'Salle Sud 07', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.', photos: ['/img/Sud-7.jpg'] },
-  'QR_SUD_08':           { nom: 'Salle Sud 08', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
+  'QR_SUD_08':           { nom: 'Salle Sud 08', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.', photos: ['/img/Sud-8.jpg'] },
   'QR_SUD_09':           { nom: 'Salle Sud 09', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
   'QR_LABO_SUD':         { nom: 'Labo Sud', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Laboratoire - Bâtiment Sud.' },
   'QR_FB_10':            { nom: 'Salle FB 10', batiment: 'Bâtiment FB', etage: 'RDC', description: 'Salle de cours - Bâtiment FB.' },
