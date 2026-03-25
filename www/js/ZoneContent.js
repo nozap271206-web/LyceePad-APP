@@ -257,16 +257,13 @@ async function loadZoneFromDB(qrCode) {
     document.getElementById('quiz-text').textContent = `Répondez au quiz sur ${zone.nom}`;
     document.getElementById('quiz-link').href = `Quiz.html?zone=${zone.id}`;
 
-    // Afficher la section vidéo uniquement si la zone a une vidéo
-    const videoSection = document.getElementById('video-section');
+    // Mettre à jour les titres médias et afficher la vidéo si disponible
+    const videoTitleEl = document.getElementById('video-title');
+    if (videoTitleEl) videoTitleEl.textContent = `Visite de ${zone.nom}`;
     if (zone.videos && zone.videos.length > 0) {
       const videoSrc = resolveUrl(zone.videos[0]);
       const placeholder = document.getElementById('video-placeholder');
       if (placeholder) placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}" type="video/mp4"></video>`;
-      const videoTitleEl = document.getElementById('video-title');
-      if (videoTitleEl) videoTitleEl.textContent = `Visite de ${zone.nom}`;
-    } else if (videoSection) {
-      videoSection.style.display = 'none';
     }
 
   } catch (err) {
