@@ -107,7 +107,7 @@
 .hero-title {
   font-size: 3.5rem;
   font-weight: 900;
-  color: var(--secondary);
+  color: var(--text);
   margin-bottom: 1rem;
   line-height: 1.2;
 }
