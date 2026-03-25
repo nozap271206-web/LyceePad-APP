@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Fallback statique (offline / IndexedDB vide)
 const ZONES_FALLBACK = {
   'QR_HALL_001':         { nom: 'Hall d\'accueil/Vie scolaire', batiment: '', etage: '', description: 'Point d\'entrée principal du lycée avec personnel d\'accueil.' },
-  'QR_CDI_001':          { nom: 'CDI', batiment: 'Bâtiment C', etage: '1er étage', description: 'Centre de Documentation et d\'Information.', photos: ['/img/photo_CDI_1.png', '/img/photo_CDI_2.png'] },
+  'QR_CDI_001':          { nom: 'CDI', batiment: 'Bâtiment C', etage: '1er étage', description: 'Centre de Documentation et d\'Information.', photos: ['/img/photo_CDI_1.png', '/img/photo_CDI_2.png'], videos: ['/video/Presentation_CDI.mp4'] },
   'QR_CAFET_001':        { nom: 'Cafétéria', batiment: 'Bâtiment C', etage: 'RDC', description: 'Espace de restauration et de convivialité.' },
   'QR_SUD_05':           { nom: 'Salle Sud 05', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
   'QR_SUD_06':           { nom: 'Salle Sud 06', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
