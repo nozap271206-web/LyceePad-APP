@@ -8,7 +8,7 @@
  *  - Offline page → si tout échoue, une page de secours est affichée
  */
 
-const CACHE_VERSION = 'lyceepad-v1';
+const CACHE_VERSION = 'lyceepad-v2';
 
 // Fichiers mis en cache immédiatement à l'installation
 const PRECACHE_ASSETS = [
@@ -52,7 +52,9 @@ const PRECACHE_ASSETS = [
 const NETWORK_FIRST_PATTERNS = [
   /\/data\/db-version\.json/,
   /\/data\/qr-data\.json/,
-  /\/API\//
+  /\/API\//,
+  /\.js(\?.*)?$/,
+  /\.html(\?.*)?$/
 ];
 
 // ─── Installation ────────────────────────────────────────────────────────────

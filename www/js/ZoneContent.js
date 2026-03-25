@@ -205,8 +205,9 @@ async function loadZoneFromDB(qrCode) {
     const resolveUrl = p => {
       if (!p) return null;
       if (p.startsWith('http')) return p;
-      if (p.startsWith('/img/zones/')) return serverBase + p; // fichiers uploadés
-      return p; // assets statiques, laisser le navigateur résoudre
+      if (p.startsWith('../')) p = '/' + p.slice(3); // normalise ../img/ → /img/
+      if (p.startsWith('/img/zones/') || p.startsWith('/video/zones/')) return serverBase + p;
+      return p; // chemin absolu, le navigateur résout depuis la racine
     };
     const photoSources = (zone.photos && zone.photos.length > 0)
       ? zone.photos.map(resolveUrl).filter(Boolean)
@@ -259,9 +260,9 @@ async function loadZoneFromDB(qrCode) {
     // Mettre à jour les titres médias et afficher la vidéo si disponible
     document.getElementById('video-title').textContent = `Visite de ${zone.nom}`;
     if (zone.videos && zone.videos.length > 0) {
-      const videoSrc = zone.videos[0].startsWith('http') ? zone.videos[0] : serverBase + zone.videos[0];
+      const videoSrc = resolveUrl(zone.videos[0]);
       const placeholder = document.getElementById('video-placeholder');
-      placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}"></video>`;
+      placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}" type="video/mp4"></video>`;
     }
 
   } catch (err) {
