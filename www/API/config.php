@@ -7,7 +7,7 @@
  */
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'lyceepad');
+define('DB_NAME', 'lyceepad_db');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 
