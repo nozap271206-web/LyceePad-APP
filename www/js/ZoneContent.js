@@ -154,7 +154,7 @@ const ZONES_FALLBACK = {
   'QR_C_ETAGE_1':        { nom: 'Bâtiment C - 1er étage', batiment: 'Bâtiment C', etage: '1er étage', description: 'Premier étage - Bâtiment C.' },
   'QR_C_ETAGE_2':        { nom: 'Bâtiment C - 2ème étage', batiment: 'Bâtiment C', etage: '2ème étage', description: 'Second étage - Bâtiment C.' },
   'QR_C_ETAGE_3':        { nom: 'Bâtiment C - 3ème étage', batiment: 'Bâtiment C', etage: '3ème étage', description: 'Troisième étage - Bâtiment C.' },
-  'QR_AMPHITHÉATRE_001': { nom: 'Amphithéâtre', batiment: '', etage: '', description: 'Amphithéâtre de l\'établissement.', photos: ['/img/Théatre-1.jpg', '/img/Théatre-2.jpg'] },
+  'QR_AMPHITHÉATRE_001': { nom: 'Amphithéâtre', batiment: '', etage: '', description: 'Amphithéâtre de l\'établissement.', photos: ['/img/Théatre-1.jpg', '/img/Théatre-2.jpg'], noVideo: true },
   'QR_INTERNAT_001':     { nom: 'Internat', batiment: 'Internat', etage: '', description: 'Internat du lycée Saint-Éloi.', photos: ['/img/photo_salle_internat.png', '/img/photo_chambre_internat.png'], videos: ['/video/presentation_internat.mp4'] },
 };
 
@@ -179,6 +179,7 @@ async function loadZoneFromDB(qrCode) {
       const f = ZONES_FALLBACK[qrCode];
       if ((!zone.photos || zone.photos.length === 0) && f.photos) zone.photos = f.photos;
       if ((!zone.videos || zone.videos.length === 0) && f.videos) zone.videos = f.videos;
+      if (f.noVideo) zone.noVideo = true;
     }
 
     if (!zone) {
@@ -257,16 +258,18 @@ async function loadZoneFromDB(qrCode) {
     document.getElementById('quiz-text').textContent = `Répondez au quiz sur ${zone.nom}`;
     document.getElementById('quiz-link').href = `Quiz.html?zone=${zone.id}`;
 
-    // Afficher la section vidéo uniquement si la zone a une vidéo
+    // Section vidéo : masquer si noVideo, sinon afficher (avec vidéo si disponible)
     const videoSection = document.getElementById('video-section');
-    if (zone.videos && zone.videos.length > 0) {
+    if (zone.noVideo && videoSection) {
+      videoSection.style.display = 'none';
+    } else {
       const videoTitleEl = document.getElementById('video-title');
       if (videoTitleEl) videoTitleEl.textContent = `Visite de ${zone.nom}`;
-      const videoSrc = resolveUrl(zone.videos[0]);
-      const placeholder = document.getElementById('video-placeholder');
-      if (placeholder) placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}" type="video/mp4"></video>`;
-    } else if (videoSection) {
-      videoSection.style.display = 'none';
+      if (zone.videos && zone.videos.length > 0) {
+        const videoSrc = resolveUrl(zone.videos[0]);
+        const placeholder = document.getElementById('video-placeholder');
+        if (placeholder) placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}" type="video/mp4"></video>`;
+      }
     }
 
   } catch (err) {
