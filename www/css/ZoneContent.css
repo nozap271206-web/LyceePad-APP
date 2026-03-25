@@ -76,10 +76,10 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, rgba(46, 163, 242, 0.1), rgba(26, 111, 168, 0.1));
-  border: 1px solid var(--primary);
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--text);
   border-radius: 50px;
-  color: var(--primary);
+  color: var(--text);
   font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
