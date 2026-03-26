@@ -202,7 +202,7 @@ function regenerateJSONFromDB($pdo) {
         // Convertir parcours
         foreach ($parcours as $p) {
             // Récupérer les zones du parcours
-            $stmtPZ = $pdo->prepare("SELECT id_zone FROM parcours_zones WHERE id_parcours = ? ORDER BY ordre_affichage ASC");
+            $stmtPZ = $pdo->prepare("SELECT id_zone FROM parcours_zones WHERE id_parcours = ? ORDER BY ordre_visite ASC");
             $stmtPZ->execute([$p['id_parcours']]);
             $zonesIds = array_column($stmtPZ->fetchAll(), 'id_zone');
 
