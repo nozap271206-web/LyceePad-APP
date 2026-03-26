@@ -159,18 +159,17 @@ function regenerateJSONFromDB($pdo) {
             ];
 
             // Récupérer les contenus de la zone
-            $stmt = $pdo->prepare("SELECT * FROM contenus WHERE zone_id = ? ORDER BY ordre ASC");
-            $stmt->execute([$zone['id']]);
+            $stmt = $pdo->prepare("SELECT * FROM contenus WHERE id_zone = ? ORDER BY ordre_affichage ASC");
+            $stmt->execute([$zone['id_zone']]);
             $contenus = $stmt->fetchAll();
 
             foreach ($contenus as $contenu) {
                 $zoneData['contenus'][] = [
-                    'id' => (int)$contenu['id'],
+                    'id' => (int)$contenu['id_contenu'],
                     'titre' => $contenu['titre'],
-                    'type' => $contenu['type'],
-                    'valeur' => $contenu['valeur'],
-                    'profils_cibles' => $contenu['profils_cibles'] ? json_decode($contenu['profils_cibles'], true) : [],
-                    'ordre' => (int)$contenu['ordre']
+                    'description' => $contenu['description'] ?? '',
+                    'fichier' => $contenu['fichier_media'] ?? null,
+                    'ordre' => (int)($contenu['ordre_affichage'] ?? 0)
                 ];
             }
 
