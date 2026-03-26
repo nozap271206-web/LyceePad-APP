@@ -50,61 +50,53 @@ function getDBConnection() {
 function updateZoneInDB($pdo, $zone) {
     try {
         // Vérifier si la zone existe
-        $stmt = $pdo->prepare("SELECT id FROM zones WHERE qr_code = ?");
+        $stmt = $pdo->prepare("SELECT id_zone FROM zones WHERE qr_code = ?");
         $stmt->execute([$zone['qr_code']]);
         $existing = $stmt->fetch();
 
-        $gpsLat = isset($zone['coordonnees_gps']['lat']) ? $zone['coordonnees_gps']['lat'] : null;
-        $gpsLng = isset($zone['coordonnees_gps']['lng']) ? $zone['coordonnees_gps']['lng'] : null;
+        $gps = null;
+        if (isset($zone['coordonnees_gps']['lat']) && isset($zone['coordonnees_gps']['lng'])) {
+            $gps = json_encode(['lat' => $zone['coordonnees_gps']['lat'], 'lng' => $zone['coordonnees_gps']['lng']]);
+        }
 
         if ($existing) {
             // UPDATE
-            $sql = "UPDATE zones SET 
-                    nom = ?,
+            $sql = "UPDATE zones SET
+                    nom_zone = ?,
                     batiment = ?,
                     etage = ?,
-                    description_courte = ?,
-                    coordonnees_gps_lat = ?,
-                    coordonnees_gps_lng = ?,
-                    statut = ?,
+                    description = ?,
+                    coordonnees_gps = ?,
                     actif = ?,
-                    ordre = ?,
-                    date_modification = NOW()
+                    ordre_affichage = ?
                     WHERE qr_code = ?";
-            
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
-                $zone['nom'],
+                $zone['nom'] ?? $zone['nom_zone'] ?? null,
                 $zone['batiment'] ?? null,
                 $zone['etage'] ?? null,
-                $zone['description_courte'] ?? null,
-                $gpsLat,
-                $gpsLng,
-                $zone['statut'] ?? 'active',
-                $zone['actif'] ? 1 : 0,
-                $zone['ordre'] ?? 999,
+                $zone['description'] ?? $zone['description_courte'] ?? null,
+                $gps,
+                isset($zone['actif']) ? ($zone['actif'] ? 1 : 0) : 1,
+                $zone['ordre'] ?? $zone['ordre_affichage'] ?? 999,
                 $zone['qr_code']
             ]);
         } else {
             // INSERT
             $sql = "INSERT INTO zones (
-                    qr_code, nom, batiment, etage, description_courte,
-                    coordonnees_gps_lat, coordonnees_gps_lng,
-                    statut, actif, ordre, date_creation
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
-            
+                    qr_code, nom_zone, batiment, etage, description,
+                    coordonnees_gps, actif, ordre_affichage, date_creation
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 $zone['qr_code'],
-                $zone['nom'],
+                $zone['nom'] ?? $zone['nom_zone'] ?? null,
                 $zone['batiment'] ?? null,
                 $zone['etage'] ?? null,
-                $zone['description_courte'] ?? null,
-                $gpsLat,
-                $gpsLng,
-                $zone['statut'] ?? 'active',
-                $zone['actif'] ? 1 : 0,
-                $zone['ordre'] ?? 999
+                $zone['description'] ?? $zone['description_courte'] ?? null,
+                $gps,
+                isset($zone['actif']) ? ($zone['actif'] ? 1 : 0) : 1,
+                $zone['ordre'] ?? $zone['ordre_affichage'] ?? 999
             ]);
         }
         
@@ -121,7 +113,7 @@ function updateZoneInDB($pdo, $zone) {
 function regenerateJSONFromDB($pdo) {
     try {
         // Récupérer toutes les zones
-        $stmt = $pdo->query("SELECT * FROM zones ORDER BY ordre ASC");
+        $stmt = $pdo->query("SELECT * FROM zones ORDER BY ordre_affichage ASC");
         $zones = $stmt->fetchAll();
 
         // Récupérer les parcours
@@ -146,28 +138,25 @@ function regenerateJSONFromDB($pdo) {
 
         // Convertir zones
         foreach ($zones as $zone) {
+            $gpsData = null;
+            if (!empty($zone['coordonnees_gps'])) {
+                $parsed = json_decode($zone['coordonnees_gps'], true);
+                if ($parsed) $gpsData = $parsed;
+            }
             $zoneData = [
-                'id' => (int)$zone['id'],
+                'id' => (int)$zone['id_zone'],
                 'qr_code' => $zone['qr_code'],
-                'nom' => $zone['nom'],
-                'description' => $zone['description_courte'] ?? '',
-                'description_courte' => $zone['description_courte'] ?? '',
+                'nom' => $zone['nom_zone'],
+                'description' => $zone['description'] ?? '',
+                'description_courte' => $zone['description'] ?? '',
                 'batiment' => $zone['batiment'],
-                'etage' => $zone['etage'] !== null ? (int)$zone['etage'] : null,
-                'coordonnees_gps' => null,
-                'ordre' => (int)$zone['ordre'],
+                'etage' => $zone['etage'] ?? null,
+                'coordonnees_gps' => $gpsData,
+                'ordre' => (int)($zone['ordre_affichage'] ?? 0),
                 'actif' => (bool)$zone['actif'],
-                'statut' => $zone['statut'],
+                'statut' => $zone['actif'] ? 'active' : 'inactive',
                 'contenus' => []
             ];
-
-            // Coordonnées GPS
-            if ($zone['coordonnees_gps_lat'] && $zone['coordonnees_gps_lng']) {
-                $zoneData['coordonnees_gps'] = [
-                    'lat' => (float)$zone['coordonnees_gps_lat'],
-                    'lng' => (float)$zone['coordonnees_gps_lng']
-                ];
-            }
 
             // Récupérer les contenus de la zone
             $stmt = $pdo->prepare("SELECT * FROM contenus WHERE zone_id = ? ORDER BY ordre ASC");
