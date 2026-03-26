@@ -655,7 +655,7 @@ const DBManager = {
       });
 
       // Envoyer au serveur via API
-      const apiUrl = this.config.serverUrl.replace('/data', '/api/sync.php');
+      const apiUrl = this.config.serverUrl.replace('/data', '/API/sync.php');
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
