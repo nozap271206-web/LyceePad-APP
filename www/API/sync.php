@@ -108,6 +108,54 @@ function updateZoneInDB($pdo, $zone) {
 }
 
 /**
+ * Sauvegarder un parcours dans MySQL
+ */
+function saveParcoursInDB($pdo, $parcours) {
+    try {
+        $nom = $parcours['nom'] ?? $parcours['nom_parcours'] ?? null;
+        if (!$nom) return false;
+
+        // Récupérer un id_profil par défaut
+        $stmtP = $pdo->query("SELECT id_profil FROM profils_visiteurs LIMIT 1");
+        $profil = $stmtP->fetch();
+        $idProfil = $profil ? $profil['id_profil'] : 1;
+
+        // Upsert parcours
+        if (!empty($parcours['id'])) {
+            $stmt = $pdo->prepare("SELECT id_parcours FROM parcours WHERE id_parcours = ?");
+            $stmt->execute([$parcours['id']]);
+            $existing = $stmt->fetch();
+        } else {
+            $existing = false;
+        }
+
+        if ($existing) {
+            $pdo->prepare("UPDATE parcours SET nom_parcours = ?, description = ? WHERE id_parcours = ?")
+                ->execute([$nom, $parcours['description'] ?? '', $parcours['id']]);
+            $idParcours = $parcours['id'];
+        } else {
+            $pdo->prepare("INSERT INTO parcours (id_profil, nom_parcours, description, actif) VALUES (?, ?, ?, 1)")
+                ->execute([$idProfil, $nom, $parcours['description'] ?? '']);
+            $idParcours = $pdo->lastInsertId();
+        }
+
+        // Mettre à jour les zones du parcours
+        if (isset($parcours['zones_ids']) && is_array($parcours['zones_ids'])) {
+            $pdo->prepare("DELETE FROM parcours_zones WHERE id_parcours = ?")->execute([$idParcours]);
+            $stmtIns = $pdo->prepare("INSERT IGNORE INTO parcours_zones (id_parcours, id_zone, ordre_visite) VALUES (?, ?, ?)");
+            foreach ($parcours['zones_ids'] as $ordre => $idZone) {
+                $stmtIns->execute([$idParcours, $idZone, $ordre + 1]);
+            }
+        }
+
+        return true;
+    } catch (PDOException $e) {
+        error_log("Erreur save parcours: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
  * Régénérer le fichier qr-data.json depuis MySQL
  */
 function regenerateJSONFromDB($pdo) {
@@ -324,6 +372,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (updateZoneInDB($pdo, $zone)) {
                     $zonesUpdated++;
                 }
+            }
+        }
+
+        // Mettre à jour les parcours
+        if (isset($data['parcours'])) {
+            foreach ($data['parcours'] as $parcours) {
+                saveParcoursInDB($pdo, $parcours);
             }
         }
 
