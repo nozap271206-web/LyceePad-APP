@@ -16,10 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // Configuration base de données
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'lyceepad');
-define('DB_USER', 'lyceepad_user');
-define('DB_PASS', 'votre_mot_de_passe');
+require_once __DIR__ . '/config.php';
 
 // Chemins des fichiers
 define('DATA_DIR', __DIR__ . '/../data/');
