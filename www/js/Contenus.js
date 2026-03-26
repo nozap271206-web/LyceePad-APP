@@ -10,7 +10,7 @@ const ContenusManager = {
    * URL de base de l'API upload (même serveur que db-manager)
    */
   get uploadApiUrl() {
-    return DBManager.config.serverUrl.replace('/data', '/api/upload.php');
+    return DBManager.config.serverUrl.replace('/data', '/API/upload.php');
   },
 
   /**
