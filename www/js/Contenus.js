@@ -10,7 +10,7 @@ const ContenusManager = {
    * URL de base de l'API upload (même serveur que db-manager)
    */
   get uploadApiUrl() {
-    return DBManager.config.serverUrl.replace('/data', '/api/upload.php');
+    return DBManager.config.serverUrl.replace('/data', '/API/upload.php');
   },
 
   /**
@@ -51,6 +51,11 @@ const ContenusManager = {
           <button class="btn btn-secondary" id="btnRefreshMedia">
             <i class="fas fa-sync-alt"></i> Actualiser
           </button>
+        </div>
+        <div class="role-selector-bar">
+          <span><i class="fas fa-map-pin"></i> Emplacement des photos :</span>
+          <label class="role-option"><input type="radio" name="photoRole" value="gallery" checked> <span><i class="fas fa-th"></i> Galerie</span></label>
+          <label class="role-option"><input type="radio" name="photoRole" value="hero"> <span><i class="fas fa-image"></i> Image principale</span></label>
         </div>
 
         <div class="upload-progress" id="uploadProgress">
@@ -194,9 +199,12 @@ const ContenusManager = {
             </button>
           </div>`;
       } else {
+        const roleLabel = f.role === 'hero' ? 'Image principale' : 'Galerie';
+        const roleClass = f.role === 'hero' ? 'role-hero' : 'role-gallery';
         return `
           <div class="media-item" data-filename="${f.name}">
             <img src="${fullUrl}" alt="${f.name}" loading="lazy">
+            <span class="role-badge ${roleClass}">${roleLabel}</span>
             <div class="media-item-info">
               <div class="media-item-name">${f.name}</div>
               <span>${sizeKb} Ko · image</span>
@@ -241,6 +249,10 @@ const ContenusManager = {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('qr_code', this.currentQrCode);
+        if (!file.type.startsWith('video/')) {
+          const roleInput = document.querySelector('input[name="photoRole"]:checked');
+          formData.append('role', roleInput ? roleInput.value : 'gallery');
+        }
 
         const res  = await fetch(this.uploadApiUrl, { method: 'POST', body: formData });
         const data = await res.json();

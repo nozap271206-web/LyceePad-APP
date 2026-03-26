@@ -7,9 +7,9 @@
  */
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'lyceepad');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_NAME', 'lyceepad_db');
+define('DB_USER', 'lyceepad_user');
+define('DB_PASS', 'lycee13');
 
 function getDB() {
     try {

@@ -85,7 +85,7 @@
         "lat": 43.5214,
         "lng": 5.443
       },
-      "image": null,
+      "image": "/img/Sud-7.jpg",
       "ordre": 12,
       "actif": true
     },
@@ -100,7 +100,7 @@
         "lat": 43.5214,
         "lng": 5.443
       },
-      "image": null,
+      "image": "/img/Sud-8.jpg",
       "ordre": 13,
       "actif": true
     },
@@ -130,7 +130,7 @@
         "lat": 43.5214,
         "lng": 5.443
       },
-      "image": null,
+      "image": "/img/Labo-sud.jpg",
       "ordre": 15,
       "actif": true
     },
@@ -430,7 +430,7 @@
         "lat": 43.52143,
         "lng": 5.44385
       },
-      "image": null,
+      "image": "/img/Théatre-1.jpg",
       "ordre": 0,
       "actif": true
     },

@@ -127,34 +127,34 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Fallback statique (offline / IndexedDB vide)
 const ZONES_FALLBACK = {
   'QR_HALL_001':         { nom: 'Hall d\'accueil/Vie scolaire', batiment: '', etage: '', description: 'Point d\'entrée principal du lycée avec personnel d\'accueil.' },
-  'QR_CDI_001':          { nom: 'CDI', batiment: 'Bâtiment C', etage: '1er étage', description: 'Centre de Documentation et d\'Information.', photos: ['/img/photo_CDI_1.png', '/img/photo_CDI_2.png'] },
+  'QR_CDI_001':          { nom: 'CDI', batiment: 'Bâtiment C', etage: '1er étage', description: 'Centre de Documentation et d\'Information.', photos: ['/img/photo_CDI_1.png', '/img/photo_CDI_2.png'], videos: ['/video/Presentation_CDI.mp4'] },
   'QR_CAFET_001':        { nom: 'Cafétéria', batiment: 'Bâtiment C', etage: 'RDC', description: 'Espace de restauration et de convivialité.' },
-  'QR_SUD_05':           { nom: 'Salle Sud 05', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
-  'QR_SUD_06':           { nom: 'Salle Sud 06', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
-  'QR_SUD_07':           { nom: 'Salle Sud 07', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
-  'QR_SUD_08':           { nom: 'Salle Sud 08', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
+  'QR_SUD_05':           { nom: 'Salle Sud 05', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.', noVideo: true },
+  'QR_SUD_06':           { nom: 'Salle Sud 06', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.', noVideo: true },
+  'QR_SUD_07':           { nom: 'Salle Sud 07', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.', photos: ['/img/Sud-7.jpg'] },
+  'QR_SUD_08':           { nom: 'Salle Sud 08', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.', photos: ['/img/Sud-8.jpg'] },
   'QR_SUD_09':           { nom: 'Salle Sud 09', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Salle de cours - Bâtiment Sud.' },
-  'QR_LABO_SUD':         { nom: 'Labo Sud', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Laboratoire - Bâtiment Sud.' },
-  'QR_FB_10':            { nom: 'Salle FB 10', batiment: 'Bâtiment FB', etage: 'RDC', description: 'Salle de cours - Bâtiment FB.' },
-  'QR_FB_11':            { nom: 'Salle FB 11', batiment: 'Bâtiment FB', etage: 'RDC', description: 'Salle de cours - Bâtiment FB.' },
-  'QR_FB_20':            { nom: 'Salle FB 20', batiment: 'Bâtiment FB', etage: '1er étage', description: 'Salle de cours - Bâtiment FB.' },
-  'QR_FB_21':            { nom: 'Salle FB 21', batiment: 'Bâtiment FB', etage: '1er étage', description: 'Salle de cours - Bâtiment FB.' },
-  'QR_NORD_08':          { nom: 'Salle Nord 08', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.' },
-  'QR_NORD_09':          { nom: 'Salle Nord 09', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.' },
-  'QR_NORD_10':          { nom: 'Salle Nord 10', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.' },
-  'QR_NORD_11':          { nom: 'Salle Nord 11', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.' },
-  'QR_NORD_12':          { nom: 'Salle Nord 12', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
-  'QR_NORD_13':          { nom: 'Salle Nord 13', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
-  'QR_NORD_14':          { nom: 'Salle Nord 14', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
-  'QR_NORD_15':          { nom: 'Salle Nord 15', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
-  'QR_NORD_16':          { nom: 'Salle Nord 16', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.' },
+  'QR_LABO_SUD':         { nom: 'Labo Sud', batiment: 'Bâtiment Sud', etage: 'RDC', description: 'Laboratoire - Bâtiment Sud.', photos: ['/img/Labo-sud.jpg'] },
+  'QR_FB_10':            { nom: 'Salle FB 10', batiment: 'Bâtiment FB', etage: 'RDC', description: 'Salle de cours - Bâtiment FB.', noVideo: true },
+  'QR_FB_11':            { nom: 'Salle FB 11', batiment: 'Bâtiment FB', etage: 'RDC', description: 'Salle de cours - Bâtiment FB.', noVideo: true },
+  'QR_FB_20':            { nom: 'Salle FB 20', batiment: 'Bâtiment FB', etage: '1er étage', description: 'Salle de cours - Bâtiment FB.', noVideo: true },
+  'QR_FB_21':            { nom: 'Salle FB 21', batiment: 'Bâtiment FB', etage: '1er étage', description: 'Salle de cours - Bâtiment FB.', noVideo: true },
+  'QR_NORD_08':          { nom: 'Salle Nord 08', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.', noVideo: true },
+  'QR_NORD_09':          { nom: 'Salle Nord 09', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.', noVideo: true },
+  'QR_NORD_10':          { nom: 'Salle Nord 10', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.', noVideo: true },
+  'QR_NORD_11':          { nom: 'Salle Nord 11', batiment: 'Bâtiment Nord', etage: 'RDC', description: 'Salle de cours - Bâtiment Nord.', noVideo: true },
+  'QR_NORD_12':          { nom: 'Salle Nord 12', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.', noVideo: true },
+  'QR_NORD_13':          { nom: 'Salle Nord 13', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.', noVideo: true },
+  'QR_NORD_14':          { nom: 'Salle Nord 14', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.', noVideo: true },
+  'QR_NORD_15':          { nom: 'Salle Nord 15', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.', noVideo: true },
+  'QR_NORD_16':          { nom: 'Salle Nord 16', batiment: 'Bâtiment Nord', etage: '1er étage', description: 'Salle de cours - Bâtiment Nord.', noVideo: true },
   'QR_EST_11':           { nom: 'Salle Est 11', batiment: 'Bâtiment Est', etage: 'RDC', description: 'Salle de cours - Bâtiment Est.' },
   'QR_EST_12':           { nom: 'Salle Est 12', batiment: 'Bâtiment Est', etage: 'RDC', description: 'Salle de cours - Bâtiment Est.' },
   'QR_EST_13':           { nom: 'Salle Est 13', batiment: 'Bâtiment Est', etage: 'RDC', description: 'Salle de cours - Bâtiment Est.' },
-  'QR_C_ETAGE_1':        { nom: 'Bâtiment C - 1er étage', batiment: 'Bâtiment C', etage: '1er étage', description: 'Premier étage - Bâtiment C.' },
-  'QR_C_ETAGE_2':        { nom: 'Bâtiment C - 2ème étage', batiment: 'Bâtiment C', etage: '2ème étage', description: 'Second étage - Bâtiment C.' },
-  'QR_C_ETAGE_3':        { nom: 'Bâtiment C - 3ème étage', batiment: 'Bâtiment C', etage: '3ème étage', description: 'Troisième étage - Bâtiment C.' },
-  'QR_AMPHITHÉATRE_001': { nom: 'Amphithéâtre', batiment: '', etage: '', description: 'Amphithéâtre de l\'établissement.' },
+  'QR_C_ETAGE_1':        { nom: 'Bâtiment C - 1er étage', batiment: 'Bâtiment C', etage: '1er étage', description: 'Premier étage - Bâtiment C.', noVideo: true },
+  'QR_C_ETAGE_2':        { nom: 'Bâtiment C - 2ème étage', batiment: 'Bâtiment C', etage: '2ème étage', description: 'Second étage - Bâtiment C.', noVideo: true },
+  'QR_C_ETAGE_3':        { nom: 'Bâtiment C - 3ème étage', batiment: 'Bâtiment C', etage: '3ème étage', description: 'Troisième étage - Bâtiment C.', noVideo: true },
+  'QR_AMPHITHÉATRE_001': { nom: 'Amphithéâtre', batiment: '', etage: '', description: 'Amphithéâtre de l\'établissement.', photos: ['/img/Théatre-1.jpg', '/img/Théatre-2.jpg'], noVideo: true },
   'QR_INTERNAT_001':     { nom: 'Internat', batiment: 'Internat', etage: '', description: 'Internat du lycée Saint-Éloi.', photos: ['/img/photo_salle_internat.png', '/img/photo_chambre_internat.png'], videos: ['/video/presentation_internat.mp4'] },
 };
 
@@ -179,6 +179,7 @@ async function loadZoneFromDB(qrCode) {
       const f = ZONES_FALLBACK[qrCode];
       if ((!zone.photos || zone.photos.length === 0) && f.photos) zone.photos = f.photos;
       if ((!zone.videos || zone.videos.length === 0) && f.videos) zone.videos = f.videos;
+      if (f.noVideo) zone.noVideo = true;
     }
 
     if (!zone) {
@@ -205,8 +206,9 @@ async function loadZoneFromDB(qrCode) {
     const resolveUrl = p => {
       if (!p) return null;
       if (p.startsWith('http')) return p;
-      if (p.startsWith('/img/zones/')) return serverBase + p; // fichiers uploadés
-      return p; // assets statiques, laisser le navigateur résoudre
+      if (p.startsWith('../')) p = '/' + p.slice(3); // normalise ../img/ → /img/
+      if (p.startsWith('/img/zones/') || p.startsWith('/video/zones/')) return serverBase + p;
+      return p; // chemin absolu, le navigateur résout depuis la racine
     };
     const photoSources = (zone.photos && zone.photos.length > 0)
       ? zone.photos.map(resolveUrl).filter(Boolean)
@@ -229,6 +231,40 @@ async function loadZoneFromDB(qrCode) {
         </div>
       `;
       galleryGrid.appendChild(photoDiv);
+    }
+
+    // Charger les photos/vidéos uploadées depuis le serveur
+    try {
+      const uploadUrl = `${serverBase}/API/upload.php?qr_code=${encodeURIComponent(qrCode)}`;
+      const uploadRes = await fetch(uploadUrl, { cache: 'no-cache' });
+      if (uploadRes.ok) {
+        const uploadData = await uploadRes.json();
+        if (uploadData.success && uploadData.files && uploadData.files.length > 0) {
+          uploadData.files.forEach(f => {
+            const fullUrl = serverBase + f.url;
+            if (f.type === 'image') {
+              if (f.role === 'hero') {
+                const heroEl = document.querySelector('.zone-hero');
+                if (heroEl) {
+                  heroEl.style.backgroundImage = `url('${fullUrl}')`;
+                  heroEl.style.backgroundSize = 'cover';
+                  heroEl.style.backgroundPosition = 'center';
+                }
+              } else {
+                const photoDiv = document.createElement('div');
+                photoDiv.className = 'gallery-item';
+                photoDiv.innerHTML = `<img src="${fullUrl}" alt="${zone.nom}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
+                galleryGrid.appendChild(photoDiv);
+              }
+            } else if (f.type === 'video' && !zone.noVideo && (!zone.videos || zone.videos.length === 0)) {
+              const placeholder = document.getElementById('video-placeholder');
+              if (placeholder) placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${fullUrl}" type="video/mp4"></video>`;
+            }
+          });
+        }
+      }
+    } catch (e) {
+      console.warn('Photos uploadées non disponibles:', e.message);
     }
 
     // Remplir la description détaillée
@@ -256,12 +292,18 @@ async function loadZoneFromDB(qrCode) {
     document.getElementById('quiz-text').textContent = `Répondez au quiz sur ${zone.nom}`;
     document.getElementById('quiz-link').href = `Quiz.html?zone=${zone.id}`;
 
-    // Mettre à jour les titres médias et afficher la vidéo si disponible
-    document.getElementById('video-title').textContent = `Visite de ${zone.nom}`;
-    if (zone.videos && zone.videos.length > 0) {
-      const videoSrc = zone.videos[0].startsWith('http') ? zone.videos[0] : serverBase + zone.videos[0];
-      const placeholder = document.getElementById('video-placeholder');
-      placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}"></video>`;
+    // Section vidéo : masquer si noVideo, sinon afficher (avec vidéo si disponible)
+    const videoSection = document.getElementById('video-section');
+    if (zone.noVideo && videoSection) {
+      videoSection.style.display = 'none';
+    } else {
+      const videoTitleEl = document.getElementById('video-title');
+      if (videoTitleEl) videoTitleEl.textContent = `Visite de ${zone.nom}`;
+      if (zone.videos && zone.videos.length > 0) {
+        const videoSrc = resolveUrl(zone.videos[0]);
+        const placeholder = document.getElementById('video-placeholder');
+        if (placeholder) placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}" type="video/mp4"></video>`;
+      }
     }
 
   } catch (err) {

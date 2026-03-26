@@ -99,7 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Générer un nom unique
     $ext          = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $safeName     = sanitizeFilename(pathinfo($file['name'], PATHINFO_FILENAME));
-    $uniqueName   = $safeName . '_' . uniqid() . '.' . $ext;
+    $role         = (isset($_POST['role']) && $_POST['role'] === 'hero') ? 'hero' : 'gallery';
+    $uniqueName   = $role . '_' . $safeName . '_' . uniqid() . '.' . $ext;
     $destPath     = $zoneDir . $uniqueName;
     $publicUrl    = UPLOAD_BASE_URL . $qrCode . '/' . $uniqueName;
 
@@ -122,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'original'  => $file['name'],
             'url'       => $publicUrl,
             'type'      => $fileType,
+            'role'      => $role,
             'mime'      => $mime,
             'size'      => $file['size'],
             'qr_code'   => $qrCode
@@ -186,11 +188,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $finfo    = new finfo(FILEINFO_MIME_TYPE);
             $mime     = $finfo->file($zoneDir . $f);
             $fileType = strpos($mime, 'video') === 0 ? 'video' : 'image';
+            $fileRole = (strpos($f, 'hero_') === 0) ? 'hero' : 'gallery';
 
             $files[] = [
                 'name'     => $f,
                 'url'      => UPLOAD_BASE_URL . $qrCode . '/' . $f,
                 'type'     => $fileType,
+                'role'     => $fileRole,
                 'size'     => filesize($zoneDir . $f),
                 'modified' => filemtime($zoneDir . $f)
             ];

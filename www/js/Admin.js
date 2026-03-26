@@ -216,10 +216,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     document.querySelectorAll('.btn-content').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', async (e) => {
         const qrCode = e.currentTarget.dataset.qr;
-        // TODO: Ouvrir l'éditeur de contenu
-        alert('Éditeur de contenu - À venir');
+        // Aller sur l'onglet Contenus et pré-sélectionner la zone
+        document.querySelector('.tab-btn[data-tab="contenus"]').click();
+        await ContenusManager.populateZoneSelect();
+        const select = document.getElementById('selectZoneContenus');
+        if (select) {
+          select.value = qrCode;
+          select.dispatchEvent(new Event('change'));
+        }
       });
     });
   }
