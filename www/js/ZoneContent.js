@@ -233,6 +233,40 @@ async function loadZoneFromDB(qrCode) {
       galleryGrid.appendChild(photoDiv);
     }
 
+    // Charger les photos/vidéos uploadées depuis le serveur
+    try {
+      const uploadUrl = `${serverBase}/API/upload.php?qr_code=${encodeURIComponent(qrCode)}`;
+      const uploadRes = await fetch(uploadUrl, { cache: 'no-cache' });
+      if (uploadRes.ok) {
+        const uploadData = await uploadRes.json();
+        if (uploadData.success && uploadData.files && uploadData.files.length > 0) {
+          uploadData.files.forEach(f => {
+            const fullUrl = serverBase + f.url;
+            if (f.type === 'image') {
+              if (f.role === 'hero') {
+                const heroEl = document.querySelector('.zone-hero');
+                if (heroEl) {
+                  heroEl.style.backgroundImage = `url('${fullUrl}')`;
+                  heroEl.style.backgroundSize = 'cover';
+                  heroEl.style.backgroundPosition = 'center';
+                }
+              } else {
+                const photoDiv = document.createElement('div');
+                photoDiv.className = 'gallery-item';
+                photoDiv.innerHTML = `<img src="${fullUrl}" alt="${zone.nom}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
+                galleryGrid.appendChild(photoDiv);
+              }
+            } else if (f.type === 'video' && !zone.noVideo && (!zone.videos || zone.videos.length === 0)) {
+              const placeholder = document.getElementById('video-placeholder');
+              if (placeholder) placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${fullUrl}" type="video/mp4"></video>`;
+            }
+          });
+        }
+      }
+    } catch (e) {
+      console.warn('Photos uploadées non disponibles:', e.message);
+    }
+
     // Remplir la description détaillée
     const descriptionContent = document.getElementById('description-content');
     descriptionContent.innerHTML = '';

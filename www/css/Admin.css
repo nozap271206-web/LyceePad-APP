@@ -613,6 +613,42 @@ body {
 }
 .media-item:hover .media-item-delete { opacity: 1; }
 
+.role-selector-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+.role-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 500;
+}
+.role-option input { accent-color: var(--primary); }
+.role-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.role-gallery { background: var(--primary); color: #fff; }
+.role-hero    { background: #f59e0b; color: #fff; }
+
 .upload-progress {
   display: none;
   padding: 14px;
