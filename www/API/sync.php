@@ -201,31 +201,36 @@ function regenerateJSONFromDB($pdo) {
 
         // Convertir parcours
         foreach ($parcours as $p) {
-            $data['parcours'][$p['id']] = [
-                'id' => (int)$p['id'],
-                'nom' => $p['nom'],
-                'description' => $p['description'],
-                'zones_ids' => $p['zones_ids'] ? json_decode($p['zones_ids'], true) : []
+            // Récupérer les zones du parcours
+            $stmtPZ = $pdo->prepare("SELECT id_zone FROM parcours_zones WHERE id_parcours = ? ORDER BY ordre_affichage ASC");
+            $stmtPZ->execute([$p['id_parcours']]);
+            $zonesIds = array_column($stmtPZ->fetchAll(), 'id_zone');
+
+            $data['parcours'][$p['id_parcours']] = [
+                'id' => (int)$p['id_parcours'],
+                'nom' => $p['nom_parcours'],
+                'description' => $p['description'] ?? '',
+                'zones_ids' => $zonesIds
             ];
         }
 
         // Convertir profils
         foreach ($profils as $p) {
-            $data['profils'][$p['nom']] = [
-                'nom' => $p['nom'],
-                'label' => $p['label'],
-                'description' => $p['description'],
-                'icone' => $p['icone']
+            $data['profils'][$p['nom_profil']] = [
+                'nom' => $p['nom_profil'],
+                'label' => $p['nom_profil'],
+                'description' => $p['description'] ?? '',
+                'icone' => $p['icon'] ?? ''
             ];
         }
 
         // Convertir types de contenu
         foreach ($typesContenu as $tc) {
             $data['types_contenu'][] = [
-                'id' => (int)$tc['id'],
-                'nom' => $tc['nom'],
-                'label' => $tc['label'],
-                'icone' => $tc['icone']
+                'id' => (int)$tc['id_type'],
+                'nom' => $tc['nom_type'],
+                'label' => $tc['nom_type'],
+                'icone' => $tc['icon'] ?? ''
             ];
         }
 
