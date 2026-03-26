@@ -79,11 +79,11 @@ body {
   transition: all 0.2s;
 }
 
-.tab-btn:hover { color: var(--primary); }
+.tab-btn:hover { color: var(--text); }
 
 .tab-btn.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+  color: var(--text);
+  border-bottom-color: var(--text);
   font-weight: 600;
 }
 
