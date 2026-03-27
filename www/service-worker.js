@@ -8,7 +8,7 @@
  *  - Offline page → si tout échoue, une page de secours est affichée
  */
 
-const CACHE_VERSION = 'lyceepad-v2';
+const CACHE_VERSION = 'lyceepad-v3';
 
 // Fichiers mis en cache immédiatement à l'installation
 const PRECACHE_ASSETS = [
@@ -20,6 +20,7 @@ const PRECACHE_ASSETS = [
   '/html/About.html',
   '/html/ZoneContent.html',
   '/html/login.html',
+  '/html/Admin.html',
   '/css/app.css',
   '/css/Home.css',
   '/css/map.css',
