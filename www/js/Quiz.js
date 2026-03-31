@@ -117,34 +117,109 @@ const quizData = {
       }
     ]
   },
-  2: { // Salles NORD/MELEC
-    zoneName: 'Salles NORD/MELEC',
+  2: { // Salles NORD/MELEC - BTS MS
+    zoneName: 'Salles NORD/MELEC - BTS MS',
     zoneIcon: '🔬',
     questionsPool: [
       {
-        question: 'Que signifie MELEC ?',
-        answers: ['Métiers de l\'Électricité', 'Mécanique Électrique', 'Maintenance Électronique', 'Menuiserie Électrique'],
+        question: 'Que signifie BTS MS ?',
+        answers: ['Brevet de Technicien Supérieur Maintenance des Systèmes', 'Brevet de Technicien Supérieur Mécanique et Structures', 'Brevet de Technicien Supérieur Mesures Scientifiques', 'Brevet de Technicien Supérieur Management et Services'],
         correctIndex: 0
       },
       {
-        question: 'Quel type d\'ateliers trouve-t-on dans cette zone ?',
-        answers: ['Ateliers électricité', 'Ateliers cuisine', 'Ateliers menuiserie', 'Ateliers peinture'],
+        question: 'Quelles sont les trois options du BTS MS ?',
+        answers: ['Systèmes de production, Systèmes énergétiques et fluidiques, Systèmes éoliens', 'Informatique, Électronique, Mécanique', 'Automatisme, Robotique, Pneumatique', 'Hydraulique, Électrique, Thermique'],
         correctIndex: 0
       },
       {
-        question: 'Les salles NORD sont-elles accessibles aux visiteurs ?',
-        answers: ['Oui, librement', 'Non, jamais', 'Oui, avec accompagnement', 'Uniquement les jours portes ouvertes'],
-        correctIndex: 2
-      },
-      {
-        question: 'Combien d\'élèves peuvent être accueillis simultanément dans les ateliers MELEC ?',
-        answers: ['10 élèves', '15 élèves', '20 élèves', '30 élèves'],
-        correctIndex: 2
-      },
-      {
-        question: 'Quel diplôme prépare-t-on dans la section MELEC ?',
-        answers: ['CAP', 'BAC Pro', 'BTS', 'Licence'],
+        question: 'Qu\'est-ce que la maintenance préventive ?',
+        answers: ['Réparer une machine après une panne', 'Effectuer des interventions planifiées avant qu\'une panne survienne', 'Remplacer immédiatement toutes les pièces usées', 'Surveiller une machine à distance uniquement'],
         correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce que la maintenance corrective ?',
+        answers: ['Planifier des interventions régulières', 'Intervenir après une défaillance pour remettre le système en état', 'Former les opérateurs à l\'utilisation des machines', 'Améliorer les performances d\'un équipement'],
+        correctIndex: 1
+      },
+      {
+        question: 'Que signifie GMAO ?',
+        answers: ['Gestion de la Maintenance Assistée par Ordinateur', 'Guide de Maintenance des Ateliers et Outillages', 'Gestion des Matériaux et des Approvisionnements Outil', 'Groupe de Maintenance Automatique et Opérationnelle'],
+        correctIndex: 0
+      },
+      {
+        question: 'Quel est le rôle d\'un technicien de maintenance en entreprise ?',
+        answers: ['Uniquement produire des pièces', 'Assurer le bon fonctionnement des équipements et intervenir en cas de panne', 'Gérer les stocks de produits finis', 'Concevoir de nouveaux équipements industriels'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'un système pneumatique ?',
+        answers: ['Un système utilisant de l\'eau sous pression', 'Un système utilisant de l\'air comprimé pour transmettre de l\'énergie', 'Un système électrique haute tension', 'Un système de chauffage par convection'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'un système hydraulique ?',
+        answers: ['Un système utilisant de l\'air pour actionner des vérins', 'Un système utilisant un fluide liquide sous pression pour transmettre de l\'énergie', 'Un système de refroidissement par ventilation', 'Un système de gestion de l\'eau potable'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel appareil permet de mesurer la tension électrique dans un circuit ?',
+        answers: ['Un ampèremètre', 'Un ohmmètre', 'Un voltmètre', 'Un wattmètre'],
+        correctIndex: 2
+      },
+      {
+        question: 'Que signifie MTBF en maintenance industrielle ?',
+        answers: ['Méthode de Travail en Binôme et en Formation', 'Mean Time Between Failures (Temps Moyen Entre Pannes)', 'Maintenance Technique des Bâtiments et Fluides', 'Module de Test des Batteries et Fusibles'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel type de capteur mesure une température ?',
+        answers: ['Un capteur inductif', 'Un capteur capacitif', 'Un thermocouple ou une sonde PT100', 'Un capteur photoélectrique'],
+        correctIndex: 2
+      },
+      {
+        question: 'Qu\'est-ce qu\'un automate programmable industriel (API) ?',
+        answers: ['Un robot entièrement autonome', 'Un système électronique programmable qui contrôle des processus industriels', 'Un logiciel de dessin technique', 'Un capteur de pression industriel'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quelle est la tension d\'alimentation standard en France pour les machines industrielles ?',
+        answers: ['110V monophasé', '230V monophasé ou 400V triphasé', '48V continu uniquement', '600V triphasé'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'un variateur de vitesse ?',
+        answers: ['Un appareil qui modifie la fréquence du courant pour faire varier la vitesse d\'un moteur', 'Un frein électromagnétique', 'Un transformateur de courant continu', 'Un contacteur électromécanique'],
+        correctIndex: 0
+      },
+      {
+        question: 'Que signifie le terme "consignation" en sécurité industrielle ?',
+        answers: ['Stocker des pièces dans un entrepôt', 'Mettre hors énergie une machine et s\'assurer qu\'elle ne peut pas être réalimentée pendant une intervention', 'Rédiger un rapport de panne', 'Vérifier la conformité d\'un équipement'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel document liste toutes les opérations de maintenance à effectuer sur une machine ?',
+        answers: ['Le plan de production', 'La gamme de maintenance ou plan de maintenance préventive', 'Le bon de livraison', 'La fiche de poste opérateur'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce que la TPM (Total Productive Maintenance) ?',
+        answers: ['Une méthode de maintenance impliquant tous les acteurs de l\'entreprise pour zéro panne et zéro défaut', 'Un logiciel de GMAO américain', 'Un type de maintenance uniquement corrective', 'Une norme européenne sur la sécurité des machines'],
+        correctIndex: 0
+      },
+      {
+        question: 'Qu\'est-ce que le MTR en maintenance ?',
+        answers: ['Moyen Temps de Réparation', 'Maintenance Totale des Robots', 'Mode de Traitement et Révision', 'Mesure Technique de Résistance'],
+        correctIndex: 0
+      },
+      {
+        question: 'Quel document technique décrit le fonctionnement d\'un équipement et ses interventions ?',
+        answers: ['Le bon de commande', 'Le logiciel GMAO', 'Le dossier technique ou notice de maintenance', 'Le planning de production'],
+        correctIndex: 2
+      },
+      {
+        question: 'Quel est le principal objectif du BTS MS option Systèmes de production ?',
+        answers: ['Former des techniciens capables de maintenir des machines de production industrielle', 'Former des ingénieurs en robotique', 'Former des techniciens en informatique uniquement', 'Former des électriciens du bâtiment'],
+        correctIndex: 0
       }
     ]
   },
@@ -174,23 +249,83 @@ const quizData = {
       }
     ]
   },
-  6: { // Bâtiment Principal
-    zoneName: 'Bâtiment Principal',
-    zoneIcon: '🏛️',
+  6: { // CDI de Saint-Éloi
+    zoneName: 'CDI de Saint-Éloi',
+    zoneIcon: '📚',
     questionsPool: [
       {
-        question: 'Que trouve-t-on dans le bâtiment principal ?',
-        answers: ['Accueil et administration', 'Ateliers', 'Gymnase', 'Cantine'],
+        question: 'Que signifie CDI dans un établissement scolaire ?',
+        answers: ['Centre de Documentation et d\'Information', 'Centre de Données Informatiques', 'Centre de Développement et d\'Innovation', 'Centre de Distribution Interne'],
         correctIndex: 0
       },
       {
-        question: 'Le bâtiment principal est-il accessible aux personnes à mobilité réduite ?',
-        answers: ['Oui', 'Non', 'Partiellement', 'En projet'],
+        question: 'Quel est le rôle principal du CDI dans un lycée ?',
+        answers: ['Servir des repas aux élèves', 'Mettre à disposition des ressources documentaires et numériques', 'Organiser les examens', 'Gérer les absences des élèves'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qui est le professionnel responsable du CDI ?',
+        answers: ['Un professeur principal', 'Un professeur documentaliste', 'Un conseiller d\'orientation', 'Un assistant d\'éducation'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel type de ressources trouve-t-on principalement au CDI ?',
+        answers: ['Matériel sportif', 'Livres, magazines, ressources numériques et bases de données', 'Équipements scientifiques', 'Matériel informatique uniquement'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'un SIGB utilisé dans un CDI ?',
+        answers: ['Système Informatique de Gestion des Bulletins', 'Système Intégré de Gestion de Bibliothèque', 'Service Interne de Gestion des Bases de données', 'Système d\'Information et de Gestion des Budgets'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel est l\'objectif de l\'éducation aux médias dispensée au CDI ?',
+        answers: ['Apprendre à réparer des ordinateurs', 'Développer l\'esprit critique face aux informations', 'Apprendre à créer des films', 'Former à la programmation informatique'],
+        correctIndex: 1
+      },
+      {
+        question: 'Comment appelle-t-on la classification utilisée dans la plupart des CDI pour organiser les livres ?',
+        answers: ['Classification alphabétique', 'Classification Dewey', 'Classification numérique', 'Classification par couleur'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quelle activité peut-on pratiquer au CDI en dehors de la lecture ?',
+        answers: ['Jouer aux jeux vidéo librement', 'Effectuer des recherches documentaires sur internet', 'Regarder des films récents', 'Pratiquer des sports d\'intérieur'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel type de prêt propose généralement un CDI ?',
+        answers: ['Prêt de matériel sportif uniquement', 'Prêt de livres, de magazines et parfois de ressources numériques', 'Prêt d\'ordinateurs portables uniquement', 'Prêt de calculatrices uniquement'],
+        correctIndex: 1
+      },
+      {
+        question: 'Le CDI de Saint-Éloi est-il accessible aux élèves pendant les heures de cours ?',
+        answers: ['Non, uniquement pendant les pauses', 'Oui, sur demande auprès du professeur', 'Uniquement le mercredi', 'Seulement aux élèves de terminale'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'une base de données documentaire disponible au CDI ?',
+        answers: ['Un fichier Excel de notes des élèves', 'Un ensemble structuré de ressources numériques accessibles pour la recherche', 'Un annuaire téléphonique', 'Un planning des cours'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel outil numérique utilise-t-on souvent au CDI pour faire des recherches ?',
+        answers: ['Un magnétoscope', 'Un moteur de recherche ou une base de données en ligne', 'Un téléphone fixe', 'Une machine à écrire'],
+        correctIndex: 1
+      },
+      {
+        question: 'Comment s\'appelle le catalogue informatisé permettant de chercher un livre au CDI ?',
+        answers: ['OPAC (Online Public Access Catalog)', 'GPS (Guide de Prêt Scolaire)', 'BNF (Bibliothèque Numérique de France)', 'ENT (Espace Numérique de Travail)'],
         correctIndex: 0
       },
       {
-        question: 'Où se trouve le bureau du directeur ?',
-        answers: ['Rez-de-chaussée', '1er étage', '2ème étage', 'Bâtiment annexe'],
+        question: 'Quel est le rôle de l\'éducation à l\'information (EMI) dispensée au CDI ?',
+        answers: ['Apprendre à jouer d\'un instrument de musique', 'Former les élèves à rechercher, analyser et utiliser l\'information de manière responsable', 'Enseigner les mathématiques', 'Préparer aux examens de sport'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel type d\'espace trouve-t-on souvent dans un CDI moderne ?',
+        answers: ['Un gymnase', 'Un espace de travail collaboratif avec ordinateurs et zone de lecture', 'Une cuisine pédagogique', 'Un laboratoire de chimie'],
         correctIndex: 1
       }
     ]
@@ -253,13 +388,58 @@ const quizData = {
       },
       {
         question: 'Les chambres de l\'internat sont-elles individuelles ?',
-        answers: ['Oui, toutes', 'Non, toutes partagées', 'Mixte', 'Selon les niveaux'],
+        answers: ['Oui, toutes', 'Non, toutes partagées', 'Mixte (individuelles et partagées)', 'Selon les niveaux'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quels sont les horaires de fermeture de l\'internat le soir ?',
+        answers: ['20h', '21h', '22h', '23h'],
         correctIndex: 2
       },
       {
-        question: 'Quels sont les horaires de fermeture de l\'internat ?',
-        answers: ['20h', '21h', '22h', '23h'],
-        correctIndex: 2
+        question: 'Quel service est proposé aux élèves internes pour leurs repas ?',
+        answers: ['Ils doivent cuisiner eux-mêmes', 'Un service de restauration est inclus', 'Ils commandent des repas livrés', 'Il n\'y a pas de service repas'],
+        correctIndex: 1
+      },
+      {
+        question: 'L\'internat dispose-t-il d\'une connexion internet pour les élèves ?',
+        answers: ['Non, aucune connexion', 'Oui, une connexion WiFi est disponible', 'Seulement dans les couloirs', 'Uniquement le week-end'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel est l\'avantage principal de l\'internat pour un élève éloigné du lycée ?',
+        answers: ['Éviter de faire ses devoirs', 'Bénéficier d\'un hébergement sécurisé proche du lycée', 'Ne pas aller en cours', 'Avoir plus de temps libre'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qui supervise et encadre les élèves à l\'internat ?',
+        answers: ['Les professeurs principaux uniquement', 'Des maîtres d\'internat (MI) ou conseillers principaux d\'éducation', 'Les élèves eux-mêmes', 'La direction uniquement'],
+        correctIndex: 1
+      },
+      {
+        question: 'L\'internat du lycée Saint-Éloi accueille-t-il des élèves de tous les niveaux ?',
+        answers: ['Non, uniquement les terminales', 'Oui, des élèves de différentes formations', 'Non, uniquement les BTS', 'Uniquement les premières années'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel équipement trouve-t-on généralement dans une chambre d\'internat ?',
+        answers: ['Une télévision personnelle et un réfrigérateur', 'Un lit, un bureau et un espace de rangement', 'Une cuisine équipée', 'Un canapé et une salle de bain privative'],
+        correctIndex: 1
+      },
+      {
+        question: 'Peut-on rentrer chez soi le week-end quand on est interne ?',
+        answers: ['Non, on reste obligatoirement à l\'internat', 'Oui, l\'internat ferme généralement le week-end', 'Seulement un week-end sur deux', 'Uniquement pendant les vacances scolaires'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'une heure d\'étude surveillée à l\'internat ?',
+        answers: ['Un cours supplémentaire payant', 'Un temps dédié au travail personnel encadré par un adulte', 'Une activité sportive obligatoire', 'Une réunion avec les parents'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel document est nécessaire pour s\'inscrire à l\'internat ?',
+        answers: ['Un passeport uniquement', 'Un dossier d\'inscription avec justificatif de domicile et éloignement', 'Uniquement les bulletins scolaires', 'Aucun document, inscription libre'],
+        correctIndex: 1
       }
     ]
   }
@@ -319,7 +499,8 @@ function displayZoneSelection() {
   // Créer une carte pour chaque zone
   Object.keys(quizData).forEach(zoneId => {
     const zone = quizData[zoneId];
-    const questionCount = zoneId === '1' ? 8 : zone.questionsPool.length; // 8 questions pour zone 1
+    const randomZones = ['1', '2', '6', '10'];
+    const questionCount = randomZones.includes(zoneId) ? 8 : zone.questionsPool.length;
 
     const zoneCard = document.createElement('div');
     zoneCard.className = 'zone-card';
@@ -368,8 +549,9 @@ function startQuiz(zoneId) {
     return;
   }
 
-  // Pour la zone 1 (BTS CIEL IR), sélectionner 8 questions aléatoires
-  if (zoneId === 1) {
+  // Zones avec 8 questions aléatoires
+  const randomZones = [1, 2, 6, 10];
+  if (randomZones.includes(zoneId)) {
     selectedQuestions = selectRandomQuestions(zoneData.questionsPool, 8);
   } else {
     selectedQuestions = [...zoneData.questionsPool];
