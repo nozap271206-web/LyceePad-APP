@@ -20,9 +20,9 @@
     <preference name="Fullscreen" value="true" />
     
     <!-- Configuration de la Splash Screen (Nouvelle méthode Android 12+) -->
-    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/img/logo.png" />
-    <preference name="AndroidWindowSplashScreenBackground" value="#2EA3F2" />
-    <preference name="AndroidWindowSplashScreenIconBackgroundColor" value="#2EA3F2" />
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/img/logo_splash.png" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#1a6fa8" />
+    <preference name="AndroidWindowSplashScreenIconBackgroundColor" value="#ffffff" />
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="ShowSplashScreenSpinner" value="false" />
     
