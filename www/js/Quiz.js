@@ -330,29 +330,113 @@ const quizData = {
       }
     ]
   },
-  8: { // Salles BAC Pro
-    zoneName: 'Salles BAC Pro',
+  8: { // Salles BAC Pro CIEL & MELEC - 2 pools séparés
+    zoneName: 'Salles BAC Pro CIEL & MELEC',
     zoneIcon: '💻',
-    questionsPool: [
+    // Pool dédié BAC Pro CIEL (10 questions)
+    questionsPoolCIEL: [
       {
-        question: 'Combien de BAC Pro différents sont proposés au lycée ?',
-        answers: ['2', '4', '6', '8'],
+        question: 'Que prépare le BAC Pro CIEL option A ?',
+        answers: ['Cybersécurité, Informatique et réseaux', 'Électronique et communication', 'Maintenance industrielle', 'Automatismes et robotique'],
+        correctIndex: 0
+      },
+      {
+        question: 'Quel langage de programmation est souvent utilisé en BAC Pro CIEL ?',
+        answers: ['Latin', 'Python ou C', 'Espagnol', 'HTML uniquement'],
         correctIndex: 1
       },
       {
-        question: 'La formation BAC Pro dure combien d\'années ?',
-        answers: ['1 an', '2 ans', '3 ans', '4 ans'],
+        question: 'En BAC Pro CIEL, qu\'est-ce qu\'un réseau local (LAN) ?',
+        answers: ['Un réseau téléphonique national', 'Un réseau informatique reliant des équipements dans une zone géographique limitée', 'Un réseau de transport en commun', 'Un réseau de distribution électrique'],
+        correctIndex: 1
+      },
+      {
+        question: 'En BAC Pro CIEL, qu\'est-ce qu\'une adresse MAC ?',
+        answers: ['L\'adresse d\'un magasin Apple', 'Un identifiant unique attribué à une carte réseau', 'Un type de câble réseau', 'Un protocole de sécurité WiFi'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'un câble VDI utilisé en BAC Pro CIEL ?',
+        answers: ['Un câble Voix Données Images pour les réseaux informatiques et téléphoniques', 'Un câble haute tension industrielle', 'Un câble de recharge de véhicule électrique', 'Un câble d\'antenne TV'],
+        correctIndex: 0
+      },
+      {
+        question: 'En BAC Pro CIEL, que permet de faire un switch réseau ?',
+        answers: ['Allumer et éteindre les ordinateurs à distance', 'Connecter plusieurs équipements sur un réseau local et gérer les communications entre eux', 'Bloquer l\'accès à internet', 'Convertir le WiFi en câble Ethernet'],
+        correctIndex: 1
+      },
+      {
+        question: 'En BAC Pro CIEL, qu\'est-ce qu\'un protocole de communication ?',
+        answers: ['Une règle de politesse dans les réunions', 'Un ensemble de règles qui définissent comment les équipements échangent des données', 'Un document administratif de l\'école', 'Un logiciel antivirus'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel outil utilise-t-on principalement pour programmer en BAC Pro CIEL ?',
+        answers: ['Un marteau', 'Un IDE comme Visual Studio Code ou PyCharm', 'Un oscilloscope uniquement', 'Un multimètre'],
+        correctIndex: 1
+      },
+      {
+        question: 'En BAC Pro CIEL, quel appareil permet de connecter un réseau local à internet ?',
+        answers: ['Un hub', 'Un routeur', 'Un répéteur', 'Un pont réseau'],
+        correctIndex: 1
+      },
+      {
+        question: 'Après un BAC Pro CIEL, quelle poursuite d\'études est la plus adaptée ?',
+        answers: ['Uniquement entrer dans la vie active', 'Préparer un BTS CIEL ou d\'autres BTS du secteur numérique', 'S\'inscrire en médecine uniquement', 'Passer directement un Master'],
+        correctIndex: 1
+      }
+    ],
+    // Pool dédié BAC Pro MELEC (10 questions)
+    questionsPoolMELEC: [
+      {
+        question: 'Que signifie MELEC dans le BAC Pro ?',
+        answers: ['Métiers de l\'Électricité et de ses Environnements Connectés', 'Mécanique Électrique et Connections', 'Maintenance des Équipements Locaux Et Connectés', 'Modules Électriques Liés aux Environnements Connectés'],
+        correctIndex: 0
+      },
+      {
+        question: 'Quel type de travaux pratiques réalise-t-on en BAC Pro MELEC ?',
+        answers: ['Programmation de sites web', 'Câblage électrique, installation de tableaux et domotique', 'Réparation de voitures', 'Conception de meubles en bois'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'un tableau électrique basse tension (BT) en MELEC ?',
+        answers: ['Un tableau blanc pour écrire', 'Un coffret regroupant les protections et disjoncteurs d\'une installation électrique', 'Un écran de contrôle industriel', 'Un panneau de signalisation'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce que la domotique abordée en BAC Pro MELEC ?',
+        answers: ['La gestion automatisée des équipements d\'une maison (éclairage, chauffage, sécurité)', 'La fabrication de robots industriels', 'La programmation de sites internet', 'La maintenance des avions'],
+        correctIndex: 0
+      },
+      {
+        question: 'Quel appareil de mesure est indispensable en BAC Pro MELEC pour vérifier une installation ?',
+        answers: ['Un thermomètre', 'Un multimètre (voltmètre, ampèremètre, ohmmètre)', 'Un chronomètre', 'Un microscope'],
+        correctIndex: 1
+      },
+      {
+        question: 'Que signifie NFC 15-100 en électricité ?',
+        answers: ['Un type de connexion sans fil', 'La norme française régissant les installations électriques dans les bâtiments', 'Un protocole réseau informatique', 'Un calibre de câble électrique'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel est le rôle d\'un disjoncteur différentiel en installation électrique MELEC ?',
+        answers: ['Augmenter la puissance électrique', 'Protéger les personnes contre les électrocutions et les installations contre les courts-circuits', 'Mesurer la consommation électrique', 'Transformer le courant alternatif en courant continu'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce que le courant alternatif (AC) utilisé dans les installations MELEC ?',
+        answers: ['Un courant qui circule toujours dans le même sens', 'Un courant dont le sens change périodiquement (50 Hz en France)', 'Un courant produit uniquement par les panneaux solaires', 'Un courant de très basse tension'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel est l\'objectif principal du BAC Pro MELEC en matière d\'emploi ?',
+        answers: ['Devenir programmeur informatique', 'Travailler comme électricien dans le bâtiment, l\'industrie ou les smart buildings', 'Devenir cuisinier', 'Travailler dans la grande distribution'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quelle est la durée totale des périodes de formation en entreprise (PFMP) en BAC Pro MELEC ?',
+        answers: ['4 semaines', '8 semaines', '22 semaines minimum', '52 semaines'],
         correctIndex: 2
-      },
-      {
-        question: 'Les élèves de BAC Pro font-ils des stages en entreprise ?',
-        answers: ['Oui', 'Non', 'Seulement en dernière année', 'C\'est facultatif'],
-        correctIndex: 0
-      },
-      {
-        question: 'Quel est le principal objectif du BAC Pro ?',
-        answers: ['Insertion professionnelle', 'Poursuite d\'études longues', 'Formation artistique', 'Formation sportive'],
-        correctIndex: 0
       }
     ]
   },
@@ -500,7 +584,15 @@ function displayZoneSelection() {
   Object.keys(quizData).forEach(zoneId => {
     const zone = quizData[zoneId];
     const randomZones = ['1', '2', '6', '10'];
-    const questionCount = randomZones.includes(zoneId) ? 8 : zone.questionsPool.length;
+    // Zone 8 : toujours 8 questions (4 CIEL + 4 MELEC)
+    let questionCount;
+    if (zoneId === '8') {
+      questionCount = 8;
+    } else if (randomZones.includes(zoneId)) {
+      questionCount = 8;
+    } else {
+      questionCount = zone.questionsPool ? zone.questionsPool.length : 8;
+    }
 
     const zoneCard = document.createElement('div');
     zoneCard.className = 'zone-card';
@@ -549,16 +641,21 @@ function startQuiz(zoneId) {
     return;
   }
 
-  // Zones avec 8 questions aléatoires
-  const randomZones = [1, 2, 6, 10];
-  if (randomZones.includes(zoneId)) {
-    selectedQuestions = selectRandomQuestions(zoneData.questionsPool, 8);
+  // Cas spécial zone 8 : 4 questions CIEL + 4 questions MELEC
+  if (zoneId === 8) {
+    const cielQuestions = selectRandomQuestions(zoneData.questionsPoolCIEL, 4);
+    const melecQuestions = selectRandomQuestions(zoneData.questionsPoolMELEC, 4);
+    selectedQuestions = shuffleArray([...cielQuestions, ...melecQuestions]);
   } else {
-    selectedQuestions = [...zoneData.questionsPool];
+    // Zones avec 8 questions aléatoires
+    const randomZones = [1, 2, 6, 10];
+    if (randomZones.includes(zoneId)) {
+      selectedQuestions = selectRandomQuestions(zoneData.questionsPool, 8);
+    } else {
+      selectedQuestions = [...zoneData.questionsPool];
+    }
+    selectedQuestions = shuffleArray(selectedQuestions);
   }
-
-  // Mélanger l'ordre des questions
-  selectedQuestions = shuffleArray(selectedQuestions);
 
   // Mélanger les réponses de chaque question
   selectedQuestions = selectedQuestions.map(q => shuffleAnswers(q));
