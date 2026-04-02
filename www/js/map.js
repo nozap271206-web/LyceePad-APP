@@ -71,6 +71,7 @@ function togglePopup(container, pin, markerEl) {
   if (existing) {
     const wasThisOne = existing.dataset.qr === pin.qr;
     existing.remove();
+    container.querySelectorAll('.qr-marker-container').forEach(m => m.classList.remove('active'));
     if (wasThisOne) return;
   }
 
@@ -92,6 +93,7 @@ function togglePopup(container, pin, markerEl) {
   popup.style.left = pin.x + '%';
   popup.style.top  = pin.y + '%';
   container.appendChild(popup);
+  markerEl.classList.add('active');
 
   // Ajuster position pour éviter les débordements
   requestAnimationFrame(() => {
@@ -134,7 +136,10 @@ function buildPlanMap() {
   // Fermer popup en cliquant sur le fond
   mapDiv.addEventListener('click', () => {
     const open = mapDiv.querySelector('.map-popup');
-    if (open) open.remove();
+    if (open) {
+      open.remove();
+      mapDiv.querySelectorAll('.qr-marker-container').forEach(m => m.classList.remove('active'));
+    }
   });
 
   // Ajouter les puces

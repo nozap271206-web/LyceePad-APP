@@ -8,7 +8,7 @@
  *  - Offline page → si tout échoue, une page de secours est affichée
  */
 
-const CACHE_VERSION = 'lyceepad-v3';
+const CACHE_VERSION = 'lyceepad-v5';
 
 // Fichiers mis en cache immédiatement à l'installation
 const PRECACHE_ASSETS = [
@@ -94,6 +94,9 @@ self.addEventListener('fetch', event => {
 
   // Ignorer les requêtes POST (formulaires, uploads)
   if (request.method !== 'GET') return;
+
+  // Ignorer les vidéos (trop lourdes à cacher, servies directement)
+  if (/\.(mp4|webm|ogg)(\?.*)?$/.test(url.pathname)) return;
 
   // Vérifier si la requête doit passer en Network First
   const isNetworkFirst = NETWORK_FIRST_PATTERNS.some(pattern => pattern.test(url.pathname));

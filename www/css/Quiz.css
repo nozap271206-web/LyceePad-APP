@@ -714,6 +714,13 @@ html:not(.dark) .answer-option:hover:not(:disabled) {
   background: var(--bg-alt);
 }
 
+html:not(.dark) .status-badge {
+  background: rgba(46, 163, 242, 0.15);
+  border: 1.5px solid rgba(46, 163, 242, 0.7);
+  color: #1a6fa8;
+  text-shadow: none;
+}
+
 /* ========================================
    DARK MODE
 ======================================== */
