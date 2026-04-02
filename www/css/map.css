@@ -165,7 +165,7 @@
 /* Conteneur overlay CSS — remplace Leaflet */
 #map.plan-overlay-container {
   width: 100%;
-  max-width: 100%;
+  max-width: 780px;
   margin: 0 auto;
   aspect-ratio: 867 / 519;
   border-radius: 16px;
