@@ -18,9 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const errorMessage     = document.getElementById('errorMessage');
   const errorText        = document.getElementById('errorText');
 
-  // Placeholder adapté à l'email
-  if (emailInput) emailInput.placeholder = 'admin@lycee-steloi.fr';
-
   // Toggle visibilité mot de passe
   if (togglePasswordBtn) {
     togglePasswordBtn.addEventListener('click', function () {
