@@ -6,7 +6,7 @@
 const DBManager = {
   // Configuration
   config: {
-    serverUrl: (location.protocol === 'https:' ? location.origin : 'http://192.168.15.38') + '/data',
+    serverUrl: (location.protocol === 'https:' ? location.origin : 'https://lycee-pad.cc') + '/data',
     versionFile: 'db-version.json',
     dataFile: 'qr-data.json',
     localDataPath: '../data/qr-data.json',
