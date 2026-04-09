@@ -544,7 +544,6 @@ const ParcoursPage = {
       { id:'5',  qr_code:'QR_SUD_06',           nom:'Salle Sud 06',            description:'Salle de cours - Bâtiment Sud', batiment:'Bâtiment Sud', etage:'RDC',      ordre:11 },
       { id:'6',  qr_code:'QR_SUD_07',           nom:'Salle Sud 07',            description:'Salle de cours - Bâtiment Sud', batiment:'Bâtiment Sud', etage:'RDC',      ordre:12 },
       { id:'7',  qr_code:'QR_SUD_08',           nom:'Salle Sud 08',            description:'Salle de cours - Bâtiment Sud', batiment:'Bâtiment Sud', etage:'RDC',      ordre:13 },
-      { id:'8',  qr_code:'QR_SUD_09',           nom:'Salle Sud 09',            description:'Salle de cours - Bâtiment Sud', batiment:'Bâtiment Sud', etage:'RDC',      ordre:14 },
       { id:'9',  qr_code:'QR_LABO_SUD',         nom:'Labo Sud',                description:'Laboratoire - Bâtiment Sud',   batiment:'Bâtiment Sud', etage:'RDC',      ordre:15 },
       { id:'10', qr_code:'QR_FB_10',            nom:'Salle FB 10',             description:'Salle de cours - Bâtiment FB', batiment:'Bâtiment FB', etage:'RDC',       ordre:20 },
       { id:'11', qr_code:'QR_FB_11',            nom:'Salle FB 11',             description:'Salle de cours - Bâtiment FB', batiment:'Bâtiment FB', etage:'RDC',       ordre:21 },

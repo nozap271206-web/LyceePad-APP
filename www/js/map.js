@@ -5,7 +5,7 @@ const mapPins = [
   {
     label: 'Salles Sud',
     description: 'BTS CIEL IR',
-    qr: 'QR_SUD_05',
+    qr: 'QR_SUD_07',
     x: 16,
     y: 36
   },
