@@ -12,6 +12,8 @@
     <preference name="scheme" value="http" />
     <preference name="hostname" value="localhost" />
     <access origin="http://10.48.102.130:*" />
+    <access origin="https://lycee-pad.cc" />
+    <access origin="https://*.lycee-pad.cc" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     
