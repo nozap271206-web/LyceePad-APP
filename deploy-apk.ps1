@@ -14,7 +14,7 @@ $ASSETS_VIDEO = "$ROOT\platforms\android\app\src\main\assets\www\video"
 
 # Écarter les vidéos du build
 if (Test-Path $VIDEO) {
-    Rename-Item $VIDEO $VIDEOTMP
+    Move-Item $VIDEO $VIDEOTMP
     Write-Host "Vidéos écartées du build" -ForegroundColor Yellow
 }
 if (Test-Path $ASSETS_VIDEO) {
