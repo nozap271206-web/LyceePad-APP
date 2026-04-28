@@ -6,7 +6,7 @@ $env:PATH += ";$env:ANDROID_HOME\platform-tools;$env:ANDROID_HOME\cmdline-tools\
 
 $APK = "platforms\android\app\build\outputs\apk\debug\app-debug.apk"
 $SERVER = "admin@192.168.15.38"
-$DEST = "/var/www/html/lyceepad.apk"
+$DEST = "/var/www/html/LyceePad/www/lyceepad.apk"
 
 Write-Host "Build APK..." -ForegroundColor Cyan
 cordova build android
@@ -16,4 +16,4 @@ Write-Host "Upload sur le serveur..." -ForegroundColor Cyan
 & "D:\applis\Git\usr\bin\scp.exe" $APK "${SERVER}:${DEST}"
 if ($LASTEXITCODE -ne 0) { Write-Host "Upload échoué." -ForegroundColor Red; exit 1 }
 
-Write-Host "APK disponible sur http://192.168.15.38/lyceepad.apk" -ForegroundColor Green
+Write-Host "APK disponible sur https://lycee-pad.cc/lyceepad.apk" -ForegroundColor Green

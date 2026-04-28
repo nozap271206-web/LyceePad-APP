@@ -228,7 +228,7 @@ async function loadZoneFromDB(qrCode) {
       photoSources.forEach(src => {
         const photoDiv = document.createElement('div');
         photoDiv.className = 'gallery-item';
-        photoDiv.innerHTML = `<img src="${src}" alt="${zone.nom}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
+        photoDiv.innerHTML = `<img src="${src}" alt="${zone.nom}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
         galleryGrid.appendChild(photoDiv);
       });
     } else {
@@ -263,7 +263,7 @@ async function loadZoneFromDB(qrCode) {
               } else {
                 const photoDiv = document.createElement('div');
                 photoDiv.className = 'gallery-item';
-                photoDiv.innerHTML = `<img src="${fullUrl}" alt="${zone.nom}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
+                photoDiv.innerHTML = `<img src="${fullUrl}" alt="${zone.nom}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
                 galleryGrid.appendChild(photoDiv);
               }
             } else if (f.type === 'video' && !zone.noVideo && (!zone.videos || zone.videos.length === 0)) {
