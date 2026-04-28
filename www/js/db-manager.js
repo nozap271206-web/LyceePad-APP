@@ -47,7 +47,7 @@ const DBManager = {
       await this.syncData();
       
       // Démarrer le ping périodique du serveur (toutes les 10 secondes)
-      this.startPeriodicPing(10000);
+      this.startPeriodicPing(60000);
       
       return true;
     } catch (error) {

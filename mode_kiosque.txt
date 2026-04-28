@@ -1,0 +1,37 @@
+MODE KIOSQUE — LYCEEPAD
+=======================
+
+Le mode kiosque est activé automatiquement au démarrage de l'app Android.
+Il combine 3 mécanismes :
+
+
+1. PLEIN ECRAN IMMERSIF (app.js)
+---------------------------------
+- Cache la barre de statut Android (StatusBar.hide)
+- Active le mode immersif via le plugin AndroidFullScreen :
+  l'app occupe tout l'écran, sans barre de navigation ni barre système
+- Fallback : leanMode si immersiveMode n'est pas disponible
+- Réappliqué automatiquement à chaque reprise de l'app (event "resume")
+
+
+2. LOCK TASK ANDROID (kiosk.js + config.xml)
+---------------------------------------------
+- Appelle KioskMode.start() via un plugin Cordova natif (com.tonapp.KioskMode)
+- Enclenche le Lock Task Mode d'Android :
+  l'utilisateur ne peut plus quitter l'app (bouton Retour et Accueil bloqués)
+- C'est la protection la plus forte — c'est ce qui en fait un vrai kiosque
+
+
+3. CONFIG FULLSCREEN (config.xml)
+-----------------------------------
+- <preference name="Fullscreen" value="true" />
+  Plein écran déclaré dès le démarrage, avant même que le JS ne s'exécute
+
+
+QUI PEUT EN SORTIR ?
+---------------------
+Le Lock Task ne peut être levé que par un admin via KioskMode.stop().
+L'interface admin est protégée par login :
+- Token stocké en localStorage
+- Expire après 2h (ou 7j si "Se souvenir de moi" coché)
+- Fallback hors-ligne : admin@lycee-steloi.fr / admin
