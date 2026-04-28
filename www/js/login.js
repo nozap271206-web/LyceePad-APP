@@ -45,9 +45,9 @@ document.addEventListener('DOMContentLoaded', function () {
     btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Vérification...';
 
     try {
-      // URL de l'API (relative selon la page courante)
-      const isInHtmlDir = window.location.pathname.includes('/html/');
-      const apiUrl      = isInHtmlDir ? '../API/auth.php' : 'API/auth.php';
+      // URL absolue vers le serveur (fonctionne en Cordova et navigateur)
+      const serverBase = (location.protocol === 'https:' ? location.origin : 'https://lycee-pad.cc');
+      const apiUrl     = serverBase + '/API/auth.php';
 
       const response = await fetch(apiUrl, {
         method:  'POST',
