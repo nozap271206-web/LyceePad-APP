@@ -11,19 +11,16 @@ $VIDEO  = "www\video"
 $VIDEOTMP = "www\_video_tmp"
 
 # Écarter les vidéos du build pour réduire la taille de l'APK
-if (Test-Path $VIDEO) {
-    Rename-Item $VIDEO $VIDEOTMP
-}
+if (Test-Path $VIDEO) { Rename-Item $VIDEO $VIDEOTMP }
+$ASSETS_VIDEO = "platforms\android\app\src\main\assets\www\video"
+if (Test-Path $ASSETS_VIDEO) { Remove-Item $ASSETS_VIDEO -Recurse -Force }
 
 Write-Host "Build APK..." -ForegroundColor Cyan
-cordova clean android | Out-Null
 cordova build android
 $buildOk = $LASTEXITCODE
 
 # Restaurer les vidéos dans tous les cas
-if (Test-Path $VIDEOTMP) {
-    Rename-Item $VIDEOTMP $VIDEO
-}
+if (Test-Path $VIDEOTMP) { Rename-Item $VIDEOTMP $VIDEO }
 
 if ($buildOk -ne 0) { Write-Host "Build échoué." -ForegroundColor Red; exit 1 }
 
