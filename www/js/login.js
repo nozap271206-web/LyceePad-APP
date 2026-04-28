@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem(AUTH_USER_KEY,   JSON.stringify({ nom: 'Admin', role: 'admin' }));
         window.location.href = 'Admin.html';
       } else {
-        showError('Erreur: ' + (err.message || err.toString()));
+        showError('Serveur inaccessible et identifiants inconnus hors-ligne');
         btnLogin.disabled = false;
         btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Connexion';
       }
