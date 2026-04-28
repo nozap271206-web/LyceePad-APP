@@ -254,7 +254,12 @@ const ContenusManager = {
           formData.append('role', roleInput ? roleInput.value : 'gallery');
         }
 
-        const res  = await fetch(this.uploadApiUrl, { method: 'POST', body: formData });
+        const token = localStorage.getItem('lyceepad_auth_token') || '';
+        const res  = await fetch(this.uploadApiUrl, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
         const data = await res.json();
 
         if (!data.success) throw new Error(data.message);
@@ -289,9 +294,13 @@ const ContenusManager = {
     if (!confirm(`Supprimer le fichier "${filename}" du serveur ?`)) return;
 
     try {
+      const token = localStorage.getItem('lyceepad_auth_token') || '';
       const res  = await fetch(this.uploadApiUrl, {
         method:  'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body:    JSON.stringify({ qr_code: this.currentQrCode, filename })
       });
       const data = await res.json();

@@ -7,7 +7,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // Gérer les requêtes OPTIONS (preflight CORS)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -338,6 +338,9 @@ function updateVersionFile() {
  * Point d'entrée principal
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once __DIR__ . '/check_auth.php';
+    requireApiAuth();
+
     // Récupérer les données envoyées
     $input = file_get_contents('php://input');
     $data = json_decode($input, true);

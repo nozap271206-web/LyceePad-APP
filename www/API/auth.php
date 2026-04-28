@@ -55,8 +55,16 @@ if (!password_verify($password, $user['mot_de_passe'])) {
 $pdo->prepare('UPDATE utilisateurs SET derniere_connexion = NOW() WHERE id_utilisateur = ?')
     ->execute([$user['id_utilisateur']]);
 
+// Générer un token de session côté serveur
+$token     = bin2hex(random_bytes(32));
+$expiresAt = date('Y-m-d H:i:s', strtotime('+7 days'));
+
+$pdo->prepare('INSERT INTO sessions (token, id_utilisateur, expires_at) VALUES (?, ?, ?)')
+    ->execute([$token, $user['id_utilisateur'], $expiresAt]);
+
 echo json_encode([
     'success'  => true,
+    'token'    => $token,
     'user'     => [
         'id'     => $user['id_utilisateur'],
         'nom'    => $user['nom'],

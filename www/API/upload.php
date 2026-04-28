@@ -7,7 +7,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, DELETE, GET, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -51,6 +51,8 @@ function isAllowedMime($tmpPath, $originalName) {
  * Upload d'un fichier
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once __DIR__ . '/check_auth.php';
+    requireApiAuth();
 
     $qrCode = isset($_POST['qr_code']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_POST['qr_code']) : '';
 
@@ -136,6 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  * Suppression d'un fichier
  */
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    require_once __DIR__ . '/check_auth.php';
+    requireApiAuth();
+
     $input   = json_decode(file_get_contents('php://input'), true);
     $qrCode  = isset($input['qr_code'])  ? preg_replace('/[^a-zA-Z0-9_-]/', '', $input['qr_code'])  : '';
     $filename = isset($input['filename']) ? basename($input['filename']) : '';

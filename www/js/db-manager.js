@@ -656,10 +656,12 @@ const DBManager = {
 
       // Envoyer au serveur via API
       const apiUrl = this.config.serverUrl.replace('/data', '/API/sync.php');
+      const token  = localStorage.getItem('lyceepad_auth_token') || '';
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(payload)
       });

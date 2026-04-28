@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        // Stocker le token et les infos utilisateur
-        const token  = 'lyceepad_' + Math.random().toString(36).substr(2) + Date.now().toString(36);
+        // Utiliser le token généré côté serveur
+        const token  = data.token;
         const expiry = rememberMe.checked
           ? Date.now() + 7 * 24 * 60 * 60 * 1000   // 7 jours
           : Date.now() + 2 * 60 * 60 * 1000;        // 2 heures
