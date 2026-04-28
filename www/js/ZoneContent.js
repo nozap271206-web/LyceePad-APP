@@ -268,7 +268,16 @@ async function loadZoneFromDB(qrCode) {
               }
             } else if (f.type === 'video' && !zone.noVideo && (!zone.videos || zone.videos.length === 0)) {
               const placeholder = document.getElementById('video-placeholder');
-              if (placeholder) placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${fullUrl}" type="video/mp4"></video>`;
+              if (placeholder) {
+                const videoUrl = fullUrl;
+                const observer = new IntersectionObserver((entries, obs) => {
+                  if (entries[0].isIntersecting) {
+                    placeholder.innerHTML = `<video controls playsinline preload="none" width="100%" style="border-radius:12px;display:block;"><source src="${videoUrl}" type="video/mp4"></video>`;
+                    obs.disconnect();
+                  }
+                }, { threshold: 0.1 });
+                observer.observe(placeholder);
+              }
             }
           });
         }
@@ -313,7 +322,15 @@ async function loadZoneFromDB(qrCode) {
       if (zone.videos && zone.videos.length > 0) {
         const videoSrc = resolveUrl(zone.videos[0]);
         const placeholder = document.getElementById('video-placeholder');
-        if (placeholder) placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}" type="video/mp4"></video>`;
+        if (placeholder) {
+          const observer = new IntersectionObserver((entries, obs) => {
+            if (entries[0].isIntersecting) {
+              placeholder.innerHTML = `<video controls playsinline preload="none" width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}" type="video/mp4"></video>`;
+              obs.disconnect();
+            }
+          }, { threshold: 0.1 });
+          observer.observe(placeholder);
+        }
       }
     }
 
@@ -385,6 +402,12 @@ function loadZoneContent(zoneId) {
   // Injecter la vidéo uniquement pour la zone internat (id=10)
   if (parseInt(zoneId) === 10) {
     const placeholder = document.getElementById('video-placeholder');
-    placeholder.innerHTML = `<video controls playsinline width="100%" style="border-radius:12px;display:block;"><source src="/video/presentation_internat.mp4" type="video/mp4"></video>`;
+    const observer = new IntersectionObserver((entries, obs) => {
+      if (entries[0].isIntersecting) {
+        placeholder.innerHTML = `<video controls playsinline preload="none" width="100%" style="border-radius:12px;display:block;"><source src="/video/presentation_internat.mp4" type="video/mp4"></video>`;
+        obs.disconnect();
+      }
+    }, { threshold: 0.1 });
+    observer.observe(placeholder);
   }
 }

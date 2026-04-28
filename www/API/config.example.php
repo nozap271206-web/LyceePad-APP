@@ -1,15 +1,14 @@
 <?php
 /**
  * Configuration base de données - LyceePad
- *
- * WAMP local  : DB_USER = 'root',          DB_PASS = ''
- * Serveur LAMP: DB_USER = 'lyceepad_user', DB_PASS = 'votre_mot_de_passe'
+ * Copier ce fichier en config.php et remplir les valeurs réelles.
+ * NE PAS committer config.php dans git.
  */
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'lyceepad_db');
 define('DB_USER', 'lyceepad_user');
-define('DB_PASS', 'lycee13');
+define('DB_PASS', 'VOTRE_MOT_DE_PASSE_ICI');
 
 function getDB() {
     try {

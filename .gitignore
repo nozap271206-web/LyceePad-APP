@@ -63,6 +63,7 @@ tmp_*/
 .env.local
 .env.production
 secrets.json
+www/API/config.php
 
 # IDE
 .vscode/
