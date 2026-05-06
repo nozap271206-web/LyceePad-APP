@@ -256,10 +256,11 @@ async function loadZoneFromDB(qrCode) {
       if (uploadRes.ok) {
         const uploadData = await uploadRes.json();
         if (uploadData.success && uploadData.files && uploadData.files.length > 0) {
-          // Supprimer le placeholder bleu si des photos uploadées existent
+          // Supprimer le placeholder bleu si des photos uploadées existent (quelle que soit la source statique)
           const hasUploadedGalleryPhotos = uploadData.files.some(f => f.type === 'image' && f.role !== 'hero');
-          if (hasUploadedGalleryPhotos && photoSources.length === 0) {
-            galleryGrid.innerHTML = '';
+          if (hasUploadedGalleryPhotos) {
+            const placeholder = galleryGrid.querySelector('.gallery-placeholder');
+            if (placeholder) placeholder.closest('.gallery-item').remove();
           }
           uploadData.files.forEach(f => {
             const fullUrl = uploadServerBase + f.url;
@@ -274,7 +275,7 @@ async function loadZoneFromDB(qrCode) {
               } else {
                 const photoDiv = document.createElement('div');
                 photoDiv.className = 'gallery-item';
-                photoDiv.innerHTML = `<img src="${fullUrl}" alt="${zone.nom}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
+                photoDiv.innerHTML = `<img src="${fullUrl}" alt="${zone.nom}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
                 galleryGrid.appendChild(photoDiv);
               }
             } else if (f.type === 'video' && !zone.noVideo && (!zone.videos || zone.videos.length === 0)) {
