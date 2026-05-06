@@ -48,11 +48,45 @@ function isAllowedMime($tmpPath, $originalName) {
 }
 
 /**
+ * Traduire les codes d'erreur PHP en messages lisibles
+ */
+function uploadErrorMessage($code) {
+    switch ($code) {
+        case UPLOAD_ERR_INI_SIZE:   return 'Fichier trop volumineux (limite php.ini : upload_max_filesize)';
+        case UPLOAD_ERR_FORM_SIZE:  return 'Fichier trop volumineux (limite du formulaire)';
+        case UPLOAD_ERR_PARTIAL:    return 'Transfert interrompu (fichier reçu partiellement)';
+        case UPLOAD_ERR_NO_FILE:    return 'Aucun fichier reçu';
+        case UPLOAD_ERR_NO_TMP_DIR: return 'Dossier temporaire serveur manquant';
+        case UPLOAD_ERR_CANT_WRITE: return 'Impossible d\'écrire sur le disque serveur';
+        case UPLOAD_ERR_EXTENSION:  return 'Upload bloqué par une extension PHP';
+        default:                    return 'Erreur upload inconnue (code ' . $code . ')';
+    }
+}
+
+/**
  * Upload d'un fichier
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once __DIR__ . '/check_auth.php';
     requireApiAuth();
+
+    // Détecter le dépassement de post_max_size : PHP vide $_POST et $_FILES silencieusement
+    $contentLength = isset($_SERVER['CONTENT_LENGTH']) ? (int)$_SERVER['CONTENT_LENGTH'] : 0;
+    $postMaxBytes  = (int)(ini_get('post_max_size'));
+    // Convertir les suffixes K/M/G
+    $raw = trim(ini_get('post_max_size'));
+    $unit = strtoupper(substr($raw, -1));
+    $val  = (int)$raw;
+    if ($unit === 'G') $postMaxBytes = $val * 1073741824;
+    elseif ($unit === 'M') $postMaxBytes = $val * 1048576;
+    elseif ($unit === 'K') $postMaxBytes = $val * 1024;
+    else $postMaxBytes = $val;
+
+    if ($contentLength > 0 && $postMaxBytes > 0 && $contentLength > $postMaxBytes) {
+        http_response_code(413);
+        echo json_encode(['success' => false, 'message' => 'Fichier trop volumineux (limite serveur : post_max_size = ' . ini_get('post_max_size') . ')']);
+        exit;
+    }
 
     $qrCode = isset($_POST['qr_code']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_POST['qr_code']) : '';
 
@@ -73,15 +107,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Vérifier les erreurs d'upload
     if ($file['error'] !== UPLOAD_ERR_OK) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Erreur upload : code ' . $file['error']]);
+        echo json_encode(['success' => false, 'message' => uploadErrorMessage($file['error'])]);
         exit;
     }
 
-    // Vérifier la taille (max 50 Mo)
-    $maxSize = 50 * 1024 * 1024;
+    // Vérifier la taille (max 500 Mo pour les vidéos)
+    $maxSize = 500 * 1024 * 1024;
     if ($file['size'] > $maxSize) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Fichier trop volumineux (max 50 Mo)']);
+        echo json_encode(['success' => false, 'message' => 'Fichier trop volumineux (max 500 Mo)']);
         exit;
     }
 
