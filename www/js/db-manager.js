@@ -46,7 +46,7 @@ const DBManager = {
       // Vérifier et synchroniser les données
       await this.syncData();
       
-      // Démarrer le ping périodique du serveur (toutes les 10 secondes)
+      // Démarrer le ping périodique du serveur (toutes les 60 secondes)
       this.startPeriodicPing(60000);
       
       return true;
@@ -727,6 +727,16 @@ const DBManager = {
 
 // Initialiser automatiquement et exposer la Promise pour les autres scripts
 window.DBManager = DBManager;
-DBManager.ready = (document.readyState === 'loading')
-  ? new Promise(resolve => document.addEventListener('DOMContentLoaded', () => resolve(DBManager.init())))
-  : DBManager.init();
+
+function _startDBManager() {
+  DBManager.ready = DBManager.init();
+}
+
+if (window.cordova) {
+  // En Cordova, attendre deviceready pour que le réseau soit disponible
+  document.addEventListener('deviceready', _startDBManager, false);
+} else if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _startDBManager);
+} else {
+  _startDBManager();
+}

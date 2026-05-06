@@ -28,7 +28,9 @@ function requireApiAuth() {
     try {
         $pdo  = getDB();
         $stmt = $pdo->prepare(
-            'SELECT id_utilisateur FROM sessions WHERE token = ? AND expires_at > NOW()'
+            'SELECT s.id_utilisateur FROM sessions s
+             JOIN utilisateurs u ON u.id_utilisateur = s.id_utilisateur
+             WHERE s.token = ? AND s.expires_at > NOW() AND u.actif = 1'
         );
         $stmt->execute([$token]);
         $session = $stmt->fetch();
