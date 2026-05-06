@@ -212,13 +212,17 @@ async function loadZoneFromDB(qrCode) {
     const galleryGrid = document.getElementById('gallery-grid');
     galleryGrid.innerHTML = '';
 
-    const serverBase = (window.DBManager?.config?.serverUrl || '').replace(/\/data\/?$/, '');
+    const isCordova = window.location.hostname === 'localhost';
+    const serverBase = isCordova
+      ? 'https://lycee-pad.cc'
+      : (window.DBManager?.config?.serverUrl || '').replace(/\/data\/?$/, '');
     const resolveUrl = p => {
       if (!p) return null;
       if (p.startsWith('http')) return p;
-      if (p.startsWith('../')) p = '/' + p.slice(3); // normalise ../img/ → /img/
+      if (p.startsWith('../')) p = '/' + p.slice(3);
+      if (isCordova && (p.startsWith('/video/') || p.startsWith('/img/'))) return serverBase + p;
       if (p.startsWith('/img/zones/') || p.startsWith('/video/zones/')) return serverBase + p;
-      return p; // chemin absolu, le navigateur résout depuis la racine
+      return p;
     };
     const photoSources = (zone.photos && zone.photos.length > 0)
       ? zone.photos.map(resolveUrl).filter(Boolean)
@@ -250,6 +254,11 @@ async function loadZoneFromDB(qrCode) {
       if (uploadRes.ok) {
         const uploadData = await uploadRes.json();
         if (uploadData.success && uploadData.files && uploadData.files.length > 0) {
+          // Supprimer le placeholder bleu si des photos uploadées existent
+          const hasUploadedGalleryPhotos = uploadData.files.some(f => f.type === 'image' && f.role !== 'hero');
+          if (hasUploadedGalleryPhotos && photoSources.length === 0) {
+            galleryGrid.innerHTML = '';
+          }
           uploadData.files.forEach(f => {
             const fullUrl = serverBase + f.url;
             if (f.type === 'image') {
@@ -269,14 +278,7 @@ async function loadZoneFromDB(qrCode) {
             } else if (f.type === 'video' && !zone.noVideo && (!zone.videos || zone.videos.length === 0)) {
               const placeholder = document.getElementById('video-placeholder');
               if (placeholder) {
-                const videoUrl = fullUrl;
-                const observer = new IntersectionObserver((entries, obs) => {
-                  if (entries[0].isIntersecting) {
-                    placeholder.innerHTML = `<video controls playsinline preload="none" width="100%" style="border-radius:12px;display:block;"><source src="${videoUrl}" type="video/mp4"></video>`;
-                    obs.disconnect();
-                  }
-                }, { threshold: 0.1 });
-                observer.observe(placeholder);
+                placeholder.innerHTML = `<video controls playsinline preload="metadata" width="100%" style="border-radius:12px;display:block;"><source src="${fullUrl}" type="video/mp4"></video>`;
               }
             }
           });
@@ -323,13 +325,33 @@ async function loadZoneFromDB(qrCode) {
         const videoSrc = resolveUrl(zone.videos[0]);
         const placeholder = document.getElementById('video-placeholder');
         if (placeholder) {
-          const observer = new IntersectionObserver((entries, obs) => {
-            if (entries[0].isIntersecting) {
-              placeholder.innerHTML = `<video controls playsinline preload="none" width="100%" style="border-radius:12px;display:block;"><source src="${videoSrc}" type="video/mp4"></video>`;
-              obs.disconnect();
-            }
-          }, { threshold: 0.1 });
-          observer.observe(placeholder);
+          if (isCordova) {
+            // Dans Cordova Android le WebView bloque les vidéos cross-origin → bouton direct
+            const btn = document.createElement('div');
+            btn.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:12px;color:white;';
+            btn.innerHTML = '<div style="width:70px;height:70px;background:#2EA3F2;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span style="font-size:1rem;font-weight:600;">Lancer la vidéo</span><span style="font-size:0.8rem;opacity:0.7;">S\'ouvre dans le navigateur</span>';
+            btn.addEventListener('click', function() { window.open(videoSrc, '_system'); });
+            placeholder.innerHTML = '';
+            placeholder.appendChild(btn);
+          } else {
+            const video = document.createElement('video');
+            video.controls = true;
+            video.setAttribute('playsinline', '');
+            video.preload = 'metadata';
+            video.style.cssText = 'border-radius:12px;display:block;width:100%';
+            video.src = videoSrc;
+            const showFallback = function() {
+              placeholder.innerHTML = '';
+              const btn = document.createElement('div');
+              btn.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:12px;color:white;';
+              btn.innerHTML = '<div style="width:70px;height:70px;background:#2EA3F2;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span style="font-size:1rem;font-weight:600;">Lancer la vidéo</span>';
+              btn.addEventListener('click', function() { window.open(videoSrc, '_blank'); });
+              placeholder.appendChild(btn);
+            };
+            video.addEventListener('error', showFallback);
+            placeholder.innerHTML = '';
+            placeholder.appendChild(video);
+          }
         }
       }
     }
@@ -402,12 +424,27 @@ function loadZoneContent(zoneId) {
   // Injecter la vidéo uniquement pour la zone internat (id=10)
   if (parseInt(zoneId) === 10) {
     const placeholder = document.getElementById('video-placeholder');
-    const observer = new IntersectionObserver((entries, obs) => {
-      if (entries[0].isIntersecting) {
-        placeholder.innerHTML = `<video controls playsinline preload="none" width="100%" style="border-radius:12px;display:block;"><source src="/video/presentation_internat.mp4" type="video/mp4"></video>`;
-        obs.disconnect();
-      }
-    }, { threshold: 0.1 });
-    observer.observe(placeholder);
+    if (placeholder) {
+      const internatSrc = 'https://lycee-pad.cc/video/presentation_internat.mp4';
+      const video = document.createElement('video');
+      video.controls = true;
+      video.setAttribute('playsinline', '');
+      video.preload = 'metadata';
+      video.style.cssText = 'border-radius:12px;display:block;width:100%';
+      const source = document.createElement('source');
+      source.src = internatSrc;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      video.addEventListener('error', function() {
+        placeholder.innerHTML = '';
+        const btn = document.createElement('div');
+        btn.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:12px;color:white;';
+        btn.innerHTML = '<div style="width:70px;height:70px;background:#2EA3F2;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span style="font-size:1rem;font-weight:600;">Lancer la vidéo</span>';
+        btn.addEventListener('click', function() { window.open(internatSrc, '_system'); });
+        placeholder.appendChild(btn);
+      });
+      placeholder.innerHTML = '';
+      placeholder.appendChild(video);
+    }
   }
 }
