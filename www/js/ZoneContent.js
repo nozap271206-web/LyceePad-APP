@@ -216,6 +216,8 @@ async function loadZoneFromDB(qrCode) {
     const serverBase = isCordova
       ? 'https://lycee-pad.cc'
       : (window.DBManager?.config?.serverUrl || '').replace(/\/data\/?$/, '');
+    // Pour les médias uploadés, toujours utiliser le serveur configuré (IP locale en Cordova)
+    const uploadServerBase = (window.DBManager?.config?.serverUrl || '').replace(/\/data\/?$/, '') || serverBase;
     const resolveUrl = p => {
       if (!p) return null;
       if (p.startsWith('http')) return p;
@@ -249,7 +251,7 @@ async function loadZoneFromDB(qrCode) {
 
     // Charger les photos/vidéos uploadées depuis le serveur
     try {
-      const uploadUrl = `${serverBase}/API/upload.php?qr_code=${encodeURIComponent(qrCode)}`;
+      const uploadUrl = `${uploadServerBase}/API/upload.php?qr_code=${encodeURIComponent(qrCode)}`;
       const uploadRes = await fetch(uploadUrl, { cache: 'no-cache' });
       if (uploadRes.ok) {
         const uploadData = await uploadRes.json();
@@ -260,7 +262,7 @@ async function loadZoneFromDB(qrCode) {
             galleryGrid.innerHTML = '';
           }
           uploadData.files.forEach(f => {
-            const fullUrl = serverBase + f.url;
+            const fullUrl = uploadServerBase + f.url;
             if (f.type === 'image') {
               if (f.role === 'hero') {
                 const heroEl = document.querySelector('.zone-hero');
