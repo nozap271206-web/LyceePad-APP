@@ -307,13 +307,17 @@ async function loadZoneFromDB(qrCode) {
               if (ph) ph.closest('.gallery-item').remove();
               const docDiv = document.createElement('div');
               docDiv.className = 'gallery-item';
-              const a = document.createElement('a');
-              a.href = fullUrl;
-              a.target = '_blank';
-              a.rel = 'noopener';
-              a.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;min-height:120px;background:#fff;color:#e74c3c;border-radius:12px;text-decoration:none;gap:0.5rem;padding:0.5rem;';
-              a.innerHTML = `<i class="fas fa-file-pdf" style="font-size:2.5rem"></i><span style="font-size:0.8rem;color:#333;text-align:center;word-break:break-word">Document PDF</span>`;
-              docDiv.appendChild(a);
+              docDiv.style.cssText = 'grid-column:1 / -1;height:auto;';
+              docDiv.innerHTML = `
+                <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+                  <iframe src="${fullUrl}#view=FitH" title="Document PDF" loading="lazy"
+                    style="width:100%;height:80vh;min-height:480px;border:0;display:block"></iframe>
+                  <div style="padding:0.6rem;text-align:center;border-top:1px solid #eee">
+                    <a href="${fullUrl}" target="_blank" rel="noopener" style="color:#2EA3F2;text-decoration:none;font-size:0.85rem">
+                      <i class="fas fa-external-link-alt"></i> Ouvrir le PDF en plein écran
+                    </a>
+                  </div>
+                </div>`;
               galleryGrid.appendChild(docDiv);
             }
           });
