@@ -537,20 +537,36 @@ document.addEventListener('DOMContentLoaded', async function() {
     }));
   }
 
-  function loadParcoursFromStorage() {
+  function getParcoursApiUrl() {
+    const base = (window.DBManager?.config?.serverUrl || '').replace(/\/data\/?$/, '');
+    return (base || '') + '/API/parcours.php';
+  }
+
+  function getAuthHeader() {
+    const token = localStorage.getItem('lyceepad_auth_token') || '';
+    return token ? { 'Authorization': 'Bearer ' + token } : {};
+  }
+
+  async function loadParcours() {
+    const container = document.getElementById('parcoursList');
+    if (container) container.innerHTML = '<div class="info-text"><i class="fas fa-spinner fa-spin"></i> Chargement depuis le serveur...</div>';
+
     try {
-      const stored = localStorage.getItem('lyceepad_parcours_custom');
-      if (stored) return JSON.parse(stored);
-    } catch {}
-    return null;
-  }
+      const res  = await fetch(`${getParcoursApiUrl()}?action=all`, { cache: 'no-cache' });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message || 'Erreur API');
 
-  function saveParcoursToStorage(data) {
-    localStorage.setItem('lyceepad_parcours_custom', JSON.stringify(data));
-  }
-
-  function loadParcours() {
-    parcoursData = loadParcoursFromStorage() || getDefaultParcoursData();
+      // Fusionner avec les profils par défaut pour avoir la couleur/label
+      const byId = new Map((json.data || []).map(p => [p.id_profil, p]));
+      parcoursData = getDefaultParcoursData().map(def => {
+        const fromApi = byId.get(def.id_profil);
+        return fromApi ? { ...def, ...fromApi, couleur: def.couleur } : def;
+      });
+    } catch (err) {
+      console.warn('Chargement parcours échoué :', err);
+      addLog('error', `Impossible de charger les parcours depuis le serveur : ${err.message}`);
+      parcoursData = getDefaultParcoursData();
+    }
     displayParcoursAdmin(parcoursData);
   }
 
@@ -658,113 +674,72 @@ document.addEventListener('DOMContentLoaded', async function() {
     const desc      = document.getElementById('parcoursDesc').value.trim();
     const duree     = parseInt(document.getElementById('parcoursDuree').value) || null;
 
-    let allZ = [];
-    try { allZ = await DBManager.getAllZones(); } catch {}
-    if (!allZ.length) allZ = STATIC_ZONES_LIST;
-
     const checked = [...document.querySelectorAll('input[name="zone_check"]:checked')];
-    const zones = checked.map((cb, i) => {
-      const zid = parseInt(cb.value);
-      const z = allZ.find(z => (z.id || z.id_zone) === zid) || {};
-      return {
-        id_zone:      zid,
-        nom_zone:     z.nom || z.nom_zone || '',
-        description:  z.description_courte || z.description || '',
-        batiment:     z.batiment || '',
-        etage:        z.etage || '',
-        ordre_visite: i + 1
-      };
-    });
+    const zonesIds = checked.map(cb => parseInt(cb.value));
 
     const { profilId: originalProfilId, parcoursIdx } = currentParcoursEdit;
-
-    // Si le profil a changé, retirer de l'ancien et ajouter au nouveau
-    if (parcoursIdx !== null && originalProfilId !== profilId) {
-      const oldProfil = parcoursData.find(p => p.id_profil === originalProfilId);
-      if (oldProfil) oldProfil.parcours.splice(parcoursIdx, 1);
+    let existingId = null;
+    if (parcoursIdx !== null) {
+      const origProfil = parcoursData.find(p => p.id_profil === originalProfilId);
+      existingId = origProfil?.parcours[parcoursIdx]?.id_parcours || null;
     }
 
-    const targetProfil = parcoursData.find(p => p.id_profil === profilId);
-    if (!targetProfil) { alert('Profil introuvable'); return; }
+    const btnSave = document.getElementById('btnSaveParcours');
+    if (btnSave) btnSave.disabled = true;
 
-    const parcoursObj = { id_parcours: Date.now(), nom_parcours: nom, description: desc, duree_estimee: duree, zones };
+    try {
+      const res = await fetch(`${getParcoursApiUrl()}?action=save`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+        body: JSON.stringify({
+          id_parcours:   existingId,
+          id_profil:     profilId,
+          nom_parcours:  nom,
+          description:   desc,
+          duree_estimee: duree,
+          zones_ids:     zonesIds
+        })
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message || 'Échec sauvegarde');
 
-    if (parcoursIdx !== null && originalProfilId === profilId) {
-      targetProfil.parcours[parcoursIdx] = { ...targetProfil.parcours[parcoursIdx], ...parcoursObj };
-    } else {
-      targetProfil.parcours.push(parcoursObj);
+      closeParcoursModal();
+      await loadParcours();
+      addLog('success', `Parcours "${nom}" sauvegardé sur le serveur`);
+    } catch (err) {
+      alert(`Erreur lors de la sauvegarde : ${err.message}`);
+      addLog('error', `Sauvegarde parcours échouée : ${err.message}`);
+    } finally {
+      if (btnSave) btnSave.disabled = false;
     }
-
-    saveParcoursToStorage(parcoursData);
-    closeParcoursModal();
-    displayParcoursAdmin(parcoursData);
-    addLog('success', `Parcours "${nom}" sauvegardé localement`);
-
-    // Sync serveur en arrière-plan
-    const finalParcours = parcoursIdx !== null && originalProfilId === profilId
-      ? targetProfil.parcours[parcoursIdx]
-      : targetProfil.parcours[targetProfil.parcours.length - 1];
-    pushParcoursToServer({ ...finalParcours, id_profil: profilId })
-      .then(() => addLog('success', `Parcours "${nom}" synchronisé avec le serveur`))
-      .catch(err => addLog('error', `Sync serveur échouée (local conservé) : ${err.message}`));
   }
 
-  async function pushParcoursToServer(parcoursObj) {
-    const token  = localStorage.getItem('lyceepad_auth_token') || '';
-    const apiUrl = (DBManager.config?.serverUrl || 'https://lycee-pad.cc/data').replace('/data', '/API/sync.php');
-    const payload = {
-      parcours: {
-        [parcoursObj.id_parcours]: {
-          id:            parcoursObj.id_parcours,
-          id_profil:     parcoursObj.id_profil,
-          nom_parcours:  parcoursObj.nom_parcours,
-          description:   parcoursObj.description || '',
-          duree_estimee: parcoursObj.duree_estimee || null,
-          zones_ids:     (parcoursObj.zones || []).map(z => z.id_zone)
-        }
-      }
-    };
-    const res = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify(payload)
-    });
-    const json = await res.json();
-    if (!json.success) throw new Error(json.message || 'Erreur serveur');
-    return json;
-  }
-
-  async function deleteParcoursOnServer(parcoursId) {
-    const token  = localStorage.getItem('lyceepad_auth_token') || '';
-    const apiUrl = (DBManager.config?.serverUrl || 'https://lycee-pad.cc/data').replace('/data', '/API/sync.php');
-    const payload = { deleted_parcours_ids: [parcoursId] };
-    const res = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify(payload)
-    });
-    const json = await res.json();
-    if (!json.success) throw new Error(json.message || 'Erreur serveur');
-    return json;
-  }
-
-  function deleteParcours(profilId, parcoursIdx) {
+  async function deleteParcours(profilId, parcoursIdx) {
     const profil = parcoursData.find(p => p.id_profil === profilId);
     if (!profil) return;
     const parcours = profil.parcours[parcoursIdx];
     const nom = parcours?.nom_parcours || 'ce parcours';
     if (!confirm(`Supprimer "${nom}" ?\nCette action est irréversible.`)) return;
-    const parcoursId = parcours?.id_parcours;
-    profil.parcours.splice(parcoursIdx, 1);
-    saveParcoursToStorage(parcoursData);
-    displayParcoursAdmin(parcoursData);
-    addLog('success', `Parcours "${nom}" supprimé localement`);
 
-    // Sync suppression serveur en arrière-plan
-    if (parcoursId) {
-      deleteParcoursOnServer(parcoursId)
-        .then(() => addLog('success', `Suppression de "${nom}" synchronisée avec le serveur`))
-        .catch(err => addLog('error', `Sync suppression échouée : ${err.message}`));
+    if (!parcours?.id_parcours) {
+      addLog('error', 'Parcours sans identifiant, suppression impossible');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${getParcoursApiUrl()}?action=delete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+        body: JSON.stringify({ id_parcours: parcours.id_parcours })
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message || 'Échec suppression');
+
+      await loadParcours();
+      addLog('success', `Parcours "${nom}" supprimé du serveur`);
+    } catch (err) {
+      alert(`Erreur lors de la suppression : ${err.message}`);
+      addLog('error', `Suppression parcours échouée : ${err.message}`);
     }
   }
 
