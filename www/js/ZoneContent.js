@@ -32,16 +32,16 @@ const zonesData = {
   },
   4: {
     id: 4,
-    title: 'Salles BTS PME',
-    description: 'Espaces dédiés au BTS Professions Immobilières et Management',
+    title: 'Salles BTS GPME',
+    description: 'Espaces dédiés au BTS GPME — Gestion de la PME',
     detailedInfo: [
-      'Salles configurées pour les enseignements tertiaires : économie, gestion, droit. Équipements adaptés aux simulations professionnelles et aux études de cas. Espace collaboratif favorisant le travail en groupe et les projets d\'entreprise.'
+      'Salles configurées pour les enseignements tertiaires : gestion administrative, comptable et commerciale. Équipements adaptés aux simulations professionnelles et aux études de cas. Espace collaboratif favorisant le travail en groupe et les projets d\'entreprise.'
     ],
     photos: [
       { name: 'Salle de cours', color: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)' },
       { name: 'Espace informatique', color: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' }
     ],
-    videoTitle: 'Présentation des salles BTS PME',
+    videoTitle: 'Présentation des salles BTS GPME',
     audioTitle: 'Témoignage d\'un étudiant'
   },
   6: {
@@ -164,6 +164,8 @@ const QR_TO_QUIZ_ID = {
   'QR_SUD_08': 3, // Salle Sud 08 → BTS CIEL ER
   'QR_NORD_08': 2, 'QR_NORD_09': 2, 'QR_NORD_10': 2, 'QR_NORD_11': 2, 'QR_NORD_12': 2,
   'QR_NORD_13': 2, 'QR_NORD_14': 2, 'QR_NORD_15': 2, 'QR_NORD_16': 2,
+  'QR_FB_10': 4, 'QR_FB_11': 4, 'QR_FB_20': 4, 'QR_FB_21': 4, // Bâtiment FB → BTS GPME
+  'QR_EST_11': 8, 'QR_EST_12': 8, 'QR_EST_13': 8,             // Bâtiment Est → BAC Pro
   'QR_CDI_001': 6,
   'QR_AMPHITHÉATRE_001': 9,
   'QR_INTERNAT_001': 10,
@@ -174,6 +176,8 @@ const DB_ID_TO_QUIZ_ID = {
   4: 1, 5: 1, 6: 1, 8: 1, 9: 1, // Sud 05-07, 09, Labo → CIEL IR
   7: 3,                            // Sud 08 → CIEL ER
   14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, // Nord → BTS MS
+  10: 4, 11: 4, 12: 4, 13: 4,      // FB 10/11/20/21 → BTS GPME
+  23: 8, 24: 8, 25: 8,             // Est 11/12/13 → BAC Pro
   2: 6,                            // CDI
   29: 9,                           // Amphithéâtre
   30: 10,                          // Internat

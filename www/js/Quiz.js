@@ -329,28 +329,33 @@ const quizData = {
       }
     ]
   },
-  4: { // Salles BTS PME
-    zoneName: 'Salles BTS PME',
+  4: { // Salles BTS GPME
+    zoneName: 'Salles BTS GPME',
     zoneIcon: '🏢',
     questionsPool: [
       {
-        question: 'Que signifie PME ?',
+        question: 'Que signifie GPME ?',
+        answers: ['Gestion de la PME', 'Gestion de Projet Multi-Entreprises', 'Groupe Professionnel des Métiers de l\'Entreprise', 'Gestion Publique et Management d\'État'],
+        correctIndex: 0
+      },
+      {
+        question: 'Que signifie PME dans BTS GPME ?',
         answers: ['Petites et Moyennes Entreprises', 'Projet Management Européen', 'Pédagogie Moderne Éducative', 'Production Mécanique et Électronique'],
         correctIndex: 0
       },
       {
-        question: 'Combien d\'années dure la formation BTS PME ?',
+        question: 'Combien d\'années dure la formation BTS GPME ?',
         answers: ['1 an', '2 ans', '3 ans', '4 ans'],
         correctIndex: 1
       },
       {
-        question: 'Les salles BTS PME sont-elles équipées d\'ordinateurs ?',
-        answers: ['Oui, toutes', 'Non', 'Seulement certaines', 'Uniquement des portables'],
+        question: 'Quels domaines couvre principalement le BTS GPME ?',
+        answers: ['Gestion administrative, comptable et commerciale', 'Mécanique et robotique', 'Réseaux et cybersécurité', 'Électronique de puissance'],
         correctIndex: 0
       },
       {
-        question: 'Quel type de métiers prépare le BTS PME ?',
-        answers: ['Gestion d\'entreprise', 'Médecine', 'Cuisine', 'Architecture'],
+        question: 'Quel type de métiers prépare le BTS GPME ?',
+        answers: ['Assistant de gestion / collaborateur de PME', 'Médecine', 'Cuisine', 'Architecture'],
         correctIndex: 0
       }
     ]

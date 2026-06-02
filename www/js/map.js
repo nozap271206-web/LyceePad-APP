@@ -18,7 +18,7 @@ const mapPins = [
   },
   {
     label: 'Salles FB',
-    description: 'Bâtiment FB — Salles de cours',
+    description: 'Bâtiment FB — BTS GPME',
     qr: 'QR_FB_10',
     x: 32,
     y: 48
