@@ -543,9 +543,12 @@ function bindGalleryLightbox() {
   grid.dataset.lightboxBound = 'true';
 
   grid.addEventListener('click', e => {
-    const img = e.target.closest('img');
-    if (!img || !img.src) return;
-    const allImgs = [...grid.querySelectorAll('img[src]')];
+    const item = e.target.closest('.gallery-item');
+    if (!item) return;
+    const img = item.querySelector('img');
+    if (!img || !img.src || img.src === window.location.href) return;
+    const allImgs = [...grid.querySelectorAll('.gallery-item img')]
+      .filter(i => i.src && i.src !== window.location.href);
     lightbox.open(allImgs.map(i => i.src), allImgs.indexOf(img));
   });
 }
