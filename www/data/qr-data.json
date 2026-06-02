@@ -422,8 +422,8 @@
     "QR_AMPHITHÉATRE_001": {
       "id": "29",
       "qr_code": "QR_AMPHITHÉATRE_001",
-      "nom": "Amphithéatre",
-      "description": "Amphithéatre de l établissement",
+      "nom": "Amphithéâtre",
+      "description": "Amphithéâtre de l'établissement",
       "batiment": "",
       "etage": "",
       "coordonnees": {

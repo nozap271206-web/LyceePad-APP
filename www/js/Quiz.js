@@ -467,24 +467,24 @@ const quizData = {
       }
     ]
   },
-  9: { // Théâtre
-    zoneName: 'Théâtre',
+  9: { // Amphithéâtre
+    zoneName: 'Amphithéâtre',
     zoneIcon: '🎭',
     questionsPool: [
       {
-        question: 'Combien de places a le théâtre du lycée ?',
+        question: 'Combien de places a l\'amphithéâtre du lycée ?',
         answers: ['50 places', '100 places', '200 places', '300 places'],
         correctIndex: 2
       },
       {
-        question: 'Le théâtre est-il utilisé uniquement par le lycée ?',
+        question: 'L\'amphithéâtre est-il utilisé uniquement par le lycée ?',
         answers: ['Oui', 'Non, il accueille aussi des événements externes', 'Seulement pour les examens', 'Fermé au public'],
         correctIndex: 1
       },
       {
-        question: 'Quand a été construit le théâtre ?',
-        answers: ['1990', '2000', '2010', '2020'],
-        correctIndex: 1
+        question: 'Quel type d\'événements accueille l\'amphithéâtre ?',
+        answers: ['Conférences, spectacles et représentations', 'Uniquement des cours de sport', 'Seulement des examens écrits', 'Aucun, il est fermé'],
+        correctIndex: 0
       }
     ]
   },

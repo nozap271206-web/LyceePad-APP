@@ -74,16 +74,16 @@ const zonesData = {
   },
   9: {
     id: 9,
-    title: 'Théâtre',
+    title: 'Amphithéâtre',
     description: 'Salle de spectacle et d\'expression artistique',
     detailedInfo: [
-      'Salle équipée pour les représentations théâtrales, concerts et événements culturels. Matériel son et lumière professionnel. Lieu de pratique pour les ateliers théâtre.'
+      'Amphithéâtre équipé pour les conférences, représentations, concerts et événements culturels. Matériel son et lumière professionnel. Lieu de pratique pour les ateliers artistiques.'
     ],
     photos: [
       { name: 'Scène', color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
       { name: 'Gradins', color: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)' }
     ],
-    videoTitle: 'Visite du théâtre',
+    videoTitle: 'Visite de l\'amphithéâtre',
     audioTitle: 'Interview du responsable culturel'
   },
   10: {
