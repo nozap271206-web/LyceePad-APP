@@ -29,8 +29,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="../css/app.css?v=3">
-  <link rel="stylesheet" href="../css/Admin.css?v=3">
+  <link rel="stylesheet" href="../css/app.css?v=7">
+  <link rel="stylesheet" href="../css/Admin.css?v=7">
   <link rel="stylesheet" href="../lib/fontawesome/css/svg-with-js.min.css">
   <link rel="manifest" href="../manifest.json">
   <meta name="theme-color" content="#2EA3F2">
@@ -150,6 +150,11 @@
                     <i class="fas fa-search"></i>
                     <input type="text" id="searchZones" placeholder="Rechercher une zone...">
                 </div>
+            </div>
+
+            <div class="info-text" style="display:flex;align-items:center;gap:0.6rem;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);color:var(--text);padding:0.75rem 1rem;border-radius:10px;margin-bottom:1rem;font-size:0.9rem">
+                <i class="fas fa-triangle-exclamation" style="color:#f59e0b"></i>
+                <span>Les modifications de zones sont d'abord enregistrées <strong>localement</strong>. Cliquez sur <strong>« Pousser vers serveur »</strong> (onglet Synchronisation) pour qu'elles soient appliquées sur le serveur.</span>
             </div>
 
             <div class="zones-list" id="zonesList">
@@ -373,8 +378,8 @@
     <script src="../cordova.js"></script>
     <script src="../lib/fontawesome/js/all.min.js"></script>
     <script src="../lib/qrcode.min.js"></script>
-    <script src="../js/kiosk.js?v=3"></script>
-    <script src="../js/login.js?v=3"></script>
+    <script src="../js/kiosk.js?v=7"></script>
+    <script src="../js/login.js?v=7"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -397,11 +402,11 @@
             }
         });
     </script>
-    <script src="../js/db-manager.js?v=3"></script>
-    <script src="../js/app.js?v=3"></script>
-    <script src="../js/Admin.js?v=6"></script>
-    <script src="../js/Contenus.js?v=3"></script>
-    <script src="../js/Depot.js?v=3"></script>
+    <script src="../js/db-manager.js?v=7"></script>
+    <script src="../js/app.js?v=7"></script>
+    <script src="../js/Admin.js?v=7"></script>
+    <script src="../js/Contenus.js?v=7"></script>
+    <script src="../js/Depot.js?v=7"></script>
     <script>
         // Bouton kiosque - visible uniquement sur Android avec Cordova
         document.addEventListener('deviceready', function() {

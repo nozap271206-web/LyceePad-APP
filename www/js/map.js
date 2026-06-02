@@ -197,20 +197,22 @@ document.addEventListener('DOMContentLoaded', async function () {
     card.className = 'zone-card';
     card.onclick = () => goToZone(zone.qr_code);
 
+    const bat = zone.batiment || '';
+    const nom = zone.nom || '';
     let icon = '📍';
-    if (zone.batiment.includes('Sud'))  icon = '📘';
-    else if (zone.batiment.includes('Nord')) icon = '🔬';
-    else if (zone.batiment.includes('FB'))   icon = '💻';
-    else if (zone.batiment.includes('Est'))  icon = '🏢';
-    else if (zone.batiment.includes('C'))    icon = '🏛️';
-    else if (zone.nom.includes('Internat'))  icon = '🛏️';
-    else if (zone.nom.includes('Amphith'))   icon = '🎭';
+    if (bat.includes('Sud'))  icon = '📘';
+    else if (bat.includes('Nord')) icon = '🔬';
+    else if (bat.includes('FB'))   icon = '💻';
+    else if (bat.includes('Est'))  icon = '🏢';
+    else if (bat.includes('C'))    icon = '🏛️';
+    else if (nom.includes('Internat'))  icon = '🛏️';
+    else if (nom.includes('Amphith'))   icon = '🎭';
 
     card.innerHTML = `
       <div class="zone-number">${zone.ordre || zone.id}</div>
       <div class="zone-icon">${icon}</div>
-      <h3 class="zone-name">${zone.nom}</h3>
-      <p class="zone-description">${zone.batiment}${zone.etage ? ' — ' + zone.etage : ''}</p>
+      <h3 class="zone-name">${nom}</h3>
+      <p class="zone-description">${bat}${zone.etage ? ' — ' + zone.etage : ''}</p>
       <button class="zone-btn">
         Découvrir
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
