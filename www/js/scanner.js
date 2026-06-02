@@ -4,9 +4,6 @@
  * + appel API pour récupérer les données de la zone
  */
 
-// ===== CONFIGURATION =====
-const API_BASE_URL = "http://10.48.102.130:3000";
-
 // ===== ÉTAT =====
 let html5QrCode = null;
 let scanning = false;

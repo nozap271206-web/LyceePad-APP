@@ -1,12 +1,5 @@
 // Home.js - JavaScript pur (sans Vue.js)
 
-// Données des stats
-const stats = [
-  { value: '30+', label: 'Zones interactives', icon: '📍' },
-  { value: '50+', label: 'Contenus multimédias', icon: '🎬' },
-  { value: '100%', label: 'Gratuit', icon: '✨' }
-];
-
 // Fonction pour générer le style des particules
 function getParticleStyle(i) {
   return {

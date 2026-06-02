@@ -3,11 +3,18 @@
 // Puces sur le plan — positions en % (left, top) par rapport à l'image 867x519
 const mapPins = [
   {
-    label: 'Salles Sud',
+    label: 'Salle Sud 07',
     description: 'BTS CIEL IR',
     qr: 'QR_SUD_07',
     x: 16,
     y: 36
+  },
+  {
+    label: 'Salle Sud 08',
+    description: 'BTS CIEL ER',
+    qr: 'QR_SUD_08',
+    x: 22,
+    y: 42
   },
   {
     label: 'Salles FB',
