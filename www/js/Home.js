@@ -2,7 +2,7 @@
 
 // Données des stats
 const stats = [
-  { value: '7', label: 'Zones interactives', icon: '📍' },
+  { value: '30+', label: 'Zones interactives', icon: '📍' },
   { value: '50+', label: 'Contenus multimédias', icon: '🎬' },
   { value: '100%', label: 'Gratuit', icon: '✨' }
 ];

@@ -8,7 +8,7 @@
  *  - Offline page → si tout échoue, une page de secours est affichée
  */
 
-const CACHE_VERSION = 'lyceepad-v6';
+const CACHE_VERSION = 'lyceepad-v7';
 
 // Fichiers mis en cache immédiatement à l'installation
 const PRECACHE_ASSETS = [
@@ -19,6 +19,7 @@ const PRECACHE_ASSETS = [
   '/html/Quiz.html',
   '/html/About.html',
   '/html/ZoneContent.html',
+  '/html/Parcours.html',
   '/html/login.html',
   '/html/Admin.html',
   '/css/app.css',
@@ -28,6 +29,7 @@ const PRECACHE_ASSETS = [
   '/css/Quiz.css',
   '/css/About.css',
   '/css/ZoneContent.css',
+  '/css/Parcours.css',
   '/css/login.css',
   '/css/Admin.css',
   '/js/app.js',
@@ -41,6 +43,7 @@ const PRECACHE_ASSETS = [
   '/js/Home.js',
   '/js/Quiz.js',
   '/js/ZoneContent.js',
+  '/js/Parcours.js',
   '/js/Admin.js',
   '/data/qr-data.json',
   '/img/logo.png',
@@ -55,15 +58,19 @@ const NETWORK_FIRST_PATTERNS = [
   /\/data\/qr-data\.json/,
   /\/API\//,
   /\.js(\?.*)?$/,
-  /\.html(\?.*)?$/
+  /\.html(\?.*)?$/,
+  /\.css(\?.*)?$/
 ];
 
 // ─── Installation ────────────────────────────────────────────────────────────
 self.addEventListener('install', event => {
+  // skipWaiting avant tout : le nouveau SW prend le contrôle immédiatement
+  // même si le précache échoue partiellement (ressource 404, réseau coupé…)
+  self.skipWaiting();
+
   event.waitUntil(
     caches.open(CACHE_VERSION)
       .then(cache => cache.addAll(PRECACHE_ASSETS.map(url => new Request(url, { cache: 'reload' }))))
-      .then(() => self.skipWaiting())
       .catch(err => console.warn('[SW] Précache partiel (certains fichiers manquants) :', err))
   );
 });
