@@ -25,7 +25,7 @@ log "Dossier: $PROJECT_DIR"
 sudo chown -R www-data:www-data "$PROJECT_DIR/.git"
 
 # Supprimer les fichiers non suivis qui bloqueraient le pull (ex: images uploadées)
-git clean -fd --exclude="www/img/" 2>/dev/null || true
+git clean -fd --exclude="www/img/" --exclude="www/lyceepad.apk" 2>/dev/null || true
 
 # Écraser toutes les modifications locales
 git fetch origin main
