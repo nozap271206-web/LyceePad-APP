@@ -181,9 +181,6 @@ document.addEventListener('DOMContentLoaded', async function() {
           <p><i class="fas fa-layer-group"></i> Étage ${zone.etage !== null ? zone.etage : 'N/A'}</p>
           <p><i class="fas fa-map-marker-alt"></i> ${zone.coordonnees_gps ? `${zone.coordonnees_gps.lat}, ${zone.coordonnees_gps.lng}` : 'Pas de GPS'}</p>
           <p>
-            <span class="status-badge ${zone.statut === 'active' ? 'active' : 'inactive'}">
-              ${zone.statut === 'active' ? 'Active' : 'Inactive'}
-            </span>
           </p>
         </div>
         <div class="zone-card-actions">
