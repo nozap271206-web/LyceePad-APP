@@ -63,6 +63,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once __DIR__ . '/check_auth.php';
     requireApiAuth();
 
+    // ── Assignation : copier un fichier du dépôt vers le dossier d'une zone ──
+    if (isset($_POST['action']) && $_POST['action'] === 'assign') {
+        $filename = isset($_POST['filename']) ? basename($_POST['filename']) : '';
+        $qrCode   = isset($_POST['qr_code']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_POST['qr_code']) : '';
+
+        if (empty($filename) || empty($qrCode)) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'filename ou qr_code manquant']);
+            exit;
+        }
+
+        $src = DEPOT_DIR . $filename;
+        if (!file_exists($src)) {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'message' => 'Fichier du dépôt introuvable']);
+            exit;
+        }
+
+        $zoneDir = __DIR__ . '/../img/zones/' . $qrCode . '/';
+        if (!is_dir($zoneDir)) {
+            mkdir($zoneDir, 0755, true);
+        }
+
+        $ext      = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        $base     = depotSanitizeName(pathinfo($filename, PATHINFO_FILENAME));
+        $destName = 'gallery_' . $base . '_' . uniqid() . '.' . $ext;
+        $dest     = $zoneDir . $destName;
+
+        if (!copy($src, $dest)) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Impossible de copier le fichier dans la zone']);
+            exit;
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Fichier assigné à la zone',
+            'file'    => [
+                'name'    => $destName,
+                'url'     => '/img/zones/' . $qrCode . '/' . $destName,
+                'type'    => $ext === 'pdf' ? 'pdf' : 'image',
+                'qr_code' => $qrCode
+            ]
+        ]);
+        exit;
+    }
+
     // Détecter le dépassement de post_max_size (PHP vide $_POST/$_FILES silencieusement)
     $contentLength = isset($_SERVER['CONTENT_LENGTH']) ? (int)$_SERVER['CONTENT_LENGTH'] : 0;
     $raw  = trim(ini_get('post_max_size'));

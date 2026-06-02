@@ -218,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $files   = [];
 
     if (is_dir($zoneDir)) {
-        $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'ogg', 'mov'];
+        $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'ogg', 'mov', 'pdf'];
         foreach (scandir($zoneDir) as $f) {
             if ($f === '.' || $f === '..') continue;
             $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
@@ -226,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             $finfo    = new finfo(FILEINFO_MIME_TYPE);
             $mime     = $finfo->file($zoneDir . $f);
-            $fileType = strpos($mime, 'video') === 0 ? 'video' : 'image';
+            $fileType = strpos($mime, 'video') === 0 ? 'video' : ($mime === 'application/pdf' ? 'pdf' : 'image');
             $fileRole = (strpos($f, 'hero_') === 0) ? 'hero' : 'gallery';
 
             $files[] = [

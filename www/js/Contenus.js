@@ -13,6 +13,11 @@ const ContenusManager = {
     return DBManager.config.serverUrl.replace('/data', '/API/upload.php');
   },
 
+  /** URL de l'API dépôt (pour importer un fichier déposé vers la zone courante) */
+  get depotApiUrl() {
+    return DBManager.config.serverUrl.replace('/data', '/API/depot.php');
+  },
+
   /**
    * Initialiser l'onglet Contenus dans l'interface Admin
    */
@@ -48,6 +53,9 @@ const ContenusManager = {
             <i class="fas fa-video"></i> Ajouter vidéo(s)
             <input type="file" id="inputVideo" accept="video/*" multiple style="display:none;">
           </label>
+          <button class="btn btn-warning" id="btnImportDepot" style="cursor:pointer;">
+            <i class="fas fa-cloud-download-alt"></i> Importer depuis le dépôt
+          </button>
           <button class="btn btn-secondary" id="btnRefreshMedia">
             <i class="fas fa-sync-alt"></i> Actualiser
           </button>
@@ -100,6 +108,11 @@ const ContenusManager = {
     const btnRefresh = document.getElementById('btnRefreshMedia');
     if (btnRefresh) {
       btnRefresh.addEventListener('click', () => this.loadMedia());
+    }
+
+    const btnImport = document.getElementById('btnImportDepot');
+    if (btnImport) {
+      btnImport.addEventListener('click', () => this.openDepotPicker());
     }
   },
 
@@ -198,6 +211,20 @@ const ContenusManager = {
               <i class="fas fa-trash"></i>
             </button>
           </div>`;
+      } else if (f.type === 'pdf') {
+        return `
+          <div class="media-item" data-filename="${f.name}">
+            <a href="${fullUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;height:100%;min-height:120px;background:var(--bg);color:#e74c3c;text-decoration:none">
+              <i class="fas fa-file-pdf" style="font-size:3rem"></i>
+            </a>
+            <div class="media-item-info">
+              <div class="media-item-name">${f.name}</div>
+              <span>${sizeKb} Ko · PDF</span>
+            </div>
+            <button class="media-item-delete" title="Supprimer" onclick="ContenusManager.deleteMedia('${f.name}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>`;
       } else {
         const roleLabel = f.role === 'hero' ? 'Image principale' : 'Galerie';
         const roleClass = f.role === 'hero' ? 'role-hero' : 'role-gallery';
@@ -285,6 +312,105 @@ const ContenusManager = {
 
     // Recharger la grille
     await this.loadMedia();
+  },
+
+  /**
+   * Ouvrir le sélecteur de fichiers du dépôt pour en assigner un à la zone courante
+   */
+  async openDepotPicker() {
+    if (!this.currentQrCode) {
+      alert('Sélectionnez d\'abord une zone.');
+      return;
+    }
+
+    // Construire la modale si absente
+    let modal = document.getElementById('depotPickerModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'depotPickerModal';
+      modal.className = 'modal';
+      modal.innerHTML = `
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2><i class="fas fa-cloud-download-alt"></i> Importer depuis le dépôt</h2>
+            <button class="modal-close" onclick="document.getElementById('depotPickerModal').classList.remove('active')">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body" id="depotPickerBody">
+            <div class="info-text"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+    }
+    modal.classList.add('active');
+
+    const body = document.getElementById('depotPickerBody');
+    body.innerHTML = `<div class="info-text"><i class="fas fa-spinner fa-spin"></i> Chargement du dépôt...</div>`;
+
+    try {
+      const res  = await fetch(`${this.depotApiUrl}?_=${Date.now()}`, { cache: 'no-cache' });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message || 'Erreur API');
+
+      const files = json.files || [];
+      if (!files.length) {
+        body.innerHTML = `<p style="color:var(--text-secondary);padding:1rem">Le dépôt est vide. Déposez des fichiers dans l'onglet "Dépôt".</p>`;
+        return;
+      }
+
+      const serverBase = DBManager.config.serverUrl.replace('/data', '');
+      body.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem">
+          ${files.map(f => {
+            const preview = f.type === 'pdf'
+              ? `<div style="height:90px;display:flex;align-items:center;justify-content:center;background:var(--bg);color:#e74c3c"><i class="fas fa-file-pdf" style="font-size:2.4rem"></i></div>`
+              : `<div style="height:90px;background:var(--bg) url('${serverBase + f.url}') center/cover no-repeat"></div>`;
+            return `
+              <div class="zone-card" style="overflow:hidden">
+                ${preview}
+                <div style="padding:0.5rem">
+                  <p style="margin:0 0 0.5rem;font-size:0.78rem;word-break:break-all">${f.name}</p>
+                  <button class="btn btn-primary" style="width:100%;padding:0.35rem;font-size:0.78rem"
+                    onclick="ContenusManager.assignFromDepot('${f.name.replace(/'/g, "\\'")}')">
+                    <i class="fas fa-check"></i> Assigner ici
+                  </button>
+                </div>
+              </div>`;
+          }).join('')}
+        </div>`;
+    } catch (err) {
+      body.innerHTML = `<p style="color:var(--danger);padding:1rem">Erreur : ${err.message}</p>`;
+    }
+  },
+
+  /**
+   * Assigner un fichier du dépôt à la zone courante (copie côté serveur)
+   */
+  async assignFromDepot(filename) {
+    if (!this.currentQrCode) return;
+    try {
+      const token = localStorage.getItem('lyceepad_auth_token') || '';
+      const formData = new FormData();
+      formData.append('action', 'assign');
+      formData.append('filename', filename);
+      formData.append('qr_code', this.currentQrCode);
+
+      const res  = await fetch(this.depotApiUrl, {
+        method:  'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body:    formData
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+
+      const modal = document.getElementById('depotPickerModal');
+      if (modal) modal.classList.remove('active');
+      await this.loadMedia();
+    } catch (err) {
+      alert('Erreur assignation : ' + err.message);
+    }
   },
 
   /**
