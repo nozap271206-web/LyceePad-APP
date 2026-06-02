@@ -35,28 +35,33 @@ try {
 if ($pdo) {
     try {
         $stmt = $pdo->query(
-            "SELECT id, qr_code, nom, description_courte AS description,
-                    batiment, etage, coordonnees_gps_lat, coordonnees_gps_lng,
-                    ordre, actif
+            "SELECT id_zone, qr_code, nom_zone, description,
+                    batiment, etage, coordonnees_gps,
+                    ordre_affichage, actif
              FROM zones
              WHERE actif = 1
-             ORDER BY ordre ASC"
+             ORDER BY ordre_affichage ASC"
         );
         $rows = $stmt->fetchAll();
 
         $zones = array_map(function ($z) {
+            $coords = null;
+            if (!empty($z['coordonnees_gps'])) {
+                $parsed = json_decode($z['coordonnees_gps'], true);
+                if ($parsed && isset($parsed['lat'], $parsed['lng'])) {
+                    $coords = ['lat' => (float)$parsed['lat'], 'lng' => (float)$parsed['lng']];
+                }
+            }
             return [
-                'id'          => (int)$z['id'],
+                'id'          => (int)$z['id_zone'],
                 'qr_code'     => $z['qr_code'],
-                'nom'         => $z['nom'],
+                'nom'         => $z['nom_zone'],
                 'description' => $z['description'] ?? '',
                 'batiment'    => $z['batiment'] ?? '',
                 'etage'       => $z['etage'] ?? '',
-                'ordre'       => (int)$z['ordre'],
+                'ordre'       => (int)$z['ordre_affichage'],
                 'actif'       => true,
-                'coordonnees' => ($z['coordonnees_gps_lat'] && $z['coordonnees_gps_lng'])
-                    ? ['lat' => (float)$z['coordonnees_gps_lat'], 'lng' => (float)$z['coordonnees_gps_lng']]
-                    : null,
+                'coordonnees' => $coords,
             ];
         }, $rows);
 

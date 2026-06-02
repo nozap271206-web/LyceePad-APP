@@ -117,6 +117,112 @@ const quizData = {
       }
     ]
   },
+  3: { // Salle SUD 08 - BTS CIEL Option ER
+    zoneName: 'Salle Sud 08 - BTS CIEL ER',
+    zoneIcon: '⚡',
+    questionsPool: [ // Pool de 20 questions, on en tire 8 aléatoirement
+      {
+        question: 'Que signifie l\'option ER dans BTS CIEL ?',
+        answers: ['Électronique et Réseaux', 'Énergie et Réseaux', 'Électricité et Robotique', 'Électronique et Robotique'],
+        correctIndex: 0
+      },
+      {
+        question: 'Quel composant électronique permet de stocker de l\'énergie sous forme de champ électrique ?',
+        answers: ['Résistance', 'Inductance', 'Condensateur', 'Diode'],
+        correctIndex: 2
+      },
+      {
+        question: 'Quelle est la loi d\'Ohm ?',
+        answers: ['U = R × I', 'P = U × R', 'I = U + R', 'U = P / I'],
+        correctIndex: 0
+      },
+      {
+        question: 'Quel microcontrôleur est très utilisé en BTS CIEL ER pour les travaux pratiques ?',
+        answers: ['Raspberry Pi', 'Arduino', 'Intel Core i7', 'FPGA Xilinx'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'un transistor NPN ?',
+        answers: ['Un composant passif de stockage d\'énergie', 'Un composant semi-conducteur utilisé comme interrupteur ou amplificateur', 'Un générateur de tension', 'Un capteur de température'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel outil logiciel est utilisé pour concevoir des circuits imprimés (PCB) ?',
+        answers: ['Photoshop', 'AutoCAD', 'KiCad ou Altium Designer', 'Microsoft Excel'],
+        correctIndex: 2
+      },
+      {
+        question: 'Qu\'est-ce qu\'un signal PWM ?',
+        answers: ['Un signal à fréquence variable et amplitude fixe', 'Un signal modulé en largeur d\'impulsion permettant de contrôler la puissance', 'Un protocole de communication série', 'Un signal analogique sinusoïdal'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel protocole de communication est couramment utilisé entre un microcontrôleur et des capteurs ?',
+        answers: ['HTTP', 'I2C ou SPI', 'FTP', 'SMTP'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quelle unité mesure la fréquence d\'un signal électronique ?',
+        answers: ['Volt (V)', 'Ampère (A)', 'Hertz (Hz)', 'Ohm (Ω)'],
+        correctIndex: 2
+      },
+      {
+        question: 'Qu\'est-ce qu\'un amplificateur opérationnel (AOP) ?',
+        answers: ['Un composant qui convertit la tension en courant uniquement', 'Un circuit intégré qui amplifie la différence de tension entre deux entrées', 'Un transformateur de puissance', 'Un générateur de signaux carrés'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce que le langage C embarqué utilisé sur microcontrôleur ?',
+        answers: ['Un langage uniquement graphique', 'Un langage de programmation bas niveau adapté aux systèmes à ressources limitées', 'Un langage exclusivement pour le web', 'Un langage de base de données'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel type de convertisseur transforme un signal analogique en signal numérique ?',
+        answers: ['DAC (Digital-to-Analog Converter)', 'ADC (Analog-to-Digital Converter)', 'PWM Converter', 'DC/DC Converter'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'une liaison UART ?',
+        answers: ['Un protocole réseau Ethernet', 'Une communication série asynchrone entre deux composants', 'Un bus d\'alimentation industriel', 'Un protocole sans fil Bluetooth'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel composant protège un circuit contre les surtensions ?',
+        answers: ['Un condensateur de découplage', 'Un régulateur de tension ou une diode TVS', 'Un amplificateur opérationnel', 'Une résistance de pull-up'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce qu\'une carte STM32 ?',
+        answers: ['Une carte graphique pour PC', 'Une carte de développement basée sur un microcontrôleur ARM Cortex-M', 'Un routeur réseau industriel', 'Une carte son professionnelle'],
+        correctIndex: 1
+      },
+      {
+        question: 'Dans un montage électronique, à quoi sert une résistance de pull-up ?',
+        answers: ['À amplifier le signal', 'À garantir un niveau logique haut défini sur une entrée numérique', 'À filtrer les harmoniques', 'À mesurer la température'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce que le bus CAN utilisé dans l\'automobile et l\'industrie ?',
+        answers: ['Un bus de communication série robuste permettant à plusieurs nœuds de communiquer sans maître', 'Un protocole réseau Ethernet industriel', 'Un type de mémoire flash', 'Un standard de câblage électrique'],
+        correctIndex: 0
+      },
+      {
+        question: 'Quel logiciel de simulation de circuits électroniques est fréquemment utilisé en formation ?',
+        answers: ['Blender', 'LTspice ou Proteus', 'VirtualBox', 'Unity'],
+        correctIndex: 1
+      },
+      {
+        question: 'Qu\'est-ce que la tension de seuil d\'une diode silicium ?',
+        answers: ['0 V', 'Environ 0,7 V', 'Environ 5 V', '12 V'],
+        correctIndex: 1
+      },
+      {
+        question: 'Quel est le rôle d\'un régulateur 7805 ?',
+        answers: ['Amplifier un signal audio', 'Fournir une tension de sortie stabilisée à +5 V', 'Convertir le courant alternatif en courant continu', 'Mesurer la résistance d\'un composant'],
+        correctIndex: 1
+      }
+    ]
+  },
   2: { // Salles NORD/MELEC - BTS MS
     zoneName: 'Salles NORD/MELEC - BTS MS',
     zoneIcon: '🔬',
@@ -499,7 +605,7 @@ function displayZoneSelection() {
   // Créer une carte pour chaque zone
   Object.keys(quizData).forEach(zoneId => {
     const zone = quizData[zoneId];
-    const randomZones = ['1', '2', '6', '10'];
+    const randomZones = ['1', '2', '3', '6', '10'];
     const questionCount = randomZones.includes(zoneId) ? 8 : zone.questionsPool.length;
 
     const zoneCard = document.createElement('div');
@@ -550,7 +656,7 @@ function startQuiz(zoneId) {
   }
 
   // Zones avec 8 questions aléatoires
-  const randomZones = [1, 2, 6, 10];
+  const randomZones = [1, 2, 3, 6, 10];
   if (randomZones.includes(zoneId)) {
     selectedQuestions = selectRandomQuestions(zoneData.questionsPool, 8);
   } else {

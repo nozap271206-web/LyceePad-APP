@@ -115,10 +115,16 @@ function saveParcoursInDB($pdo, $parcours) {
         $nom = $parcours['nom'] ?? $parcours['nom_parcours'] ?? null;
         if (!$nom) return false;
 
-        // Récupérer un id_profil par défaut
-        $stmtP = $pdo->query("SELECT id_profil FROM profils_visiteurs LIMIT 1");
-        $profil = $stmtP->fetch();
-        $idProfil = $profil ? $profil['id_profil'] : 1;
+        // Utiliser l'id_profil fourni, sinon le premier disponible
+        $idProfil = isset($parcours['id_profil']) ? (int)$parcours['id_profil'] : null;
+        if (!$idProfil) {
+            $stmtP = $pdo->query("SELECT id_profil FROM profils_visiteurs LIMIT 1");
+            $profil = $stmtP->fetch();
+            $idProfil = $profil ? (int)$profil['id_profil'] : 1;
+        }
+
+        $description  = $parcours['description'] ?? '';
+        $dureeEstimee = isset($parcours['duree_estimee']) ? (int)$parcours['duree_estimee'] : null;
 
         // Upsert parcours
         if (!empty($parcours['id'])) {
@@ -130,12 +136,12 @@ function saveParcoursInDB($pdo, $parcours) {
         }
 
         if ($existing) {
-            $pdo->prepare("UPDATE parcours SET nom_parcours = ?, description = ? WHERE id_parcours = ?")
-                ->execute([$nom, $parcours['description'] ?? '', $parcours['id']]);
+            $pdo->prepare("UPDATE parcours SET nom_parcours = ?, description = ?, duree_estimee = ?, id_profil = ? WHERE id_parcours = ?")
+                ->execute([$nom, $description, $dureeEstimee, $idProfil, $parcours['id']]);
             $idParcours = $parcours['id'];
         } else {
-            $pdo->prepare("INSERT INTO parcours (id_profil, nom_parcours, description, actif) VALUES (?, ?, ?, 1)")
-                ->execute([$idProfil, $nom, $parcours['description'] ?? '']);
+            $pdo->prepare("INSERT INTO parcours (id_profil, nom_parcours, description, duree_estimee, actif) VALUES (?, ?, ?, ?, 1)")
+                ->execute([$idProfil, $nom, $description, $dureeEstimee]);
             $idParcours = $pdo->lastInsertId();
         }
 
@@ -382,6 +388,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($data['parcours'])) {
             foreach ($data['parcours'] as $parcours) {
                 saveParcoursInDB($pdo, $parcours);
+            }
+        }
+
+        // Supprimer les parcours marqués comme supprimés
+        if (!empty($data['deleted_parcours_ids']) && is_array($data['deleted_parcours_ids'])) {
+            $stmtDel = $pdo->prepare("DELETE FROM parcours_zones WHERE id_parcours = ?");
+            $stmtDelP = $pdo->prepare("DELETE FROM parcours WHERE id_parcours = ?");
+            foreach ($data['deleted_parcours_ids'] as $delId) {
+                $delId = (int)$delId;
+                if ($delId > 0) {
+                    $stmtDel->execute([$delId]);
+                    $stmtDelP->execute([$delId]);
+                }
             }
         }
 

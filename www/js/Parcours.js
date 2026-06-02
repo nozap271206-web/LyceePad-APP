@@ -87,9 +87,9 @@ const ParcoursPage = {
             duree_estimee: 45,
             zones: [
               { id_zone: 1,  nom_zone: 'Hall d\'accueil/Vie scolaire', description: 'Point d\'entrée principal du lycée', batiment: '', etage: '', ordre_visite: 1 },
-              { id_zone: 10, nom_zone: 'Cantine', description: 'Réfectoire - Cafétéria', batiment: 'Bâtiment C', etage: 'RDC', ordre_visite: 2 },
-              { id_zone: 11, nom_zone: 'Salle Sud 7-8-9', description: 'Salle de cours - Collone SUD', batiment: 'Collone SUD', etage: 'RDC', ordre_visite: 3 },
-              { id_zone: 15, nom_zone: 'Salles Nord', description: 'Salle de cours - Bâtiment Nord', batiment: 'Bâtiment Nord', etage: 'RDC', ordre_visite: 4 },
+              { id_zone: 6,  nom_zone: 'Salle Sud 07', description: 'Salle de cours BTS CIEL IR - Bâtiment Sud', batiment: 'Bâtiment Sud', etage: 'RDC', ordre_visite: 2 },
+              { id_zone: 7,  nom_zone: 'Salle Sud 08', description: 'Salle de cours BTS CIEL ER - Bâtiment Sud', batiment: 'Bâtiment Sud', etage: 'RDC', ordre_visite: 3 },
+              { id_zone: 14, nom_zone: 'Salle Nord 08', description: 'Salle de cours - Bâtiment Nord', batiment: 'Bâtiment Nord', etage: 'RDC', ordre_visite: 4 },
               { id_zone: 2,  nom_zone: 'CDI', description: 'Centre de Documentation et d\'Information', batiment: 'Bâtiment C', etage: '1er étage', ordre_visite: 5 }
             ]
           }

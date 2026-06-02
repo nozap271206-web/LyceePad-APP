@@ -160,12 +160,23 @@ const ZONES_FALLBACK = {
 
 // Mapping QR code → ID du quiz correspondant (clés de quizData dans Quiz.js)
 const QR_TO_QUIZ_ID = {
-  'QR_SUD_05': 1, 'QR_SUD_06': 1, 'QR_SUD_07': 1, 'QR_SUD_08': 1, 'QR_SUD_09': 1, 'QR_LABO_SUD': 1,
+  'QR_SUD_05': 1, 'QR_SUD_06': 1, 'QR_SUD_07': 1, 'QR_SUD_09': 1, 'QR_LABO_SUD': 1,
+  'QR_SUD_08': 3, // Salle Sud 08 → BTS CIEL ER
   'QR_NORD_08': 2, 'QR_NORD_09': 2, 'QR_NORD_10': 2, 'QR_NORD_11': 2, 'QR_NORD_12': 2,
   'QR_NORD_13': 2, 'QR_NORD_14': 2, 'QR_NORD_15': 2, 'QR_NORD_16': 2,
   'QR_CDI_001': 6,
   'QR_AMPHITHÉATRE_001': 9,
   'QR_INTERNAT_001': 10,
+};
+
+// Mapping ID de zone (base de données) → ID du quiz (pour le chemin ?id=)
+const DB_ID_TO_QUIZ_ID = {
+  4: 1, 5: 1, 6: 1, 8: 1, 9: 1, // Sud 05-07, 09, Labo → CIEL IR
+  7: 3,                            // Sud 08 → CIEL ER
+  14: 2, 15: 2, 16: 2, 17: 2, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, // Nord → BTS MS
+  2: 6,                            // CDI
+  29: 9,                           // Amphithéâtre
+  30: 10,                          // Internat
 };
 
 async function loadZoneFromDB(qrCode) {
@@ -423,7 +434,8 @@ function loadZoneContent(zoneId) {
 
   // Mettre à jour le texte du quiz
   document.getElementById('quiz-text').textContent = `Répondez au quiz sur ${zone.title}`;
-  document.getElementById('quiz-link').href = `Quiz.html?zone=${zoneId}`;
+  const quizIdForZone = DB_ID_TO_QUIZ_ID[parseInt(zoneId)];
+  document.getElementById('quiz-link').href = quizIdForZone ? `Quiz.html?zone=${quizIdForZone}` : 'Quiz.html';
 
   // Mettre à jour les titres médias
   document.getElementById('video-title').textContent = zone.videoTitle;

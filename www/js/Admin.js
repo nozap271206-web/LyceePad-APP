@@ -698,18 +698,74 @@ document.addEventListener('DOMContentLoaded', async function() {
     saveParcoursToStorage(parcoursData);
     closeParcoursModal();
     displayParcoursAdmin(parcoursData);
-    addLog('success', `Parcours "${nom}" sauvegardé`);
+    addLog('success', `Parcours "${nom}" sauvegardé localement`);
+
+    // Sync serveur en arrière-plan
+    const finalParcours = parcoursIdx !== null && originalProfilId === profilId
+      ? targetProfil.parcours[parcoursIdx]
+      : targetProfil.parcours[targetProfil.parcours.length - 1];
+    pushParcoursToServer({ ...finalParcours, id_profil: profilId })
+      .then(() => addLog('success', `Parcours "${nom}" synchronisé avec le serveur`))
+      .catch(err => addLog('error', `Sync serveur échouée (local conservé) : ${err.message}`));
+  }
+
+  async function pushParcoursToServer(parcoursObj) {
+    const token  = localStorage.getItem('lyceepad_auth_token') || '';
+    const apiUrl = (DBManager.config?.serverUrl || 'https://lycee-pad.cc/data').replace('/data', '/API/sync.php');
+    const payload = {
+      parcours: {
+        [parcoursObj.id_parcours]: {
+          id:            parcoursObj.id_parcours,
+          id_profil:     parcoursObj.id_profil,
+          nom_parcours:  parcoursObj.nom_parcours,
+          description:   parcoursObj.description || '',
+          duree_estimee: parcoursObj.duree_estimee || null,
+          zones_ids:     (parcoursObj.zones || []).map(z => z.id_zone)
+        }
+      }
+    };
+    const res = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message || 'Erreur serveur');
+    return json;
+  }
+
+  async function deleteParcoursOnServer(parcoursId) {
+    const token  = localStorage.getItem('lyceepad_auth_token') || '';
+    const apiUrl = (DBManager.config?.serverUrl || 'https://lycee-pad.cc/data').replace('/data', '/API/sync.php');
+    const payload = { deleted_parcours_ids: [parcoursId] };
+    const res = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message || 'Erreur serveur');
+    return json;
   }
 
   function deleteParcours(profilId, parcoursIdx) {
     const profil = parcoursData.find(p => p.id_profil === profilId);
     if (!profil) return;
-    const nom = profil.parcours[parcoursIdx]?.nom_parcours || 'ce parcours';
+    const parcours = profil.parcours[parcoursIdx];
+    const nom = parcours?.nom_parcours || 'ce parcours';
     if (!confirm(`Supprimer "${nom}" ?\nCette action est irréversible.`)) return;
+    const parcoursId = parcours?.id_parcours;
     profil.parcours.splice(parcoursIdx, 1);
     saveParcoursToStorage(parcoursData);
     displayParcoursAdmin(parcoursData);
-    addLog('success', `Parcours "${nom}" supprimé`);
+    addLog('success', `Parcours "${nom}" supprimé localement`);
+
+    // Sync suppression serveur en arrière-plan
+    if (parcoursId) {
+      deleteParcoursOnServer(parcoursId)
+        .then(() => addLog('success', `Suppression de "${nom}" synchronisée avec le serveur`))
+        .catch(err => addLog('error', `Sync suppression échouée : ${err.message}`));
+    }
   }
 
   // Exposer pour les onclick inline
