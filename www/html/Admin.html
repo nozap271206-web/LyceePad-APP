@@ -126,6 +126,9 @@
             <button class="tab-btn" data-tab="parcours">
                 <i class="fas fa-route"></i> Parcours
             </button>
+            <button class="tab-btn" data-tab="depot">
+                <i class="fas fa-cloud-upload-alt"></i> Dépôt
+            </button>
             <button class="tab-btn" data-tab="sync">
                 <i class="fas fa-sync-alt"></i> Synchronisation
             </button>
@@ -169,6 +172,11 @@
             <div id="parcoursList">
                 <div class="info-text"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
             </div>
+        </div>
+
+        <!-- Tab: Dépôt -->
+        <div class="tab-content" id="tab-depot">
+            <div class="info-text"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
         </div>
 
         <!-- Tab: Synchronisation -->
@@ -387,6 +395,7 @@
     <script src="../js/app.js"></script>
     <script src="../js/Admin.js"></script>
     <script src="../js/Contenus.js"></script>
+    <script src="../js/Depot.js"></script>
     <script>
         // Bouton kiosque - visible uniquement sur Android avec Cordova
         document.addEventListener('deviceready', function() {
