@@ -308,10 +308,10 @@ async function loadZoneFromDB(qrCode) {
               const docDiv = document.createElement('div');
               docDiv.className = 'gallery-item';
               docDiv.style.cssText = 'grid-column:1 / -1;height:auto;';
+              const canvasId = 'pdf-canvas-' + Math.random().toString(36).slice(2);
               docDiv.innerHTML = `
                 <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)">
-                  <iframe src="${fullUrl}#view=FitH" title="Document PDF" loading="lazy"
-                    style="width:100%;height:80vh;min-height:480px;border:0;display:block"></iframe>
+                  <div id="${canvasId}-wrap" style="width:100%;overflow-y:auto;max-height:80vh;padding:0.5rem;box-sizing:border-box"></div>
                   <div style="padding:0.6rem;text-align:center;border-top:1px solid #eee">
                     <a href="${fullUrl}" target="_blank" rel="noopener" style="color:#2EA3F2;text-decoration:none;font-size:0.85rem">
                       <i class="fas fa-external-link-alt"></i> Ouvrir le PDF en plein écran
@@ -319,6 +319,27 @@ async function loadZoneFromDB(qrCode) {
                   </div>
                 </div>`;
               galleryGrid.appendChild(docDiv);
+              if (window.pdfjsLib) {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                pdfjsLib.getDocument(fullUrl).promise.then(pdf => {
+                  const wrap = document.getElementById(canvasId + '-wrap');
+                  if (!wrap) return;
+                  for (let p = 1; p <= pdf.numPages; p++) {
+                    pdf.getPage(p).then(page => {
+                      const vp = page.getViewport({ scale: wrap.clientWidth / page.getViewport({ scale: 1 }).width });
+                      const canvas = document.createElement('canvas');
+                      canvas.width = vp.width;
+                      canvas.height = vp.height;
+                      canvas.style.cssText = 'width:100%;display:block;margin-bottom:4px;';
+                      wrap.appendChild(canvas);
+                      page.render({ canvasContext: canvas.getContext('2d'), viewport: vp });
+                    });
+                  }
+                }).catch(() => {
+                  const wrap = document.getElementById(canvasId + '-wrap');
+                  if (wrap) wrap.innerHTML = `<p style="padding:1rem;color:#666;text-align:center"><i class="fas fa-file-pdf" style="color:#e74c3c;font-size:2rem"></i><br>Impossible d'afficher le PDF.<br><a href="${fullUrl}" target="_blank" style="color:#2EA3F2">Télécharger</a></p>`;
+                });
+              }
             }
           });
         }

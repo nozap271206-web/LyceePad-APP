@@ -520,8 +520,8 @@ document.addEventListener('DOMContentLoaded', async function() {
   const PROFILS_MAP = {
     1: { nom: 'futur_eleve',    label: 'Futur élève',              couleur: '#2EA3F2' },
     2: { nom: 'parent',         label: 'Parent',                   couleur: '#10B981' },
-    3: { nom: 'visiteur_libre', label: 'Visiteur libre',           couleur: '#6B7280' },
-    4: { nom: 'partenaire',     label: 'Partenaire professionnel', couleur: '#8B5CF6' },
+    3: { nom: 'partenaire',     label: 'Partenaire professionnel', couleur: '#8B5CF6' },
+    4: { nom: 'visiteur_libre', label: 'Visiteur libre',           couleur: '#6B7280' },
   };
 
   let parcoursData = [];
