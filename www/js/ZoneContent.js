@@ -467,3 +467,90 @@ function loadZoneContent(zoneId) {
     }
   }
 }
+
+// ── Lightbox ──────────────────────────────────────────────────────────────────
+const lightbox = {
+  el: null, img: null, counter: null, prev: null, next: null,
+  sources: [], index: 0,
+
+  init() {
+    this.el      = document.getElementById('lightbox');
+    this.img     = document.getElementById('lightboxImg');
+    this.counter = document.getElementById('lightboxCounter');
+    this.prev    = document.getElementById('lightboxPrev');
+    this.next    = document.getElementById('lightboxNext');
+    if (!this.el) return;
+
+    document.getElementById('lightboxClose').addEventListener('click',   () => this.close());
+    document.getElementById('lightboxBackdrop').addEventListener('click', () => this.close());
+    this.prev.addEventListener('click', () => this.go(this.index - 1));
+    this.next.addEventListener('click', () => this.go(this.index + 1));
+
+    document.addEventListener('keydown', e => {
+      if (!this.el.classList.contains('open')) return;
+      if (e.key === 'Escape')      this.close();
+      if (e.key === 'ArrowLeft')   this.go(this.index - 1);
+      if (e.key === 'ArrowRight')  this.go(this.index + 1);
+    });
+
+    // Swipe tactile
+    let tx = 0;
+    this.el.addEventListener('touchstart', e => { tx = e.touches[0].clientX; },        { passive: true });
+    this.el.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 50) this.go(this.index + (dx < 0 ? 1 : -1));
+    });
+  },
+
+  open(sources, index) {
+    this.sources = sources;
+    this.go(index, false);
+    this.el.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  },
+
+  close() {
+    this.el.classList.remove('open');
+    document.body.style.overflow = '';
+  },
+
+  go(index, animate = true) {
+    const n = this.sources.length;
+    if (!n) return;
+    this.index = ((index % n) + n) % n;
+
+    if (animate) {
+      this.img.classList.add('fading');
+      setTimeout(() => {
+        this.img.src = this.sources[this.index];
+        this.img.classList.remove('fading');
+      }, 150);
+    } else {
+      this.img.src = this.sources[this.index];
+    }
+
+    this.counter.textContent = n > 1 ? `${this.index + 1} / ${n}` : '';
+    this.prev.classList.toggle('hidden', n <= 1);
+    this.next.classList.toggle('hidden', n <= 1);
+  }
+};
+
+// Un seul listener par délégation sur gallery-grid — couvre photos statiques
+// ET photos uploadées dynamiquement sans modifier le code de rendu existant.
+function bindGalleryLightbox() {
+  const grid = document.getElementById('gallery-grid');
+  if (!grid || grid.dataset.lightboxBound) return;
+  grid.dataset.lightboxBound = 'true';
+
+  grid.addEventListener('click', e => {
+    const img = e.target.closest('img');
+    if (!img || !img.src) return;
+    const allImgs = [...grid.querySelectorAll('img[src]')];
+    lightbox.open(allImgs.map(i => i.src), allImgs.indexOf(img));
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  lightbox.init();
+  bindGalleryLightbox();
+});
