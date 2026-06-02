@@ -505,11 +505,13 @@ const lightbox = {
   open(sources, index) {
     this.sources = sources;
     this.go(index, false);
+    this.el.style.display = 'flex';
     this.el.classList.add('open');
     document.body.style.overflow = 'hidden';
   },
 
   close() {
+    this.el.style.display = 'none';
     this.el.classList.remove('open');
     document.body.style.overflow = '';
   },
