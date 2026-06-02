@@ -21,10 +21,6 @@ const ZonesPage = {
       return;
     }
 
-    const sourceLabel = source === 'db'
-      ? '<span class="zones-source zones-source--server"><i class="fas fa-cloud"></i> Synchronisé avec le serveur</span>'
-      : '<span class="zones-source zones-source--local"><i class="fas fa-database"></i> Données locales</span>';
-
     const groups = new Map();
     zones.forEach(z => {
       const key = (z.batiment && z.batiment.trim()) ? z.batiment.trim() : 'Général';
@@ -74,7 +70,7 @@ const ZonesPage = {
         </div>`;
     }).join('');
 
-    container.innerHTML = sourceLabel + groupsHtml;
+    container.innerHTML = groupsHtml;
   },
 
   async _fetchZones() {
