@@ -600,4 +600,21 @@ function bindGalleryLightbox() {
 document.addEventListener('DOMContentLoaded', () => {
   lightbox.init();
   bindGalleryLightbox();
+
+  // Bouton retour : destination selon la page d'origine
+  const backBtn = document.querySelector('.back-btn');
+  if (backBtn) {
+    const ref = document.referrer;
+    const origins = [
+      { key: 'map.html',     href: 'map.html',     label: 'Retour à la carte' },
+      { key: 'Zones.html',   href: 'Zones.html',   label: 'Retour aux zones' },
+      { key: 'scanner.html', href: 'scanner.html', label: 'Retour au scanner' },
+    ];
+    const match = origins.find(o => ref.includes(o.key));
+    if (match) {
+      backBtn.href = match.href;
+      const txt = [...backBtn.childNodes].filter(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim()).pop();
+      if (txt) txt.textContent = ' ' + match.label;
+    }
+  }
 });
