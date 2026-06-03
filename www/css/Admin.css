@@ -578,6 +578,31 @@ body {
   display: block;
 }
 
+/* Tuile PDF : icône + nom du fichier visible dessous */
+.pdf-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 140px;
+  padding: 10px;
+  background: var(--bg);
+  color: #e74c3c;
+  text-decoration: none;
+}
+.pdf-tile i { font-size: 2.8rem; }
+.pdf-tile-name {
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.25;
+  word-break: break-word;
+  max-height: 2.5em;
+  overflow: hidden;
+}
+
 .media-item-info {
   padding: 8px 10px;
   font-size: 0.78rem;

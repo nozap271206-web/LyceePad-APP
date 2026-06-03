@@ -195,6 +195,11 @@ const ContenusManager = {
     // Construire l'URL absolue vers le serveur
     const serverBase = DBManager.config.serverUrl.replace('/data', '');
 
+    // Nom lisible : retire le préfixe (gallery_/hero_) et le suffixe unique (_<uniqid>)
+    const prettyName = (name) => name
+      .replace(/^(?:gallery|hero)_/, '')
+      .replace(/_[a-z0-9]{13}(\.[^.]+)$/i, '$1');
+
     grid.innerHTML = files.map(f => {
       const fullUrl = serverBase + f.url;
       const sizeKb  = Math.round(f.size / 1024);
@@ -204,7 +209,7 @@ const ContenusManager = {
           <div class="media-item" data-filename="${f.name}">
             <video src="${fullUrl}" preload="metadata" muted></video>
             <div class="media-item-info">
-              <div class="media-item-name">${f.name}</div>
+              <div class="media-item-name" title="${f.name}">${prettyName(f.name)}</div>
               <span>${sizeKb} Ko · vidéo</span>
             </div>
             <button class="media-item-delete" title="Supprimer" onclick="ContenusManager.deleteMedia('${f.name}')">
@@ -212,13 +217,15 @@ const ContenusManager = {
             </button>
           </div>`;
       } else if (f.type === 'pdf') {
+        const display = prettyName(f.name);
         return `
           <div class="media-item" data-filename="${f.name}">
-            <a href="${fullUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;height:100%;min-height:120px;background:var(--bg);color:#e74c3c;text-decoration:none">
-              <i class="fas fa-file-pdf" style="font-size:3rem"></i>
+            <a href="${fullUrl}" target="_blank" rel="noopener" class="pdf-tile" title="Ouvrir ${f.name}">
+              <i class="fas fa-file-pdf"></i>
+              <span class="pdf-tile-name">${display}</span>
             </a>
             <div class="media-item-info">
-              <div class="media-item-name">${f.name}</div>
+              <div class="media-item-name" title="${f.name}">${display}</div>
               <span>${sizeKb} Ko · PDF</span>
             </div>
             <button class="media-item-delete" title="Supprimer" onclick="ContenusManager.deleteMedia('${f.name}')">
@@ -233,7 +240,7 @@ const ContenusManager = {
             <img src="${fullUrl}" alt="${f.name}" loading="lazy">
             <span class="role-badge ${roleClass}">${roleLabel}</span>
             <div class="media-item-info">
-              <div class="media-item-name">${f.name}</div>
+              <div class="media-item-name" title="${f.name}">${prettyName(f.name)}</div>
               <span>${sizeKb} Ko · image</span>
             </div>
             <button class="media-item-delete" title="Supprimer" onclick="ContenusManager.deleteMedia('${f.name}')">
