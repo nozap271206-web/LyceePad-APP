@@ -373,12 +373,15 @@ const ContenusManager = {
           ${files.map(f => {
             const preview = f.type === 'pdf'
               ? `<div style="height:90px;display:flex;align-items:center;justify-content:center;background:var(--bg);color:#e74c3c"><i class="fas fa-file-pdf" style="font-size:2.4rem"></i></div>`
+              : f.type === 'video'
+              ? `<video src="${serverBase + f.url}" muted preload="metadata" style="width:100%;height:90px;object-fit:cover;display:block;background:#000"></video>`
               : `<div style="height:90px;background:var(--bg) url('${serverBase + f.url}') center/cover no-repeat"></div>`;
+            const tag = f.source === 'app' ? ' <span style="font-size:0.7rem;color:var(--text-secondary)">(app)</span>' : '';
             return `
               <div class="zone-card" style="overflow:hidden">
                 ${preview}
                 <div style="padding:0.5rem">
-                  <p style="margin:0 0 0.5rem;font-size:0.78rem;word-break:break-all">${f.name}</p>
+                  <p style="margin:0 0 0.5rem;font-size:0.78rem;word-break:break-all">${f.name}${tag}</p>
                   <button class="btn btn-primary" style="width:100%;padding:0.35rem;font-size:0.78rem"
                     onclick="ContenusManager.assignFromDepot('${f.name.replace(/'/g, "\\'")}')">
                     <i class="fas fa-check"></i> Assigner ici

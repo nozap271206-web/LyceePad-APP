@@ -36,17 +36,17 @@ const DepotManager = {
         <div class="search-box">
           <i class="fas fa-info-circle"></i>
           <span style="color:var(--text-secondary);font-size:0.9rem">
-            Déposez des fichiers (PDF, JPG, PNG) — ils sont stockés sur le serveur et accessibles à tous.
+            Déposez des fichiers (PDF, images, vidéos) — ils sont stockés sur le serveur et accessibles à tous.
           </span>
         </div>
       </div>
 
       <div style="border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;margin-bottom:1.5rem;background:var(--bg-elevated)">
-        <input type="file" id="depotFileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,image/*,application/pdf" style="display:none">
+        <input type="file" id="depotFileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.mp4,.webm,.ogg,.mov,image/*,video/*,application/pdf" style="display:none">
         <button class="btn btn-primary" id="depotPickBtn">
           <i class="fas fa-cloud-upload-alt"></i> Choisir des fichiers à déposer
         </button>
-        <p style="color:var(--text-secondary);font-size:0.85rem;margin-top:0.75rem">PDF, JPG, PNG, GIF, WEBP — 100 Mo max par fichier</p>
+        <p style="color:var(--text-secondary);font-size:0.85rem;margin-top:0.75rem">PDF, images, vidéos — 500 Mo max par fichier</p>
         <div id="depotProgress" style="display:none;margin-top:1rem">
           <div style="background:var(--border);border-radius:8px;overflow:hidden;height:10px">
             <div id="depotProgressBar" style="height:100%;width:0%;background:var(--primary);transition:width .2s"></div>
@@ -103,22 +103,38 @@ const DepotManager = {
   },
 
   _card(f) {
-    const full    = this.origin + f.url;
-    const sizeKb  = f.size ? (f.size > 1048576 ? (f.size / 1048576).toFixed(1) + ' Mo' : Math.round(f.size / 1024) + ' Ko') : '';
-    const preview = f.type === 'pdf'
-      ? `<div style="height:120px;display:flex;align-items:center;justify-content:center;background:var(--bg);color:#e74c3c"><i class="fas fa-file-pdf" style="font-size:3rem"></i></div>`
-      : `<div style="height:120px;background:var(--bg) url('${f.url}') center/cover no-repeat"></div>`;
+    const full   = this.origin + f.url;
+    const sizeKb = f.size ? (f.size > 1048576 ? (f.size / 1048576).toFixed(1) + ' Mo' : Math.round(f.size / 1024) + ' Ko') : '';
+    const isApp  = f.source === 'app';   // média déjà présent dans l'app → lecture seule
+
+    let preview;
+    if (f.type === 'pdf') {
+      preview = `<div style="height:120px;display:flex;align-items:center;justify-content:center;background:var(--bg);color:#e74c3c"><i class="fas fa-file-pdf" style="font-size:3rem"></i></div>`;
+    } else if (f.type === 'video') {
+      preview = `<video src="${full}" muted preload="metadata" style="width:100%;height:120px;object-fit:cover;display:block;background:#000"></video>`;
+    } else {
+      preview = `<div style="height:120px;background:var(--bg) url('${full}') center/cover no-repeat"></div>`;
+    }
+
+    const typeLabel = f.type === 'pdf' ? 'PDF' : (f.type === 'video' ? 'Vidéo' : 'Image');
+    const badge = isApp
+      ? `<span style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.6);color:#fff;font-size:0.65rem;padding:2px 6px;border-radius:4px;z-index:1">app</span>`
+      : '';
+    const deleteBtn = isApp
+      ? ''
+      : `<button class="btn btn-danger" onclick="DepotManager.deleteFile('${f.name.replace(/'/g, "\\'")}')" style="padding:0.35rem 0.6rem;font-size:0.78rem" title="Supprimer"><i class="fas fa-trash"></i></button>`;
 
     return `
-      <div class="zone-card" style="overflow:hidden">
+      <div class="zone-card" style="overflow:hidden;position:relative">
+        ${badge}
         <a href="${full}" target="_blank" rel="noopener" title="Ouvrir">${preview}</a>
         <div style="padding:0.6rem 0.75rem">
           <p style="margin:0 0 0.4rem;font-size:0.82rem;color:var(--text);word-break:break-all" title="${f.name}">${f.name}</p>
-          <p style="margin:0 0 0.6rem;font-size:0.75rem;color:var(--text-secondary)">${f.type === 'pdf' ? 'PDF' : 'Image'} · ${sizeKb}</p>
+          <p style="margin:0 0 0.6rem;font-size:0.75rem;color:var(--text-secondary)">${typeLabel} · ${sizeKb}${isApp ? " · déjà dans l'app" : ''}</p>
           <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
             <a class="btn btn-secondary" href="${full}" target="_blank" rel="noopener" style="padding:0.35rem 0.6rem;font-size:0.78rem"><i class="fas fa-external-link-alt"></i></a>
             <button class="btn btn-secondary" onclick="DepotManager.copyUrl('${full}')" style="padding:0.35rem 0.6rem;font-size:0.78rem" title="Copier le lien"><i class="fas fa-link"></i></button>
-            <button class="btn btn-danger" onclick="DepotManager.deleteFile('${f.name.replace(/'/g, "\\'")}')" style="padding:0.35rem 0.6rem;font-size:0.78rem" title="Supprimer"><i class="fas fa-trash"></i></button>
+            ${deleteBtn}
           </div>
         </div>
       </div>

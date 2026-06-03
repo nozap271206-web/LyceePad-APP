@@ -27,17 +27,24 @@ if (!is_dir(DEPOT_DIR)) {
     mkdir(DEPOT_DIR, 0755, true);
 }
 
-// Types autorisés : images courantes + PDF
+// Types autorisés : images courantes + PDF + vidéos
 function depotAllowedMimes() {
     return [
         'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp',
-        'application/pdf'
+        'application/pdf',
+        'video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'
     ];
 }
 
 function depotMimeToType($mime) {
     if ($mime === 'application/pdf') return 'pdf';
+    if (strpos($mime, 'video/') === 0) return 'video';
     return 'image';
+}
+
+// Médias déjà présents dans l'app, exclus du listing (interface + fond accueil)
+function depotAppExcluded() {
+    return ['logo.png', 'logo_splash.png', 'plan-lycee.png', 'background-hero.mp4'];
 }
 
 function depotSanitizeName($name) {
@@ -74,10 +81,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $src = DEPOT_DIR . $filename;
-        if (!file_exists($src)) {
+        // Le fichier source peut être dans le dépôt OU dans les médias de l'app (img/, video/)
+        $candidates = [
+            DEPOT_DIR . $filename,
+            __DIR__ . '/../img/' . $filename,
+            __DIR__ . '/../video/' . $filename,
+        ];
+        $src = null;
+        foreach ($candidates as $c) {
+            if (is_file($c)) { $src = $c; break; }
+        }
+        if ($src === null) {
             http_response_code(404);
-            echo json_encode(['success' => false, 'message' => 'Fichier du dépôt introuvable']);
+            echo json_encode(['success' => false, 'message' => 'Fichier source introuvable']);
             exit;
         }
 
@@ -103,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'file'    => [
                 'name'    => $destName,
                 'url'     => '/img/zones/' . $qrCode . '/' . $destName,
-                'type'    => $ext === 'pdf' ? 'pdf' : 'image',
+                'type'    => $ext === 'pdf' ? 'pdf' : (in_array($ext, ['mp4', 'webm', 'ogg', 'mov'], true) ? 'video' : 'image'),
                 'qr_code' => $qrCode
             ]
         ]);
@@ -140,11 +156,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Taille max 100 Mo
-    $maxSize = 100 * 1024 * 1024;
+    // Taille max 500 Mo (vidéos incluses)
+    $maxSize = 500 * 1024 * 1024;
     if ($file['size'] > $maxSize) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Fichier trop volumineux (max 100 Mo)']);
+        echo json_encode(['success' => false, 'message' => 'Fichier trop volumineux (max 500 Mo)']);
         exit;
     }
 
@@ -217,23 +233,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 // ─── Liste (publique) ─────────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $files      = [];
-    $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf'];
+    $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'mp4', 'webm', 'ogg', 'mov'];
 
-    if (is_dir(DEPOT_DIR)) {
-        foreach (scandir(DEPOT_DIR) as $f) {
+    $extToType = function ($ext) {
+        if ($ext === 'pdf') return 'pdf';
+        if (in_array($ext, ['mp4', 'webm', 'ogg', 'mov'], true)) return 'video';
+        return 'image';
+    };
+
+    // Scanne un dossier (fichiers directs uniquement) et empile les médias trouvés
+    $scan = function ($dir, $urlPrefix, $source, array $exclude = [])
+            use (&$files, $allowedExt, $extToType) {
+        if (!is_dir($dir)) return;
+        foreach (scandir($dir) as $f) {
             if ($f === '.' || $f === '..') continue;
+            if (in_array(strtolower($f), $exclude, true)) continue;
+            $path = $dir . $f;
+            if (!is_file($path)) continue;  // ignore les sous-dossiers (zones/, depot/)
             $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
-            if (!in_array($ext, $allowedExt)) continue;
+            if (!in_array($ext, $allowedExt, true)) continue;
 
             $files[] = [
                 'name'     => $f,
-                'url'      => DEPOT_URL . $f,
-                'type'     => $ext === 'pdf' ? 'pdf' : 'image',
-                'size'     => filesize(DEPOT_DIR . $f),
-                'modified' => filemtime(DEPOT_DIR . $f)
+                'url'      => $urlPrefix . $f,
+                'type'     => $extToType($ext),
+                'source'   => $source,
+                'size'     => filesize($path),
+                'modified' => filemtime($path)
             ];
         }
-    }
+    };
+
+    // 1) Fichiers réellement déposés (modifiables / supprimables)
+    $scan(DEPOT_DIR, DEPOT_URL, 'depot');
+    // 2) Médias déjà présents dans l'app (lecture seule), hors interface + fond accueil
+    $appExclude = depotAppExcluded();
+    $scan(__DIR__ . '/../img/',   '/img/',   'app', $appExclude);
+    $scan(__DIR__ . '/../video/', '/video/', 'app', $appExclude);
 
     // Plus récents d'abord
     usort($files, function ($a, $b) { return $b['modified'] - $a['modified']; });
