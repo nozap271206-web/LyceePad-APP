@@ -3,3 +3,11 @@ php_value upload_max_filesize 500M
 php_value post_max_size 512M
 php_value max_execution_time 300
 php_value max_input_time 300
+
+# CORS sur les médias statiques : permet à l'app Cordova (origine http://localhost)
+# de lire les PDF/images cross-origin via XHR (pdf.js a besoin des octets du PDF).
+<IfModule mod_headers.c>
+  <FilesMatch "\.(pdf|png|jpe?g|gif|webp|mp4|webm|ogg|mov)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>

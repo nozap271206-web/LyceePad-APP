@@ -265,6 +265,7 @@ async function loadZoneFromDB(qrCode) {
     }
 
     // Charger les photos/vidéos uploadées depuis le serveur
+    let uploadedVideoFound = false;
     try {
       const uploadUrl = `${uploadServerBase}/API/upload.php?qr_code=${encodeURIComponent(qrCode)}`;
       const uploadRes = await fetch(uploadUrl, { cache: 'no-cache' });
@@ -297,49 +298,14 @@ async function loadZoneFromDB(qrCode) {
                 photoDiv.appendChild(img);
                 galleryGrid.appendChild(photoDiv);
               }
-            } else if (f.type === 'video' && !zone.noVideo && (!zone.videos || zone.videos.length === 0)) {
+            } else if (f.type === 'video' && (!zone.videos || zone.videos.length === 0)) {
               const placeholder = document.getElementById('video-placeholder');
               if (placeholder) {
                 placeholder.innerHTML = `<video controls playsinline preload="metadata" width="100%" style="border-radius:12px;display:block;"><source src="${fullUrl}" type="video/mp4"></video>`;
+                uploadedVideoFound = true;
               }
             } else if (f.type === 'pdf') {
-              const ph = galleryGrid.querySelector('.gallery-placeholder');
-              if (ph) ph.closest('.gallery-item').remove();
-              const docDiv = document.createElement('div');
-              docDiv.className = 'gallery-item';
-              docDiv.style.cssText = 'grid-column:1 / -1;height:auto;';
-              const canvasId = 'pdf-canvas-' + Math.random().toString(36).slice(2);
-              docDiv.innerHTML = `
-                <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)">
-                  <div id="${canvasId}-wrap" style="width:100%;overflow-y:auto;max-height:80vh;padding:0.5rem;box-sizing:border-box"></div>
-                  <div style="padding:0.6rem;text-align:center;border-top:1px solid #eee">
-                    <a href="${fullUrl}" target="_blank" rel="noopener" style="color:#2EA3F2;text-decoration:none;font-size:0.85rem">
-                      <i class="fas fa-external-link-alt"></i> Ouvrir le PDF en plein écran
-                    </a>
-                  </div>
-                </div>`;
-              galleryGrid.appendChild(docDiv);
-              if (window.pdfjsLib) {
-                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-                pdfjsLib.getDocument(fullUrl).promise.then(pdf => {
-                  const wrap = document.getElementById(canvasId + '-wrap');
-                  if (!wrap) return;
-                  for (let p = 1; p <= pdf.numPages; p++) {
-                    pdf.getPage(p).then(page => {
-                      const vp = page.getViewport({ scale: wrap.clientWidth / page.getViewport({ scale: 1 }).width });
-                      const canvas = document.createElement('canvas');
-                      canvas.width = vp.width;
-                      canvas.height = vp.height;
-                      canvas.style.cssText = 'width:100%;display:block;margin-bottom:4px;';
-                      wrap.appendChild(canvas);
-                      page.render({ canvasContext: canvas.getContext('2d'), viewport: vp });
-                    });
-                  }
-                }).catch(() => {
-                  const wrap = document.getElementById(canvasId + '-wrap');
-                  if (wrap) wrap.innerHTML = `<p style="padding:1rem;color:#666;text-align:center"><i class="fas fa-file-pdf" style="color:#e74c3c;font-size:2rem"></i><br>Impossible d'afficher le PDF.<br><a href="${fullUrl}" target="_blank" style="color:#2EA3F2">Télécharger</a></p>`;
-                });
-              }
+              mountPdf(galleryGrid, fullUrl);
             }
           });
         }
@@ -374,14 +340,14 @@ async function loadZoneFromDB(qrCode) {
     const quizId = QR_TO_QUIZ_ID[qrCode];
     document.getElementById('quiz-link').href = quizId ? `Quiz.html?zone=${quizId}` : 'Quiz.html';
 
-    // Section vidéo : masquer si noVideo, sinon afficher (avec vidéo si disponible)
+    // Section vidéo : visible uniquement s'il y a réellement une vidéo
+    // (statique ou uploadée). Sinon on masque — pas de placeholder « Vidéo à venir ».
     const videoSection = document.getElementById('video-section');
-    if (zone.noVideo && videoSection) {
-      videoSection.style.display = 'none';
-    } else {
-      const videoTitleEl = document.getElementById('video-title');
-      if (videoTitleEl) videoTitleEl.textContent = `Visite de ${zone.nom}`;
-      if (zone.videos && zone.videos.length > 0) {
+    const videoTitleEl = document.getElementById('video-title');
+    if (videoTitleEl) videoTitleEl.textContent = `Visite de ${zone.nom}`;
+
+    const hasStaticVideo = !zone.noVideo && zone.videos && zone.videos.length > 0;
+    if (hasStaticVideo) {
         const videoSrc = resolveUrl(zone.videos[0]);
         const placeholder = document.getElementById('video-placeholder');
         if (placeholder) {
@@ -413,8 +379,10 @@ async function loadZoneFromDB(qrCode) {
             placeholder.appendChild(video);
           }
         }
-      }
     }
+
+    const hasVideo = hasStaticVideo || uploadedVideoFound;
+    if (videoSection) videoSection.style.display = hasVideo ? '' : 'none';
 
   } catch (err) {
     console.error('Erreur chargement zone:', err);
@@ -482,8 +450,10 @@ function loadZoneContent(zoneId) {
   // Mettre à jour les titres médias
   document.getElementById('video-title').textContent = zone.videoTitle;
 
-  // Injecter la vidéo uniquement pour la zone internat (id=10)
+  // Injecter la vidéo uniquement pour la zone internat (id=10) ; sinon masquer la section
+  const videoSection = document.getElementById('video-section');
   if (parseInt(zoneId) === 10) {
+    if (videoSection) videoSection.style.display = '';
     const placeholder = document.getElementById('video-placeholder');
     if (placeholder) {
       const internatSrc = 'https://lycee-pad.cc/video/presentation_internat.mp4';
@@ -507,13 +477,72 @@ function loadZoneContent(zoneId) {
       placeholder.innerHTML = '';
       placeholder.appendChild(video);
     }
+  } else if (videoSection) {
+    videoSection.style.display = 'none';
   }
 }
 
-// ── Lightbox ──────────────────────────────────────────────────────────────────
+// ── Visionneur PDF ──────────────────────────────────────────────────────────
+// Affiche les pages du PDF les unes sous les autres (sans double scroll) et
+// rend chaque page cliquable → s'ouvre dans la lightbox zoomable, comme une photo.
+function mountPdf(galleryGrid, fullUrl) {
+  const ph = galleryGrid.querySelector('.gallery-placeholder');
+  if (ph) ph.closest('.gallery-item').remove();
+
+  const docDiv = document.createElement('div');
+  docDiv.className = 'gallery-item pdf-block';
+  const wrap = document.createElement('div');
+  wrap.className = 'pdf-pages';
+  wrap.innerHTML = '<div class="pdf-loading"><div class="loading-spinner"></div><span>Chargement du PDF…</span></div>';
+  const footer = document.createElement('div');
+  footer.className = 'pdf-footer';
+  footer.innerHTML = `<a href="${fullUrl}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Ouvrir le PDF</a>`;
+  docDiv.appendChild(wrap);
+  docDiv.appendChild(footer);
+  galleryGrid.appendChild(docDiv);
+
+  if (!window.pdfjsLib) {
+    wrap.innerHTML = `<p class="pdf-error"><i class="fas fa-file-pdf"></i><br>Aperçu indisponible.<br><a href="${fullUrl}" target="_blank" rel="noopener">Ouvrir le PDF</a></p>`;
+    return;
+  }
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '../lib/pdfjs/pdf.worker.min.js';
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const QUALITY = 2;            // résolution supplémentaire → zoom net dans la lightbox
+  const pageImages = [];        // dataURL HD de chaque page (source de la lightbox)
+
+  // disableRange/disableStream : un seul GET complet (CORS simple, fiable en Cordova)
+  pdfjsLib.getDocument({ url: fullUrl, disableRange: true, disableStream: true }).promise.then(async pdf => {
+    wrap.innerHTML = '';
+    const cssWidth = wrap.clientWidth || 600;
+    for (let p = 1; p <= pdf.numPages; p++) {
+      const page = await pdf.getPage(p);
+      const base = page.getViewport({ scale: 1 });
+      const vp   = page.getViewport({ scale: (cssWidth / base.width) * dpr * QUALITY });
+      const canvas = document.createElement('canvas');
+      canvas.className = 'pdf-page';
+      canvas.width  = vp.width;
+      canvas.height = vp.height;
+      wrap.appendChild(canvas);
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+      try {
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+        const idx = pageImages.push(dataUrl) - 1;
+        canvas.classList.add('clickable');
+        canvas.addEventListener('click', () => lightbox.open(pageImages, idx));
+      } catch (e) { /* canvas non exportable : aperçu seul, pas de lightbox */ }
+    }
+  }).catch(() => {
+    wrap.innerHTML = `<p class="pdf-error"><i class="fas fa-file-pdf"></i><br>Impossible d'afficher le PDF.<br><a href="${fullUrl}" target="_blank" rel="noopener">Télécharger</a></p>`;
+  });
+}
+
+// ── Lightbox (photos + pages PDF) avec zoom pinch / double-tap / déplacement ──
 const lightbox = {
   el: null, img: null, counter: null, prev: null, next: null,
   sources: [], index: 0,
+  scale: 1, tx: 0, ty: 0,
 
   init() {
     this.el      = document.getElementById('lightbox');
@@ -525,8 +554,8 @@ const lightbox = {
 
     document.getElementById('lightboxClose').addEventListener('click',   () => this.close());
     document.getElementById('lightboxBackdrop').addEventListener('click', () => this.close());
-    this.prev.addEventListener('click', () => this.go(this.index - 1));
-    this.next.addEventListener('click', () => this.go(this.index + 1));
+    this.prev.addEventListener('click', e => { e.stopPropagation(); this.go(this.index - 1); });
+    this.next.addEventListener('click', e => { e.stopPropagation(); this.go(this.index + 1); });
 
     document.addEventListener('keydown', e => {
       if (!this.el.classList.contains('open')) return;
@@ -535,17 +564,67 @@ const lightbox = {
       if (e.key === 'ArrowRight')  this.go(this.index + 1);
     });
 
-    // Swipe tactile
-    let tx = 0;
-    this.el.addEventListener('touchstart', e => { tx = e.touches[0].clientX; },        { passive: true });
-    this.el.addEventListener('touchend',   e => {
-      const dx = e.changedTouches[0].clientX - tx;
-      if (Math.abs(dx) > 50) this.go(this.index + (dx < 0 ? 1 : -1));
+    // Gestes tactiles : pinch (2 doigts), déplacement (1 doigt zoomé),
+    // swipe de navigation (1 doigt non zoomé), double-tap pour zoomer.
+    const t = { startDist: 0, startScale: 1, startX: 0, startY: 0, startTx: 0, startTy: 0, mode: null, lastTap: 0 };
+    const dist = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+
+    this.el.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        t.mode = 'pinch';
+        t.startDist = dist(e.touches[0], e.touches[1]) || 1;
+        t.startScale = this.scale;
+        e.preventDefault();
+      } else if (e.touches.length === 1) {
+        const now = Date.now();
+        if (now - t.lastTap < 300) {        // double-tap
+          t.lastTap = 0; t.mode = null;
+          this.toggleZoom();
+          e.preventDefault();
+          return;
+        }
+        t.lastTap = now;
+        t.startX = e.touches[0].clientX;
+        t.startY = e.touches[0].clientY;
+        t.startTx = this.tx; t.startTy = this.ty;
+        t.mode = this.scale > 1 ? 'pan' : 'swipe';
+      }
+    }, { passive: false });
+
+    this.el.addEventListener('touchmove', e => {
+      if (t.mode === 'pinch' && e.touches.length === 2) {
+        this.setScale(t.startScale * (dist(e.touches[0], e.touches[1]) / t.startDist));
+        e.preventDefault();
+      } else if (t.mode === 'pan' && e.touches.length === 1) {
+        this.tx = t.startTx + (e.touches[0].clientX - t.startX);
+        this.ty = t.startTy + (e.touches[0].clientY - t.startY);
+        this.applyTransform();
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    this.el.addEventListener('touchend', e => {
+      if (t.mode === 'swipe') {
+        const dx = e.changedTouches[0].clientX - t.startX;
+        if (Math.abs(dx) > 50) this.go(this.index + (dx < 0 ? 1 : -1));
+      } else if (t.mode === 'pinch' && this.scale < 1.05) {
+        this.resetZoom();
+      }
+      t.mode = null;
     });
+
+    // Souris (test sur bureau)
+    this.img.addEventListener('dblclick', e => { e.preventDefault(); this.toggleZoom(); });
+    this.el.addEventListener('wheel', e => {
+      if (!this.el.classList.contains('open')) return;
+      e.preventDefault();
+      this.setScale(this.scale * (e.deltaY < 0 ? 1.15 : 0.87));
+    }, { passive: false });
   },
 
   open(sources, index) {
     this.sources = sources;
+    this.resetZoom();
     this.go(index, false);
     this.el.style.display = 'flex';
     this.el.classList.add('open');
@@ -556,12 +635,41 @@ const lightbox = {
     this.el.style.display = 'none';
     this.el.classList.remove('open');
     document.body.style.overflow = '';
+    this.resetZoom();
+  },
+
+  setScale(s) {
+    this.scale = Math.max(1, Math.min(4, s));
+    if (this.scale === 1) { this.tx = 0; this.ty = 0; }
+    this.applyTransform();
+  },
+
+  toggleZoom() {
+    if (this.scale > 1) this.resetZoom();
+    else this.setScale(2.5);
+  },
+
+  resetZoom() {
+    this.scale = 1; this.tx = 0; this.ty = 0;
+    this.applyTransform();
+  },
+
+  applyTransform() {
+    if (!this.img) return;
+    // borne le déplacement pour garder l'image dans le cadre
+    const maxX = (this.scale - 1) * this.img.clientWidth  / 2;
+    const maxY = (this.scale - 1) * this.img.clientHeight / 2;
+    this.tx = Math.max(-maxX, Math.min(maxX, this.tx));
+    this.ty = Math.max(-maxY, Math.min(maxY, this.ty));
+    this.img.style.transform = `translate(${this.tx}px, ${this.ty}px) scale(${this.scale})`;
+    this.img.classList.toggle('zoomed', this.scale > 1);
   },
 
   go(index, animate = true) {
     const n = this.sources.length;
     if (!n) return;
     this.index = ((index % n) + n) % n;
+    this.resetZoom();
 
     if (animate) {
       this.img.classList.add('fading');

@@ -39,7 +39,8 @@ function sanitizeFilename($filename) {
 function isAllowedMime($tmpPath, $originalName) {
     $allowedMimes = [
         'image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp',
-        'video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'
+        'video/mp4', 'video/webm', 'video/ogg', 'video/quicktime',
+        'application/pdf'
     ];
 
     $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -149,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Déterminer le type (image ou vidéo)
     $finfo    = new finfo(FILEINFO_MIME_TYPE);
     $mime     = $finfo->file($destPath);
-    $fileType = strpos($mime, 'video') === 0 ? 'video' : 'image';
+    $fileType = strpos($mime, 'video') === 0 ? 'video' : ($mime === 'application/pdf' ? 'pdf' : 'image');
 
     echo json_encode([
         'success'   => true,
