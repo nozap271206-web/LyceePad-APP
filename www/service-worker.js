@@ -8,7 +8,7 @@
  *  - Offline page → si tout échoue, une page de secours est affichée
  */
 
-const CACHE_VERSION = 'lyceepad-v10';
+const CACHE_VERSION = 'lyceepad-v11';
 
 // Fichiers mis en cache immédiatement à l'installation
 const PRECACHE_ASSETS = [
@@ -52,6 +52,8 @@ const PRECACHE_ASSETS = [
   '/img/logo.png',
   '/img/plan-lycee.png',
   '/lib/fontawesome/css/all.min.css',
+  '/lib/aos/aos.css',
+  '/lib/aos/aos.js',
   '/offline.html'
 ];
 
