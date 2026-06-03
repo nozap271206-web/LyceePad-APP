@@ -183,39 +183,31 @@ const DB_ID_TO_QUIZ_ID = {
   30: 10,                          // Internat
 };
 
-// Affiche une vidéo dans le placeholder. En Cordova le WebView bloque la lecture
-// cross-origin → on propose un bouton qui ouvre la vidéo dans le navigateur système.
-// Sur le web : lecteur intégré, avec repli bouton si la lecture échoue.
+// Affiche une vidéo dans le placeholder : lecteur INTÉGRÉ d'abord (web ET app —
+// le CORS est actif côté serveur, la lecture cross-origin passe dans le WebView).
+// Si la lecture échoue vraiment, repli sur un bouton qui ouvre la vidéo ailleurs.
 function renderZoneVideo(placeholder, src, isCordova) {
   if (!placeholder || !src) return;
-  const makeBtn = (sub) => {
+
+  const showFallbackButton = () => {
     const btn = document.createElement('div');
     btn.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:12px;color:white;';
-    btn.innerHTML = '<div style="width:70px;height:70px;background:#2EA3F2;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span style="font-size:1rem;font-weight:600;">Lancer la vidéo</span>' + (sub ? `<span style="font-size:0.8rem;opacity:0.7;">${sub}</span>` : '');
-    return btn;
-  };
-
-  if (isCordova) {
-    const btn = makeBtn("S'ouvre dans le navigateur");
-    btn.addEventListener('click', () => window.open(src, '_system'));
+    btn.innerHTML = '<div style="width:70px;height:70px;background:#2EA3F2;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span style="font-size:1rem;font-weight:600;">Lancer la vidéo</span>';
+    btn.addEventListener('click', () => window.open(src, isCordova ? '_system' : '_blank'));
     placeholder.innerHTML = '';
     placeholder.appendChild(btn);
-  } else {
-    const video = document.createElement('video');
-    video.controls = true;
-    video.setAttribute('playsinline', '');
-    video.preload = 'metadata';
-    video.style.cssText = 'border-radius:12px;display:block;width:100%';
-    video.src = src;
-    video.addEventListener('error', () => {
-      const btn = makeBtn('');
-      btn.addEventListener('click', () => window.open(src, '_blank'));
-      placeholder.innerHTML = '';
-      placeholder.appendChild(btn);
-    });
-    placeholder.innerHTML = '';
-    placeholder.appendChild(video);
-  }
+  };
+
+  const video = document.createElement('video');
+  video.controls = true;
+  video.setAttribute('playsinline', '');           // lecture inline (pas plein écran forcé)
+  video.setAttribute('webkit-playsinline', '');
+  video.preload = 'metadata';
+  video.style.cssText = 'border-radius:12px;display:block;width:100%;background:#000';
+  video.src = src;
+  video.addEventListener('error', showFallbackButton);  // secours seulement si échec réel
+  placeholder.innerHTML = '';
+  placeholder.appendChild(video);
 }
 
 async function loadZoneFromDB(qrCode) {
