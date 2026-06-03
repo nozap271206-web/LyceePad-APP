@@ -8,7 +8,7 @@
  *  - Offline page → si tout échoue, une page de secours est affichée
  */
 
-const CACHE_VERSION = 'lyceepad-v12';
+const CACHE_VERSION = 'lyceepad-v13';
 
 // Fichiers mis en cache immédiatement à l'installation
 const PRECACHE_ASSETS = [
@@ -129,8 +129,11 @@ async function cacheFirst(request) {
 
   try {
     const response = await fetch(request);
-    // Ne mettre en cache que les réponses valides
-    if (response.ok) {
+    // Cacher les réponses valides ET les réponses opaques.
+    // Les images uploadées sont cross-origin (lycee-pad.cc) → réponse opaque
+    // (status 0, response.ok=false) : sans ce cas, elles n'étaient jamais mises
+    // en cache et disparaissaient hors-ligne.
+    if (response.ok || response.type === 'opaque') {
       const cache = await caches.open(CACHE_VERSION);
       cache.put(request, response.clone());
     }

@@ -183,6 +183,41 @@ const DB_ID_TO_QUIZ_ID = {
   30: 10,                          // Internat
 };
 
+// Affiche une vidéo dans le placeholder. En Cordova le WebView bloque la lecture
+// cross-origin → on propose un bouton qui ouvre la vidéo dans le navigateur système.
+// Sur le web : lecteur intégré, avec repli bouton si la lecture échoue.
+function renderZoneVideo(placeholder, src, isCordova) {
+  if (!placeholder || !src) return;
+  const makeBtn = (sub) => {
+    const btn = document.createElement('div');
+    btn.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:12px;color:white;';
+    btn.innerHTML = '<div style="width:70px;height:70px;background:#2EA3F2;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span style="font-size:1rem;font-weight:600;">Lancer la vidéo</span>' + (sub ? `<span style="font-size:0.8rem;opacity:0.7;">${sub}</span>` : '');
+    return btn;
+  };
+
+  if (isCordova) {
+    const btn = makeBtn("S'ouvre dans le navigateur");
+    btn.addEventListener('click', () => window.open(src, '_system'));
+    placeholder.innerHTML = '';
+    placeholder.appendChild(btn);
+  } else {
+    const video = document.createElement('video');
+    video.controls = true;
+    video.setAttribute('playsinline', '');
+    video.preload = 'metadata';
+    video.style.cssText = 'border-radius:12px;display:block;width:100%';
+    video.src = src;
+    video.addEventListener('error', () => {
+      const btn = makeBtn('');
+      btn.addEventListener('click', () => window.open(src, '_blank'));
+      placeholder.innerHTML = '';
+      placeholder.appendChild(btn);
+    });
+    placeholder.innerHTML = '';
+    placeholder.appendChild(video);
+  }
+}
+
 async function loadZoneFromDB(qrCode) {
   try {
     // Attendre que DBManager soit initialisé
@@ -299,37 +334,7 @@ async function loadZoneFromDB(qrCode) {
     const hasStaticVideo = !zone.noVideo && zone.videos && zone.videos.length > 0;
     if (videoSection) videoSection.style.display = hasStaticVideo ? '' : 'none';
     if (hasStaticVideo) {
-        const videoSrc = resolveUrl(zone.videos[0]);
-        const placeholder = document.getElementById('video-placeholder');
-        if (placeholder) {
-          if (isCordova) {
-            // Dans Cordova Android le WebView bloque les vidéos cross-origin → bouton direct
-            const btn = document.createElement('div');
-            btn.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:12px;color:white;';
-            btn.innerHTML = '<div style="width:70px;height:70px;background:#2EA3F2;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span style="font-size:1rem;font-weight:600;">Lancer la vidéo</span><span style="font-size:0.8rem;opacity:0.7;">S\'ouvre dans le navigateur</span>';
-            btn.addEventListener('click', function() { window.open(videoSrc, '_system'); });
-            placeholder.innerHTML = '';
-            placeholder.appendChild(btn);
-          } else {
-            const video = document.createElement('video');
-            video.controls = true;
-            video.setAttribute('playsinline', '');
-            video.preload = 'metadata';
-            video.style.cssText = 'border-radius:12px;display:block;width:100%';
-            video.src = videoSrc;
-            const showFallback = function() {
-              placeholder.innerHTML = '';
-              const btn = document.createElement('div');
-              btn.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:2rem;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:12px;color:white;';
-              btn.innerHTML = '<div style="width:70px;height:70px;background:#2EA3F2;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span style="font-size:1rem;font-weight:600;">Lancer la vidéo</span>';
-              btn.addEventListener('click', function() { window.open(videoSrc, '_blank'); });
-              placeholder.appendChild(btn);
-            };
-            video.addEventListener('error', showFallback);
-            placeholder.innerHTML = '';
-            placeholder.appendChild(video);
-          }
-        }
+      renderZoneVideo(document.getElementById('video-placeholder'), resolveUrl(zone.videos[0]), isCordova);
     }
 
     // ── Médias uploadés : chargés en direct, rafraîchis au retour au 1er plan + toutes les 15 s ──
@@ -390,11 +395,8 @@ async function loadZoneFromDB(qrCode) {
               galleryGrid.appendChild(photoDiv);
             }
           } else if (f.type === 'video' && !hasStaticVideo) {
-            const placeholder = document.getElementById('video-placeholder');
-            if (placeholder) {
-              placeholder.innerHTML = `<video controls playsinline preload="metadata" width="100%" style="border-radius:12px;display:block;"><source src="${fullUrl}" type="video/mp4"></video>`;
-              uploadedVideo = true;
-            }
+            renderZoneVideo(document.getElementById('video-placeholder'), fullUrl, isCordova);
+            uploadedVideo = true;
           } else if (f.type === 'pdf') {
             mountPdf(galleryGrid, fullUrl);
           }
