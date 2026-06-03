@@ -264,56 +264,6 @@ async function loadZoneFromDB(qrCode) {
       galleryGrid.appendChild(photoDiv);
     }
 
-    // Charger les photos/vidéos uploadées depuis le serveur
-    let uploadedVideoFound = false;
-    try {
-      const uploadUrl = `${uploadServerBase}/API/upload.php?qr_code=${encodeURIComponent(qrCode)}`;
-      const uploadRes = await fetch(uploadUrl, { cache: 'no-cache' });
-      if (uploadRes.ok) {
-        const uploadData = await uploadRes.json();
-        if (uploadData.success && uploadData.files && uploadData.files.length > 0) {
-          // Supprimer le placeholder bleu si des photos uploadées existent (quelle que soit la source statique)
-          const hasUploadedGalleryPhotos = uploadData.files.some(f => f.type === 'image' && f.role !== 'hero');
-          if (hasUploadedGalleryPhotos) {
-            const placeholder = galleryGrid.querySelector('.gallery-placeholder');
-            if (placeholder) placeholder.closest('.gallery-item').remove();
-          }
-          uploadData.files.forEach(f => {
-            const fullUrl = uploadServerBase + f.url;
-            if (f.type === 'image') {
-              if (f.role === 'hero') {
-                const heroEl = document.querySelector('.zone-hero');
-                if (heroEl) {
-                  heroEl.style.backgroundImage = `url('${fullUrl}')`;
-                  heroEl.style.backgroundSize = 'cover';
-                  heroEl.style.backgroundPosition = 'center';
-                }
-              } else {
-                const photoDiv = document.createElement('div');
-                photoDiv.className = 'gallery-item';
-                const img = document.createElement('img');
-                img.alt = zone.nom;
-                img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:12px;';
-                img.src = fullUrl;
-                photoDiv.appendChild(img);
-                galleryGrid.appendChild(photoDiv);
-              }
-            } else if (f.type === 'video' && (!zone.videos || zone.videos.length === 0)) {
-              const placeholder = document.getElementById('video-placeholder');
-              if (placeholder) {
-                placeholder.innerHTML = `<video controls playsinline preload="metadata" width="100%" style="border-radius:12px;display:block;"><source src="${fullUrl}" type="video/mp4"></video>`;
-                uploadedVideoFound = true;
-              }
-            } else if (f.type === 'pdf') {
-              mountPdf(galleryGrid, fullUrl);
-            }
-          });
-        }
-      }
-    } catch (e) {
-      console.warn('Photos uploadées non disponibles:', e.message);
-    }
-
     // Remplir la description détaillée
     const descriptionContent = document.getElementById('description-content');
     descriptionContent.innerHTML = '';
@@ -347,6 +297,7 @@ async function loadZoneFromDB(qrCode) {
     if (videoTitleEl) videoTitleEl.textContent = `Visite de ${zone.nom}`;
 
     const hasStaticVideo = !zone.noVideo && zone.videos && zone.videos.length > 0;
+    if (videoSection) videoSection.style.display = hasStaticVideo ? '' : 'none';
     if (hasStaticVideo) {
         const videoSrc = resolveUrl(zone.videos[0]);
         const placeholder = document.getElementById('video-placeholder');
@@ -381,8 +332,88 @@ async function loadZoneFromDB(qrCode) {
         }
     }
 
-    const hasVideo = hasStaticVideo || uploadedVideoFound;
-    if (videoSection) videoSection.style.display = hasVideo ? '' : 'none';
+    // ── Médias uploadés : chargés en direct, rafraîchis au retour au 1er plan + toutes les 15 s ──
+    let lastUploadSig = null;
+    let refreshing = false;
+    async function refreshUploadedMedia() {
+      if (refreshing) return;
+      refreshing = true;
+      try {
+        let files;
+        try {
+          const res = await fetch(`${uploadServerBase}/API/upload.php?qr_code=${encodeURIComponent(qrCode)}`, { cache: 'no-cache' });
+          if (!res.ok) return;
+          const data = await res.json();
+          files = (data.success && Array.isArray(data.files)) ? data.files : [];
+        } catch (e) {
+          return; // hors-ligne : on conserve l'affichage courant
+        }
+
+        // Signature : si la liste n'a pas changé, on ne touche pas au DOM (pas de clignotement)
+        const sig = files.map(f => f.name).sort().join('|');
+        if (sig === lastUploadSig) return;
+        lastUploadSig = sig;
+
+        // Retirer les médias uploadés précédemment injectés
+        galleryGrid.querySelectorAll('[data-uploaded="1"]').forEach(el => el.remove());
+        if (!hasStaticVideo) {
+          const vp = document.getElementById('video-placeholder');
+          if (vp) vp.innerHTML = '';
+        }
+
+        // Placeholder bleu : retiré dès qu'il y a une photo uploadée
+        if (files.some(f => f.type === 'image' && f.role !== 'hero')) {
+          const placeholder = galleryGrid.querySelector('.gallery-placeholder');
+          if (placeholder) placeholder.closest('.gallery-item').remove();
+        }
+
+        let uploadedVideo = false;
+        files.forEach(f => {
+          const fullUrl = uploadServerBase + f.url;
+          if (f.type === 'image') {
+            if (f.role === 'hero') {
+              const heroEl = document.querySelector('.zone-hero');
+              if (heroEl) {
+                heroEl.style.backgroundImage = `url('${fullUrl}')`;
+                heroEl.style.backgroundSize = 'cover';
+                heroEl.style.backgroundPosition = 'center';
+              }
+            } else {
+              const photoDiv = document.createElement('div');
+              photoDiv.className = 'gallery-item';
+              photoDiv.dataset.uploaded = '1';
+              const img = document.createElement('img');
+              img.alt = zone.nom;
+              img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:12px;';
+              img.src = fullUrl;
+              photoDiv.appendChild(img);
+              galleryGrid.appendChild(photoDiv);
+            }
+          } else if (f.type === 'video' && !hasStaticVideo) {
+            const placeholder = document.getElementById('video-placeholder');
+            if (placeholder) {
+              placeholder.innerHTML = `<video controls playsinline preload="metadata" width="100%" style="border-radius:12px;display:block;"><source src="${fullUrl}" type="video/mp4"></video>`;
+              uploadedVideo = true;
+            }
+          } else if (f.type === 'pdf') {
+            mountPdf(galleryGrid, fullUrl);
+          }
+        });
+
+        // La section vidéo apparaît s'il y a une vidéo (statique ou uploadée)
+        if (videoSection) videoSection.style.display = (hasStaticVideo || uploadedVideo) ? '' : 'none';
+      } finally {
+        refreshing = false;
+      }
+    }
+
+    await refreshUploadedMedia();
+
+    // Rafraîchissement automatique : au retour au premier plan + toutes les 15 s
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') refreshUploadedMedia();
+    });
+    setInterval(refreshUploadedMedia, 15000);
 
   } catch (err) {
     console.error('Erreur chargement zone:', err);
@@ -491,6 +522,7 @@ function mountPdf(galleryGrid, fullUrl) {
 
   const docDiv = document.createElement('div');
   docDiv.className = 'gallery-item pdf-block';
+  docDiv.dataset.uploaded = '1';
   const wrap = document.createElement('div');
   wrap.className = 'pdf-pages';
   wrap.innerHTML = '<div class="pdf-loading"><div class="loading-spinner"></div><span>Chargement du PDF…</span></div>';
