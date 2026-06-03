@@ -61,7 +61,7 @@ const mapPins = [
 ];
 
 function goToZone(qrCode) {
-  window.location.href = `ZoneContent.html?qr=${qrCode}`;
+  window.location.href = `ZoneContent.html?qr=${qrCode}&from=map`;
 }
 
 async function loadZonesLocally() {

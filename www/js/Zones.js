@@ -44,8 +44,8 @@ const ZonesPage = {
         const etage = z.etage ? `<span><i class="fas fa-layer-group"></i> ${z.etage}</span>` : '';
         const desc  = z.description ? `<span>${z.description}</span>` : '';
         const href = z.contentId != null
-          ? `ZoneContent.html?id=${z.contentId}`
-          : (z.qr_code ? `ZoneContent.html?qr=${encodeURIComponent(z.qr_code)}` : null);
+          ? `ZoneContent.html?id=${z.contentId}&from=zones`
+          : (z.qr_code ? `ZoneContent.html?qr=${encodeURIComponent(z.qr_code)}&from=zones` : null);
         const hasContent = !!href;
         const inner = `
           <div class="zone-step-number">${i + 1}</div>

@@ -335,7 +335,7 @@ async function showResultAndFetchAPI(qrCode) {
         viewDetailsBtn.className = 'btn-primary';
         viewDetailsBtn.style.marginTop = '20px';
         viewDetailsBtn.onclick = () => {
-            window.location.href = `ZoneContent.html?qr=${encodeURIComponent(qrCode)}`;
+            window.location.href = `ZoneContent.html?qr=${encodeURIComponent(qrCode)}&from=scanner`;
         };
         
         // Ajouter le bouton s'il n'existe pas déjà
