@@ -601,20 +601,16 @@ document.addEventListener('DOMContentLoaded', () => {
   lightbox.init();
   bindGalleryLightbox();
 
-  // Bouton retour : destination selon le paramètre ?from= dans l'URL
+  // Bouton retour : page précédente (fallback Parcours.html si pas d'historique)
   const backBtn = document.querySelector('.back-btn');
   if (backBtn) {
-    const from = new URLSearchParams(window.location.search).get('from');
-    const origins = {
-      map:     { href: 'map.html',     label: 'Retour à la carte' },
-      zones:   { href: 'Zones.html',   label: 'Retour aux zones' },
-      scanner: { href: 'scanner.html', label: 'Retour au scanner' },
-    };
-    const match = origins[from];
-    if (match) {
-      backBtn.href = match.href;
-      const txt = [...backBtn.childNodes].filter(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim()).pop();
-      if (txt) txt.textContent = ' ' + match.label;
-    }
+    backBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = 'Parcours.html';
+      }
+    });
   }
 });
