@@ -114,6 +114,20 @@
         <div class="mesh-gradient"></div>
         <div class="grid-pattern"></div>
       </div>
+      <script>
+        // En Cordova (origine http://localhost) le dossier video/ n'est pas embarqué
+        // dans l'APK → on charge la vidéo de fond depuis le serveur (version légère).
+        (function () {
+          if (location.hostname === 'localhost') {
+            var s = document.querySelector('.hero-video-bg source');
+            if (s) {
+              s.src = 'https://lycee-pad.cc/video/background-hero.mp4?v=2';
+              var v = s.parentElement;
+              if (v && v.load) v.load();
+            }
+          }
+        })();
+      </script>
 
       <div class="hero-container">
         <!-- Main Content -->
