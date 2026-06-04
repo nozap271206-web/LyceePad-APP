@@ -174,7 +174,7 @@ html.perf-lite .nav {
 }
 
 .link-icon {
-  font-size: 1.15rem;
+  font-size: 0.9rem;
   transition: transform 0.3s ease;
 }
 
@@ -649,7 +649,7 @@ html.perf-lite .nav {
   }
 
   .link-icon {
-    font-size: 1.2rem;
+    font-size: 1.0rem;
   }
 
   .footer-wrap {
@@ -683,7 +683,7 @@ html.perf-lite .nav {
   }
 
   .link-icon {
-    font-size: 1rem;
+    font-size: 0.85rem;
   }
 
   .theme-btn {
