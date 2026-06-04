@@ -24,7 +24,7 @@ const mapPins = [
     y: 48
   },
   {
-    label: 'CDI / Bât. C',
+    label: 'CDI',
     description: 'Centre de documentation et administration',
     qr: 'QR_CDI_001',
     x: 53,
@@ -33,7 +33,7 @@ const mapPins = [
   {
     label: 'Amphithéâtre',
     description: 'Salle polyvalente et spectacles',
-    qr: 'QR_AMPHITHÉATRE_001',
+    qr: 'QR_AMPHITHEATRE_001',
     x: 60,
     y: 27
   },
