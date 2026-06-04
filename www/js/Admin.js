@@ -45,20 +45,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       return;
     }
 
-    // Données à encoder dans le QR code (format JSON)
-    const qrData = {
-      code: qrCode,
-      nom: nom || 'Non défini',
-      type: 'lyceepad_zone'
-    };
-
-    // Convertir en JSON
-    const qrText = JSON.stringify(qrData);
-
     // Vider le display
     qrCodeDisplay.innerHTML = '';
 
-    // Créer le QR code
+    // Créer le QR code (on encode uniquement l'identifiant, sans accents,
+    // car qrcode.js ne supporte pas les caractères UTF-8 multi-octets)
+    const qrText = qrCode.normalize('NFD').replace(/[̀-ͯ]/g, '');
+
     try {
       qrCodeInstance = new QRCode(qrCodeDisplay, {
         text: qrText,
@@ -72,6 +65,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       qrGenerator.style.display = 'block';
     } catch (error) {
       console.error('Erreur génération QR code:', error);
+      qrCodeDisplay.innerHTML = '<p style="color:#ef4444;font-size:0.9rem;text-align:center">⚠️ Impossible de générer le QR code.<br>Vérifiez que le code ne contient pas de caractères spéciaux.</p>';
+      qrGenerator.style.display = 'block';
     }
   }
 

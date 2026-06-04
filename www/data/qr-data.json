@@ -419,9 +419,9 @@
       "ordre": 52,
       "actif": true
     },
-    "QR_AMPHITHÉATRE_001": {
+    "QR_AMPHITHEATRE_001": {
       "id": "29",
-      "qr_code": "QR_AMPHITHÉATRE_001",
+      "qr_code": "QR_AMPHITHEATRE_001",
       "nom": "Amphithéâtre",
       "description": "Amphithéâtre de l'établissement",
       "batiment": "",
