@@ -1429,11 +1429,18 @@ html.perf-lite .stat-item {
 
   .float-card-3d {
     max-width: 100%;
+    min-width: 0 !important;
     padding: 1.5rem;
   }
 
   .hero-visual {
     height: auto;
+  }
+
+  /* Empêcher le scroll horizontal sur mobile */
+  .visual-3d {
+    flex-direction: column !important;
+    overflow-x: hidden !important;
   }
 }
 
@@ -1555,6 +1562,16 @@ html.perf-lite .stat-item {
   .status-badge {
     font-size: 0.75rem;
     padding: 0.4rem 0.8rem;
+  }
+
+  .visual-3d {
+    flex-direction: column !important;
+    overflow-x: hidden !important;
+  }
+
+  .float-card-3d {
+    min-width: 0 !important;
+    width: 100% !important;
   }
 
   .action-group {
