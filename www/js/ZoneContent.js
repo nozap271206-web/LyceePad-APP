@@ -359,7 +359,7 @@ async function loadZoneFromDB(qrCode) {
         }
 
         // Placeholder bleu : retiré dès qu'il y a une photo uploadée
-        if (files.some(f => f.type === 'image' && f.role !== 'hero')) {
+        if (files.some(f => f.type === 'image')) {
           const placeholder = galleryGrid.querySelector('.gallery-placeholder');
           if (placeholder) placeholder.closest('.gallery-item').remove();
         }
@@ -368,24 +368,15 @@ async function loadZoneFromDB(qrCode) {
         files.forEach(f => {
           const fullUrl = uploadServerBase + f.url;
           if (f.type === 'image') {
-            if (f.role === 'hero') {
-              const heroEl = document.querySelector('.zone-hero');
-              if (heroEl) {
-                heroEl.style.backgroundImage = `url('${fullUrl}')`;
-                heroEl.style.backgroundSize = 'cover';
-                heroEl.style.backgroundPosition = 'center';
-              }
-            } else {
-              const photoDiv = document.createElement('div');
-              photoDiv.className = 'gallery-item';
-              photoDiv.dataset.uploaded = '1';
-              const img = document.createElement('img');
-              img.alt = zone.nom;
-              img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:12px;';
-              img.src = fullUrl;
-              photoDiv.appendChild(img);
-              galleryGrid.appendChild(photoDiv);
-            }
+            const photoDiv = document.createElement('div');
+            photoDiv.className = 'gallery-item';
+            photoDiv.dataset.uploaded = '1';
+            const img = document.createElement('img');
+            img.alt = zone.nom;
+            img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:12px;';
+            img.src = fullUrl;
+            photoDiv.appendChild(img);
+            galleryGrid.appendChild(photoDiv);
           } else if (f.type === 'video' && !hasStaticVideo) {
             renderZoneVideo(document.getElementById('video-placeholder'), fullUrl, isCordova);
             uploadedVideo = true;

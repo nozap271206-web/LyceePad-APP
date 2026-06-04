@@ -60,12 +60,6 @@ const ContenusManager = {
             <i class="fas fa-sync-alt"></i> Actualiser
           </button>
         </div>
-        <div class="role-selector-bar">
-          <span><i class="fas fa-map-pin"></i> Emplacement des photos :</span>
-          <label class="role-option"><input type="radio" name="photoRole" value="gallery" checked> <span><i class="fas fa-th"></i> Galerie</span></label>
-          <label class="role-option"><input type="radio" name="photoRole" value="hero"> <span><i class="fas fa-image"></i> Image principale</span></label>
-        </div>
-
         <div class="upload-progress" id="uploadProgress">
           <span id="uploadProgressText">Envoi en cours...</span>
           <div class="progress-bar-wrap">
