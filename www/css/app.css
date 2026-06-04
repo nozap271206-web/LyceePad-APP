@@ -56,7 +56,6 @@ html.perf-lite * {
 html {
   min-height: 100vh;
   overscroll-behavior: none;
-  overflow-x: hidden;
 }
 
 /* NAV */
